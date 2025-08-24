@@ -2,13 +2,15 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Html5QrcodeScanner } from 'html5-qrcode'
 
+/* eslint-disable react/no-unescaped-entities */
+
 // Expanded riddles with QR codes for comprehensive testing
 const sampleRiddles = [
   // EASY RIDDLES (Ages 4-8)
   {
     id: 1,
     animal: 'Lion',
-    riddle: "I&apos;m big and yellow with a fluffy mane.\nI roar really loud - can you hear my refrain?\nI&apos;m called the king, but I live on the ground.\nCan you find where my roar can be found?",
+    riddle: "I'm big and yellow with a fluffy mane.\nI roar really loud - can you hear my refrain?\nI'm called the king, but I live on the ground.\nCan you find where my roar can be found?",
     hint: "Look for the biggest, loudest cat!",
     difficulty: 'easy',
     points: 50,
@@ -18,7 +20,7 @@ const sampleRiddles = [
   {
     id: 2,
     animal: 'Elephant',
-    riddle: "I&apos;m really big and colored gray.\nMy nose is long - I use it all day!\nI flap my ears to stay nice and cool.\nFinding me would be really cool!",
+    riddle: "I'm really big and colored gray.\nMy nose is long - I use it all day!\nI flap my ears to stay nice and cool.\nFinding me would be really cool!",
     hint: "Look for the biggest animal with a long nose!",
     difficulty: 'easy',
     points: 50,
@@ -28,7 +30,7 @@ const sampleRiddles = [
   {
     id: 3,
     animal: 'Monkey',
-    riddle: "I love bananas, they&apos;re my favorite treat!\nI swing on branches with hands and feet.\nI&apos;m playful and silly, I love to have fun.\nCan you find me before the day is done?",
+    riddle: "I love bananas, they're my favorite treat!\nI swing on branches with hands and feet.\nI'm playful and silly, I love to have fun.\nCan you find me before the day is done?",
     hint: "Look for the animal that swings and plays!",
     difficulty: 'easy',
     points: 50,
@@ -39,17 +41,17 @@ const sampleRiddles = [
   {
     id: 4,
     animal: 'Giraffe',
-    riddle: "I&apos;m the tallest animal, reaching up so high,\nMy long neck helps me eat leaves in the sky.\nMy spots are unique, like a fingerprint true,\nI&apos;m gentle and peaceful - I&apos;d love to meet you!",
-    hint: "Look up! I&apos;m the tallest animal in the world!",
+    riddle: "I'm the tallest animal, reaching up so high,\nMy long neck helps me eat leaves in the sky.\nMy spots are unique, like a fingerprint true,\nI'm gentle and peaceful - and I'd love to meet you!",
+    hint: "Look up! I'm the tallest animal in the world!",
     difficulty: 'medium',
     points: 100,
-    fact: "A giraffe&apos;s tongue is 18-20 inches long and dark purple!",
+    fact: "A giraffe's tongue is 18-20 inches long and dark purple!",
     qrCode: "GIRAFFE_TALL_SAFARI"
   },
   {
     id: 5,
     animal: 'Penguin',
-    riddle: "I wear a tuxedo but can&apos;t fly through air,\nI waddle on land and swim without care.\nIn icy cold water, I&apos;m graceful and quick,\nFinding my colony would be quite a trick!",
+    riddle: "I wear a tuxedo but can't fly through air,\nI waddle on land and swim without care.\nIn icy cold water, I'm graceful and quick,\nFinding my colony would be quite a trick!",
     hint: "Look for the bird that swims better than it flies!",
     difficulty: 'medium',
     points: 100,
@@ -59,7 +61,7 @@ const sampleRiddles = [
   {
     id: 6,
     animal: 'Tiger',
-    riddle: "Orange and black stripes make me unique,\nI&apos;m a powerful hunter, strong and sleek.\nUnlike other cats, I love to swim,\nFinding me might test you to the rim!",
+    riddle: "Orange and black stripes make me unique,\nI'm a powerful hunter, strong and sleek.\nUnlike other cats, I love to swim,\nFinding me might test you to the rim!",
     hint: "Look for the striped cat that loves water!",
     difficulty: 'medium',
     points: 100,
@@ -70,7 +72,7 @@ const sampleRiddles = [
   {
     id: 7,
     animal: 'Rhino',
-    riddle: "My horn is not bone, but compressed hair so tight,\nI&apos;m a herbivore giant with poor eyesight.\nThough I look prehistoric, I&apos;m gentle at heart,\nConservation efforts give me a fresh start.",
+    riddle: "My horn is not bone, but compressed hair so tight,\nI'm a herbivore giant with poor eyesight.\nThough I look prehistoric,I'm gentle at heart,\nConservation efforts give me a fresh start.",
     hint: "Look for the armored giant with a horn!",
     difficulty: 'hard',
     points: 150,
@@ -80,21 +82,21 @@ const sampleRiddles = [
   {
     id: 8,
     animal: 'Orangutan',
-    riddle: "I share 97% of DNA with you,\nMy intelligence and tool use are certainly true.\nIn Borneo&apos;s canopy, I make my bed,\nDeforestation fills my species with dread.",
+    riddle: "I share 97% of DNA with you,\nMy intelligence and tool use are certainly true.\nIn Borneo's canopy, I make my bed,\nDeforestation fills my species with dread.",
     hint: "Look for our closest relative in the trees!",
     difficulty: 'hard',
     points: 150,
-    fact: "Orangutans are so smart they&apos;ve been observed using tools and learning sign language!",
+    fact: "Orangutans are so smart they've been observed using tools and learning sign language!",
     qrCode: "ORANGUTAN_SMART_SAFARI"
   },
   {
     id: 9,
     animal: 'Snow Leopard',
-    riddle: "In mountains so high where the air is thin,\nMy spotted coat helps my survival begin.\nMy tail&apos;s like a scarf, thick and so long,\nClimate change makes my future less strong.",
+    riddle: "In mountains so high where the air is thin,\nMy spotted coat helps my survival begin.\nMy tail's like a scarf, thick and so long,\nClimate change makes my future less strong.",
     hint: "Look for the ghost of the mountains!",
     difficulty: 'hard',
     points: 150,
-    fact: "Snow leopards can&apos;t roar - they chuff, growl, and purr instead!",
+    fact: "Snow leopards can't roar - they chuff, growl, and purr instead!",
     qrCode: "SNOW_LEOPARD_GHOST_SAFARI"
   }
 ]
@@ -298,13 +300,13 @@ export default function Home() {
           
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              What&apos;s your family name?
+              What&apos;s your group name?
             </h2>
             <input
               type="text"
               value={familyName}
               onChange={(e) => setFamilyName(e.target.value)}
-              placeholder="Enter family name..."
+              placeholder="Enter group name..."
               className="w-full p-3 border border-gray-300 rounded-lg text-lg mb-4"
             />
           </div>
