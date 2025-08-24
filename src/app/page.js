@@ -8,7 +8,7 @@ const sampleRiddles = [
   {
     id: 1,
     animal: 'Lion',
-    riddle: "I'm big and yellow with a fluffy mane.\nI roar really loud - can you hear my refrain?\nI'm called the king, but I live on the ground.\nCan you find where my roar can be found?",
+    riddle: "I&apos;m big and yellow with a fluffy mane.\nI roar really loud - can you hear my refrain?\nI'm called the king, but I live on the ground.\nCan you find where my roar can be found?",
     hint: "Look for the biggest, loudest cat!",
     difficulty: 'easy',
     points: 50,
@@ -18,7 +18,7 @@ const sampleRiddles = [
   {
     id: 2,
     animal: 'Elephant',
-    riddle: "I'm really big and colored gray.\nMy nose is long - I use it all day!\nI flap my ears to stay nice and cool.\nFinding me would be really cool!",
+    riddle: "I&apos;m really big and colored gray.\nMy nose is long - I use it all day!\nI flap my ears to stay nice and cool.\nFinding me would be really cool!",
     hint: "Look for the biggest animal with a long nose!",
     difficulty: 'easy',
     points: 50,
@@ -120,6 +120,24 @@ export default function Home() {
   const scannerRef = useRef(null)
   const html5QrcodeScannerRef = useRef(null)
 
+  const handleScanSuccess = (decodedText) => {
+    setScanResult(decodedText)
+    
+    // Check if scanned code matches current riddle
+    if (decodedText === currentRiddle.qrCode) {
+      // Correct answer! 
+      setShowScanner(false)
+      foundAnimal()
+    } else {
+      // Wrong code scanned
+      setScanError(`That's not the right animal! You scanned: ${decodedText}`)
+      // Auto-clear error after 3 seconds
+      setTimeout(() => {
+        setScanError('')
+      }, 3000)
+    }
+  }
+
   // Load saved data when app starts (Note: Using in-memory storage for artifacts)
   useEffect(() => {
     // In a real app, this would use localStorage
@@ -151,7 +169,7 @@ export default function Home() {
       html5QrcodeScannerRef.current = html5QrcodeScanner
       setScannerInitialized(true)
     }
-  }, [showScanner, scannerInitialized])
+  }, [showScanner, scannerInitialized, handleScanSuccess, handleScanError])
 
   // Cleanup scanner when modal closes
   useEffect(() => {
@@ -226,23 +244,7 @@ export default function Home() {
     setScanError('')
   }
 
-  const handleScanSuccess = (decodedText) => {
-    setScanResult(decodedText)
-    
-    // Check if scanned code matches current riddle
-    if (decodedText === currentRiddle.qrCode) {
-      // Correct answer! 
-      setShowScanner(false)
-      foundAnimal()
-    } else {
-      // Wrong code scanned
-      setScanError(`That's not the right animal! You scanned: ${decodedText}`)
-      // Auto-clear error after 3 seconds
-      setTimeout(() => {
-        setScanError('')
-      }, 3000)
-    }
-  }
+
 
   const handleScanError = (error) => {
     // Only log actual errors, not routine scanning messages
@@ -476,7 +478,7 @@ export default function Home() {
             <div className="text-center">
               <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl p-6 mb-4">
                 <h3 className="text-2xl font-bold mb-2">🏆 SAFARI COMPLETE!</h3>
-                <p className="text-lg">You're an amazing animal explorer!</p>
+                <p className="text-lg">You&apos;re an amazing animal explorer!</p>
               </div>
               <button
                 onClick={() => window.location.reload()}
