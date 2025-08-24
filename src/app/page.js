@@ -583,11 +583,11 @@ export default function Home() {
 
               {/* Current riddle reminder */}
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
-                <p className="text-sm text-blue-800">
-                  <strong>Did you solve the riddle?</strong>
-                </p>
-                <p className="text-xs text-blue-600 mt-1">
-                  <strong>QR Code should contain:</strong> {currentRiddle.qrCode}
+              <p className="text-sm text-blue-800">
+               <strong>Did you solve the riddle?</strong>
+              </p>
+              <p className="text-xs text-blue-600 mt-1">
+                Find the correct exhibit and scan its QR code!
                 </p>
               </div>
 
