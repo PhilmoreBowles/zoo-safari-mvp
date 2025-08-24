@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Html5QrcodeScanner } from 'html5-qrcode'
 
 // Expanded riddles with QR codes for comprehensive testing
@@ -8,7 +8,7 @@ const sampleRiddles = [
   {
     id: 1,
     animal: 'Lion',
-    riddle: "I&apos;m big and yellow with a fluffy mane.\nI roar really loud - can you hear my refrain?\nI'm called the king, but I live on the ground.\nCan you find where my roar can be found?",
+    riddle: "I&apos;m big and yellow with a fluffy mane.\nI roar really loud - can you hear my refrain?\nI&apos;m called the king, but I live on the ground.\nCan you find where my roar can be found?",
     hint: "Look for the biggest, loudest cat!",
     difficulty: 'easy',
     points: 50,
@@ -28,7 +28,7 @@ const sampleRiddles = [
   {
     id: 3,
     animal: 'Monkey',
-    riddle: "I love bananas, they're my favorite treat!\nI swing on branches with hands and feet.\nI'm playful and silly, I love to have fun.\nCan you find me before the day is done?",
+    riddle: "I love bananas, they&apos;re my favorite treat!\nI swing on branches with hands and feet.\nI&apos;m playful and silly, I love to have fun.\nCan you find me before the day is done?",
     hint: "Look for the animal that swings and plays!",
     difficulty: 'easy',
     points: 50,
@@ -39,17 +39,17 @@ const sampleRiddles = [
   {
     id: 4,
     animal: 'Giraffe',
-    riddle: "I'm the tallest animal, reaching up so high,\nMy long neck helps me eat leaves in the sky.\nMy spots are unique, like a fingerprint true,\nI'm gentle and peaceful - I'd love to meet you!",
-    hint: "Look up! I'm the tallest animal in the world!",
+    riddle: "I&apos;m the tallest animal, reaching up so high,\nMy long neck helps me eat leaves in the sky.\nMy spots are unique, like a fingerprint true,\nI&apos;m gentle and peaceful - I&apos;d love to meet you!",
+    hint: "Look up! I&apos;m the tallest animal in the world!",
     difficulty: 'medium',
     points: 100,
-    fact: "A giraffe's tongue is 18-20 inches long and dark purple!",
+    fact: "A giraffe&apos;s tongue is 18-20 inches long and dark purple!",
     qrCode: "GIRAFFE_TALL_SAFARI"
   },
   {
     id: 5,
     animal: 'Penguin',
-    riddle: "I wear a tuxedo but can't fly through air,\nI waddle on land and swim without care.\nIn icy cold water, I'm graceful and quick,\nFinding my colony would be quite a trick!",
+    riddle: "I wear a tuxedo but can&apos;t fly through air,\nI waddle on land and swim without care.\nIn icy cold water, I&apos;m graceful and quick,\nFinding my colony would be quite a trick!",
     hint: "Look for the bird that swims better than it flies!",
     difficulty: 'medium',
     points: 100,
@@ -59,7 +59,7 @@ const sampleRiddles = [
   {
     id: 6,
     animal: 'Tiger',
-    riddle: "Orange and black stripes make me unique,\nI'm a powerful hunter, strong and sleek.\nUnlike other cats, I love to swim,\nFinding me might test you to the rim!",
+    riddle: "Orange and black stripes make me unique,\nI&apos;m a powerful hunter, strong and sleek.\nUnlike other cats, I love to swim,\nFinding me might test you to the rim!",
     hint: "Look for the striped cat that loves water!",
     difficulty: 'medium',
     points: 100,
@@ -70,7 +70,7 @@ const sampleRiddles = [
   {
     id: 7,
     animal: 'Rhino',
-    riddle: "My horn is not bone, but compressed hair so tight,\nI'm a herbivore giant with poor eyesight.\nThough I look prehistoric, I'm gentle at heart,\nConservation efforts give me a fresh start.",
+    riddle: "My horn is not bone, but compressed hair so tight,\nI&apos;m a herbivore giant with poor eyesight.\nThough I look prehistoric, I&apos;m gentle at heart,\nConservation efforts give me a fresh start.",
     hint: "Look for the armored giant with a horn!",
     difficulty: 'hard',
     points: 150,
@@ -80,24 +80,26 @@ const sampleRiddles = [
   {
     id: 8,
     animal: 'Orangutan',
-    riddle: "I share 97% of DNA with you,\nMy intelligence and tool use are certainly true.\nIn Borneo's canopy, I make my bed,\nDeforestation fills my species with dread.",
+    riddle: "I share 97% of DNA with you,\nMy intelligence and tool use are certainly true.\nIn Borneo&apos;s canopy, I make my bed,\nDeforestation fills my species with dread.",
     hint: "Look for our closest relative in the trees!",
     difficulty: 'hard',
     points: 150,
-    fact: "Orangutans are so smart they've been observed using tools and learning sign language!",
+    fact: "Orangutans are so smart they&apos;ve been observed using tools and learning sign language!",
     qrCode: "ORANGUTAN_SMART_SAFARI"
   },
   {
     id: 9,
     animal: 'Snow Leopard',
-    riddle: "In mountains so high where the air is thin,\nMy spotted coat helps my survival begin.\nMy tail's like a scarf, thick and so long,\nClimate change makes my future less strong.",
+    riddle: "In mountains so high where the air is thin,\nMy spotted coat helps my survival begin.\nMy tail&apos;s like a scarf, thick and so long,\nClimate change makes my future less strong.",
     hint: "Look for the ghost of the mountains!",
     difficulty: 'hard',
     points: 150,
-    fact: "Snow leopards can't roar - they chuff, growl, and purr instead!",
+    fact: "Snow leopards can&apos;t roar - they chuff, growl, and purr instead!",
     qrCode: "SNOW_LEOPARD_GHOST_SAFARI"
   }
 ]
+
+const RIDDLE_LIMIT = 6
 
 export default function Home() {
   // State variables
@@ -113,14 +115,92 @@ export default function Home() {
   const [scanResult, setScanResult] = useState('')
   const [scanError, setScanError] = useState('')
   const [scannerInitialized, setScannerInitialized] = useState(false)
-  const RIDDLE_LIMIT = 6
   const [showLimitReached, setShowLimitReached] = useState(false)
 
   // QR Scanner ref
   const scannerRef = useRef(null)
   const html5QrcodeScannerRef = useRef(null)
 
-  const handleScanSuccess = (decodedText) => {
+  // Load saved data when app starts
+  useEffect(() => {
+    const savedFamily = localStorage.getItem('zooSafariFamilyName')
+    const savedPoints = localStorage.getItem('zooSafariPoints')
+    const savedAnimals = localStorage.getItem('zooSafariAnimals')
+    
+    if (savedFamily) {
+      setFamilyName(savedFamily)
+      setGameStarted(true)
+    }
+    if (savedPoints) {
+      setCurrentPoints(parseInt(savedPoints))
+    }
+    if (savedAnimals) {
+      setDiscoveredAnimals(JSON.parse(savedAnimals))
+    }
+  }, [])
+
+  // Filter riddles by difficulty
+  const getFilteredRiddles = () => {
+    if (selectedDifficulty === 'all') return sampleRiddles
+    return sampleRiddles.filter(riddle => riddle.difficulty === selectedDifficulty)
+  }
+
+  const filteredRiddles = getFilteredRiddles()
+  const currentRiddle = filteredRiddles[currentRiddleIndex]
+  const isLastRiddle = currentRiddleIndex >= filteredRiddles.length - 1
+
+  // Game functions
+  const startAdventure = () => {
+    if (familyName.trim()) {
+      setGameStarted(true)
+      localStorage.setItem('zooSafariFamilyName', familyName)
+    }
+  }
+
+  const foundAnimal = useCallback(() => {
+    const newPoints = currentPoints + currentRiddle.points
+    const newAnimals = [...discoveredAnimals, {
+      ...currentRiddle,
+      discoveredAt: new Date().toISOString()
+    }]
+
+    setCurrentPoints(newPoints)
+    setDiscoveredAnimals(newAnimals)
+
+    // Check if limit reached
+    if (newAnimals.length >= RIDDLE_LIMIT) {
+      setShowLimitReached(true)
+    } else {
+      setShowSuccess(true)
+    }
+
+    // Save to browser storage
+    localStorage.setItem('zooSafariPoints', newPoints.toString())
+    localStorage.setItem('zooSafariAnimals', JSON.stringify(newAnimals))
+  }, [currentPoints, currentRiddle, discoveredAnimals])
+
+  const nextRiddle = () => {
+    setShowSuccess(false)
+    setShowHint(false)
+    if (currentRiddleIndex < filteredRiddles.length - 1) {
+      setCurrentRiddleIndex(currentRiddleIndex + 1)
+    }
+  }
+
+  // QR Scanner functions
+  const openScanner = () => {
+    setShowScanner(true)
+    setScanError('')
+    setScanResult('')
+  }
+
+  const closeScanner = () => {
+    setShowScanner(false)
+    setScanResult('')
+    setScanError('')
+  }
+
+  const handleScanSuccess = useCallback((decodedText) => {
     setScanResult(decodedText)
     
     // Check if scanned code matches current riddle
@@ -130,19 +210,26 @@ export default function Home() {
       foundAnimal()
     } else {
       // Wrong code scanned
-      setScanError(`That's not the right animal! You scanned: ${decodedText}`)
+      setScanError(`That&apos;s not the right animal! You scanned: ${decodedText}`)
       // Auto-clear error after 3 seconds
       setTimeout(() => {
         setScanError('')
       }, 3000)
     }
-  }
+  }, [currentRiddle.qrCode, foundAnimal])
 
-  // Load saved data when app starts (Note: Using in-memory storage for artifacts)
-  useEffect(() => {
-    // In a real app, this would use localStorage
-    // For artifacts, we'll use session-based storage only
-    console.log('Game initialized - using in-memory storage only')
+  const handleScanError = useCallback((error) => {
+    // Only log actual errors, not routine scanning messages
+    if (error.includes('QR code parse error') || error.includes('No MultiFormat Readers')) {
+      // These are normal "no QR code detected" messages, ignore them
+      return
+    }
+    console.log('Scan error:', error)
+    if (error.includes('NotAllowedError') || error.includes('Permission denied')) {
+      setScanError('Camera permission denied. Please allow camera access and try again.')
+    } else {
+      setScanError('Having trouble scanning? Make sure the QR code is clear and well-lit.')
+    }
   }, [])
 
   // Initialize QR scanner when modal opens
@@ -182,84 +269,6 @@ export default function Home() {
     }
   }, [showScanner])
 
-  // Filter riddles by difficulty
-  const getFilteredRiddles = () => {
-    if (selectedDifficulty === 'all') return sampleRiddles
-    return sampleRiddles.filter(riddle => riddle.difficulty === selectedDifficulty)
-  }
-
-  const filteredRiddles = getFilteredRiddles()
-  const currentRiddle = filteredRiddles[currentRiddleIndex]
-  const isLastRiddle = currentRiddleIndex >= filteredRiddles.length - 1
-
-  // Game functions
-  const startAdventure = () => {
-    if (familyName.trim()) {
-      setGameStarted(true)
-      // In real app: localStorage.setItem('zooSafariFamilyName', familyName)
-    }
-  }
-
-  // CORRECTED: Fixed the foundAnimal function
-  const foundAnimal = () => {
-    const newPoints = currentPoints + currentRiddle.points
-    const newAnimals = [...discoveredAnimals, {
-      ...currentRiddle,
-      discoveredAt: new Date().toISOString()
-    }]
-
-    setCurrentPoints(newPoints)
-    setDiscoveredAnimals(newAnimals)
-
-    // Check if limit reached
-    if (newAnimals.length >= RIDDLE_LIMIT) {
-      setShowLimitReached(true)
-    } else {
-      setShowSuccess(true)
-    }
-
-    // In real app: Save to browser storage
-    // localStorage.setItem('zooSafariPoints', newPoints.toString())
-    // localStorage.setItem('zooSafariAnimals', JSON.stringify(newAnimals))
-  }
-
-  const nextRiddle = () => {
-    setShowSuccess(false)
-    setShowHint(false)
-    if (currentRiddleIndex < filteredRiddles.length - 1) {
-      setCurrentRiddleIndex(currentRiddleIndex + 1)
-    }
-  }
-
-  // QR Scanner functions
-  const openScanner = () => {
-    setShowScanner(true)
-    setScanError('')
-    setScanResult('')
-  }
-
-  const closeScanner = () => {
-    setShowScanner(false)
-    setScanResult('')
-    setScanError('')
-  }
-
-
-
-  const handleScanError = (error) => {
-    // Only log actual errors, not routine scanning messages
-    if (error.includes('QR code parse error') || error.includes('No MultiFormat Readers')) {
-      // These are normal "no QR code detected" messages, ignore them
-      return
-    }
-    console.log('Scan error:', error)
-    if (error.includes('NotAllowedError') || error.includes('Permission denied')) {
-      setScanError('Camera permission denied. Please allow camera access and try again.')
-    } else {
-      setScanError('Having trouble scanning? Make sure the QR code is clear and well-lit.')
-    }
-  }
-
   // Animal emoji mapping
   const animalEmojis = {
     'Lion': '🦁',
@@ -271,66 +280,6 @@ export default function Home() {
     'Rhino': '🦏',
     'Orangutan': '🦧',
     'Snow Leopard': '🐆'
-  }
-
-  // CORRECTED: Moved limit reached screen to proper position in render logic
-  // Limit reached screen
-  if (showLimitReached) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-purple-100 to-blue-100 p-4">
-        <div className="max-w-md mx-auto pt-10">
-          <div className="text-center mb-8">
-            <div className="text-6xl mb-4">🎯</div>
-            <h1 className="text-3xl font-bold text-purple-800 mb-2">
-              Demo Complete!
-            </h1>
-            <p className="text-lg text-gray-700">
-              You've completed the demo! Sign up to be notified when the full Zoo Safari launches with 50+ riddles
-            </p>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-            <div className="text-center">
-              <p className="text-2xl font-bold text-green-600 mb-2">
-                Final Score: {currentPoints} Points!
-              </p>
-              <p className="text-gray-600 mb-4">
-                🏆 Animals Discovered: {discoveredAnimals.length}
-              </p>
-              
-              <div className="mt-4">
-                <h3 className="font-semibold text-gray-800 mb-2">Your Digital Zoo</h3>
-                <div className="flex flex-wrap justify-center">
-                  {discoveredAnimals.map((animal, index) => (
-                    <span key={index} className="inline-block mr-2 mb-2 text-3xl">
-                      {animalEmojis[animal.animal]}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <a 
-              href="https://your-signup-page.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="block w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl text-lg text-center shadow-lg transform hover:scale-105 transition-all"
-            >
-              🚀 Get Notified When Full Game Launches!
-            </a>
-            
-            <button
-              onClick={() => window.location.reload()}
-              className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-3 px-6 rounded-xl text-lg"
-            >
-              🔄 Try Demo Again
-            </button>
-          </div>
-        </div>
-      </div>
-    )
   }
 
   // Welcome/Setup Screen
@@ -349,7 +298,7 @@ export default function Home() {
           
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              What's your family name?
+              What&apos;s your family name?
             </h2>
             <input
               type="text"
@@ -407,6 +356,65 @@ export default function Home() {
           >
             🚀 Start Adventure!
           </button>
+        </div>
+      </div>
+    )
+  }
+
+  // Limit reached screen
+  if (showLimitReached) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-purple-100 to-blue-100 p-4">
+        <div className="max-w-md mx-auto pt-10">
+          <div className="text-center mb-8">
+            <div className="text-6xl mb-4">🎯</div>
+            <h1 className="text-3xl font-bold text-purple-800 mb-2">
+              Demo Complete!
+            </h1>
+            <p className="text-lg text-gray-700">
+              You&apos;ve completed the demo! Sign up to be notified when the full Zoo Safari launches with 50+ riddles
+            </p>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+            <div className="text-center">
+              <p className="text-2xl font-bold text-green-600 mb-2">
+                Final Score: {currentPoints} Points!
+              </p>
+              <p className="text-gray-600 mb-4">
+                🏆 Animals Discovered: {discoveredAnimals.length}
+              </p>
+              
+              <div className="mt-4">
+                <h3 className="font-semibold text-gray-800 mb-2">Your Digital Zoo</h3>
+                <div className="flex flex-wrap justify-center">
+                  {discoveredAnimals.map((animal, index) => (
+                    <span key={index} className="inline-block mr-2 mb-2 text-3xl">
+                      {animalEmojis[animal.animal]}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <a 
+              href="https://your-signup-page.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="block w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl text-lg text-center shadow-lg transform hover:scale-105 transition-all"
+            >
+              🚀 Get Notified When Full Game Launches!
+            </a>
+            
+            <button
+              onClick={() => window.location.reload()}
+              className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-3 px-6 rounded-xl text-lg"
+            >
+              🔄 Try Demo Again
+            </button>
+          </div>
         </div>
       </div>
     )
@@ -576,7 +584,10 @@ export default function Home() {
               {/* Current riddle reminder */}
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
                 <p className="text-sm text-blue-800">
-                  <strong>Do you know the answer to the riddle?</strong>
+                  <strong>Did you solve the riddle?</strong>
+                </p>
+                <p className="text-xs text-blue-600 mt-1">
+                  <strong>QR Code should contain:</strong> {currentRiddle.qrCode}
                 </p>
               </div>
 
