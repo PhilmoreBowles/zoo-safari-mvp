@@ -10,7 +10,7 @@ const sampleRiddles = [
   {
     id: 1,
     animal: 'Lion',
-    riddle: "I'm big and yellow with a fluffy mane.\nI roar really loud - can you hear my refrain?\nI'm called the king, but I live on the ground.\nCan you find where my roar can be found?",
+    riddle: "I'm big and yellow with a fluffy mane.\nI roar so loud it can't be contained!\nI'm called the king, but I sleep on the ground.\nDo you know where my roar can be found?",
     hint: "Look for the biggest, loudest cat!",
     difficulty: 'easy',
     points: 50,
@@ -20,7 +20,7 @@ const sampleRiddles = [
   {
     id: 2,
     animal: 'Elephant',
-    riddle: "I'm really big and colored gray.\nMy nose is long - I use it all day!\nI flap my ears to stay nice and cool.\nFinding me would be really cool!",
+    riddle: "I’m reeealy big and my skin is gray.\nMy nose is so long — I can use it to play!\nI flap my ears to help me cool down.\nWhen you find me, you won't have a frown!",
     hint: "Look for the biggest animal with a long nose!",
     difficulty: 'easy',
     points: 50,
@@ -30,7 +30,7 @@ const sampleRiddles = [
   {
     id: 3,
     animal: 'Monkey',
-    riddle: "I love bananas, they're my favorite treat!\nI swing on branches with hands and feet.\nI'm playful and silly, I love to have fun.\nCan you find me before the day is done?",
+    riddle: "I love bananas, they're my favorite treat!\nI can swing on branches with my hands and feet.\nI'm playful and silly, I love to have fun.\nCan you find me before the day is done?",
     hint: "Look for the animal that swings and plays!",
     difficulty: 'easy',
     points: 50,
@@ -41,7 +41,7 @@ const sampleRiddles = [
   {
     id: 4,
     animal: 'Giraffe',
-    riddle: "I'm the tallest animal, reaching up so high,\nMy long neck helps me eat leaves in the sky.\nMy spots are unique, like a fingerprint true,\nI'm gentle and peaceful - and I'd love to meet you!",
+    riddle: "I'm the tallest animal, reaching up to the sky,\nMy extra long neck helps me eat up high.\nMy spots are unique, like a big fingerprint,\nCan you guess my name, or do you need a hint?",
     hint: "Look up! I'm the tallest animal in the world!",
     difficulty: 'medium',
     points: 100,
@@ -61,7 +61,7 @@ const sampleRiddles = [
   {
     id: 6,
     animal: 'Tiger',
-    riddle: "Orange and black stripes make me unique,\nI'm a powerful hunter, strong and sleek.\nUnlike other cats, I love to swim,\nFinding me might test you to the rim!",
+    riddle: "Orange and black stripes make me unique,\nI'm a powerful hunter, strong and sleek.\nUnlike other cats, I love to swim,\nCan you find me before the sun grows dim?!",
     hint: "Look for the striped cat that loves water!",
     difficulty: 'medium',
     points: 100,
@@ -72,7 +72,7 @@ const sampleRiddles = [
   {
     id: 7,
     animal: 'Rhino',
-    riddle: "My horn is not bone, but compressed hair so tight,\nI'm a herbivore giant with poor eyesight.\nThough I look prehistoric,I'm gentle at heart,\nConservation efforts give me a fresh start.",
+    riddle: "My horn is not bone, but compressed hair so tight,\nI'm a herbivore giant with poor eyesight.\nThough I look prehistoric,I'm gentle at heart,\nConservation efforts play a crucial part.",
     hint: "Look for the armored giant with a horn!",
     difficulty: 'hard',
     points: 150,
@@ -92,7 +92,7 @@ const sampleRiddles = [
   {
     id: 9,
     animal: 'Snow Leopard',
-    riddle: "In mountains so high where the air is thin,\nMy spotted coat helps my survival begin.\nMy tail's like a scarf, thick and so long,\nClimate change makes my future less strong.",
+    riddle: "In mountains so high where the air is thin,\nMy spotted coat helps my species win.\nMy tail's like a scarf, thick and so long,\nEnviromental threats make my future less strong.",
     hint: "Look for the ghost of the mountains!",
     difficulty: 'hard',
     points: 150,
