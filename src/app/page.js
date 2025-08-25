@@ -61,7 +61,7 @@ const sampleRiddles = [
   {
     id: 1,
     animal: 'Lion',
-    riddle: "I'm big and yellow with a fluffy mane.\nI roar so loud it can't be contained!\nThey call me the king, but I sleep on the ground.\nDo you know where my Pride can be found?",
+    riddle: "I'm big and yellow with a fluffy mane.\nI roar so loud it can't be contained!\nThey call me the king,\nbut I sleep on the ground.\nDo you know where my\npride can be found?",
     hint: "Look for the biggest, loudest cat!",
     difficulty: 'easy',
     points: 50,
@@ -358,14 +358,14 @@ if (!gameStarted) {
               <span className="animate-pulse animation-delay-400">🐧</span>
             </div>
           </div>
-          <h1 className="text-5xl font-black text-gray-700 mb-6 drop-shadow-2xl tracking-tight">
+          <h1 className="text-6xl font-black text-gray-700 mb-6 drop-shadow-lg leading-relaxed">
             Zoo Safari
           </h1>
           <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 border border-white/30">
-            <p className="text-1xl font-semibold text-gray-600 drop-shadow-lg leading-relaxed">
+            <p className="text-2xl font-regular text-gray-600 drop-shadow-lg leading-relaxed">
               Ready for an amazing
               <br />
-              <span className="text-2xl font-black text-yellow-100">animal adventure?</span>
+              <span className="text-2x1 font-black text-white drop-shadow-lg leading-relaxed">animal adventure?</span>
             </p>
           </div>
         </div>
@@ -385,11 +385,11 @@ if (!gameStarted) {
 
             <div className="text-center mb-8">
               <div className="inline-flex items-center space-x-3 mb-4">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <h2 className="text-3xl font-black text-gray-800">What's your team name?</h2>
-                <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse animation-delay-500"></div>
+               
+                <h3 className="text-2xl font-black text-gray-800">What's your team name?</h3>
+            
               </div>
-              <div className="w-16 h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full mx-auto"></div>
+              <div className="w-16 h-1 bg-gradient-to-r from-orange-400 to-red-500 rounded-full mx-auto"></div>
             </div>
             
             <div className="relative">
@@ -405,15 +405,7 @@ if (!gameStarted) {
                 />
 
               </div>
-              
-              {/* Input Enhancement Line */}
-              <div className="mt-3 flex justify-center">
-                <div className="flex space-x-1">
-                  <div className="w-3 h-1 bg-emerald-400 rounded-full"></div>
-                  <div className="w-6 h-1 bg-teal-400 rounded-full"></div>
-                  <div className="w-3 h-1 bg-green-400 rounded-full"></div>
-                </div>
-              </div>
+
             </div>
           </div>
         </div>
@@ -438,14 +430,12 @@ if (!gameStarted) {
 
             <div className="text-center mb-10 pt-8">
               <div className="inline-flex items-center space-x-4 mb-6">
-                <div className="w-3 h-3 bg-purple-400 rounded-full animate-bounce"></div>
+
                 <h3 className="text-3xl font-black text-gray-800">Choose Your Adventure Level</h3>
-                <div className="w-3 h-3 bg-pink-400 rounded-full animate-bounce animation-delay-300"></div>
+
               </div>
               <div className="flex justify-center space-x-2 mb-4">
-                <div className="w-4 h-1 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full"></div>
-                <div className="w-8 h-1 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full"></div>
-                <div className="w-4 h-1 bg-gradient-to-r from-pink-400 to-red-500 rounded-full"></div>
+              <div className="w-16 h-1 bg-gradient-to-r from-purple-400 to-red-500 rounded-full mx-auto"></div>
               </div>
               <p className="text-gray-600 font-medium">Select the perfect challenge for your group!</p>
             </div>
@@ -606,7 +596,7 @@ if (!gameStarted) {
         <button
           onClick={startAdventure}
           disabled={!familyName.trim()}
-          className="w-full bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 hover:from-emerald-700 hover:via-green-700 hover:to-teal-700 disabled:from-gray-400 disabled:via-gray-400 disabled:to-gray-500 text-white font-bold py-5 px-8 rounded-2xl text-xl shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl disabled:hover:scale-100 disabled:hover:shadow-2xl border-2 border-white/30"
+          className="w-full bg-gradient-to-r from-sky-400 via-blue-400 to-indigo-500 hover:from-emerald-700 hover:via-green-700 hover:to-teal-700 disabled:from-gray-400 disabled:via-gray-400 disabled:to-gray-500 text-white font-bold py-5 px-8 rounded-2xl text-xl shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl disabled:hover:scale-100 disabled:hover:shadow-2xl border-2 border-white/30"
         >
           <div className="flex items-center justify-center space-x-3">
             <span>🚀</span>
@@ -622,7 +612,7 @@ if (!gameStarted) {
   // Limit reached screen
   if (showLimitReached) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-purple-100 to-blue-100 p-4">
+      <div className="min-h-screen bg-gradient-to-b from-sky-200 to-indigo-100 p-4">
         <div className="max-w-md mx-auto pt-10">
           <div className="text-center mb-8">
             <div className="text-6xl mb-4">🎯</div>
@@ -658,7 +648,7 @@ if (!gameStarted) {
 
           <div className="space-y-4">
             <a 
-              href="https://your-signup-page.com" 
+              href="https://zoosafari.app" 
               target="_blank" 
               rel="noopener noreferrer"
               className="block w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl text-lg text-center shadow-lg transform hover:scale-105 transition-all"
@@ -888,7 +878,7 @@ if (!gameStarted) {
 
           <div className="space-y-4">
             <a 
-              href="https://your-signup-page.com" 
+              href="https://zoosafari.app" 
               target="_blank" 
               rel="noopener noreferrer"
               className="block w-full bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 hover:from-purple-700 hover:via-pink-700 hover:to-red-700 text-white font-black py-5 px-8 rounded-2xl text-xl text-center shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-white/40"
@@ -918,7 +908,7 @@ if (!gameStarted) {
 
 // Main game interface
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-100 via-orange-100 to-red-300 p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-amber-200 via-orange-200 to-red-300 p-4 relative overflow-hidden">
       {/* Safari Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-16 left-6 text-4xl animate-pulse">🌴</div>
