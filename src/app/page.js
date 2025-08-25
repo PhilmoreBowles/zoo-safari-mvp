@@ -61,7 +61,7 @@ const sampleRiddles = [
   {
     id: 1,
     animal: 'Lion',
-    riddle: "I'm big and yellow with a fluffy mane.\nI roar so loud it can't be contained!\nI'm called the king, but I sleep on the ground.\nDo you know where my roar can be found?",
+    riddle: "I'm big and yellow with a fluffy mane.\nI roar so loud it can't be contained!\nThey call me the king, but I sleep on the ground.\nDo you know where my Pride can be found?",
     hint: "Look for the biggest, loudest cat!",
     difficulty: 'easy',
     points: 50,
@@ -336,83 +336,288 @@ export default function Home() {
   }
 
   // Welcome/Setup Screen
-  if (!gameStarted) {
-    return (
-      <div className="min-h-screen bg-green-50 p-4">
-        <div className="max-w-md mx-auto pt-10">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-green-800 mb-4">
-              🦁 Zoo Safari
-            </h1>
-            <p className="text-lg text-gray-700 mb-8">
-              Ready for an amazing animal adventure?
-            </p>
-          </div>
-          
-          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              What&apos;s your group name?
-            </h2>
-            <input
-              type="text"
-              value={familyName}
-              onChange={(e) => setFamilyName(e.target.value)}
-              placeholder="Enter group name..."
-              className="w-full p-3 border border-gray-300 rounded-lg text-lg mb-4"
-            />
-          </div>
-
-          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">
-              Choose Your Adventure Level:
-            </h3>
-            
-            <div className="space-y-3">
-              <button
-                onClick={() => setSelectedDifficulty('all')}
-                className={`w-full p-3 rounded-lg text-left ${selectedDifficulty === 'all' ? 'bg-blue-100 border-2 border-blue-500' : 'bg-gray-50 border border-gray-300'}`}
-              >
-                <div className="font-semibold">🌟 All Levels (9 riddles)</div>
-                <div className="text-sm text-gray-600">Perfect for mixed ages</div>
-              </button>
-              
-              <button
-                onClick={() => setSelectedDifficulty('easy')}
-                className={`w-full p-3 rounded-lg text-left ${selectedDifficulty === 'easy' ? 'bg-green-100 border-2 border-green-500' : 'bg-gray-50 border border-gray-300'}`}
-              >
-                <div className="font-semibold">🟢 Easy (3 riddles)</div>
-                <div className="text-sm text-gray-600">Ages 4-8 • Simple words</div>
-              </button>
-              
-              <button
-                onClick={() => setSelectedDifficulty('medium')}
-                className={`w-full p-3 rounded-lg text-left ${selectedDifficulty === 'medium' ? 'bg-yellow-100 border-2 border-yellow-500' : 'bg-gray-50 border border-gray-300'}`}
-              >
-                <div className="font-semibold">🟡 Medium (3 riddles)</div>
-                <div className="text-sm text-gray-600">Ages 8-12 • Some science</div>
-              </button>
-              
-              <button
-                onClick={() => setSelectedDifficulty('hard')}
-                className={`w-full p-3 rounded-lg text-left ${selectedDifficulty === 'hard' ? 'bg-red-100 border-2 border-red-500' : 'bg-gray-50 border border-gray-300'}`}
-              >
-                <div className="font-semibold">🔴 Hard (3 riddles)</div>
-                <div className="text-sm text-gray-600">Ages 12+ • Conservation focus</div>
-              </button>
+if (!gameStarted) {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-amber-100 via-orange-400 to-red-500 p-4 relative overflow-hidden">
+      {/* Safari Background Pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-10 left-10 text-6xl">🌿</div>
+        <div className="absolute top-32 right-8 text-4xl">🦋</div>
+        <div className="absolute bottom-40 left-8 text-5xl">🌺</div>
+        <div className="absolute bottom-20 right-16 text-3xl">🍃</div>
+        <div className="absolute top-64 left-1/2 text-4xl">🌸</div>
+      </div>
+      
+      <div className="max-w-md mx-auto pt-10 relative z-10">
+        <div className="text-center mb-8">
+          <div className="mb-6 animate-bounce">
+            <div className="text-7xl mb-2">🦁</div>
+            <div className="flex justify-center space-x-2 text-2xl">
+              <span className="animate-pulse">🐘</span>
+              <span className="animate-pulse animation-delay-200">🦒</span>
+              <span className="animate-pulse animation-delay-400">🐧</span>
             </div>
           </div>
-
-          <button
-            onClick={startAdventure}
-            disabled={!familyName.trim()}
-            className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold py-3 px-6 rounded-lg text-lg"
-          >
-            🚀 Start Adventure!
-          </button>
+          <h1 className="text-5xl font-black text-gray-700 mb-6 drop-shadow-2xl tracking-tight">
+            Zoo Safari
+          </h1>
+          <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 border border-white/30">
+            <p className="text-1xl font-semibold text-gray-600 drop-shadow-lg leading-relaxed">
+              Ready for an amazing
+              <br />
+              <span className="text-2xl font-black text-yellow-100">animal adventure?</span>
+            </p>
+          </div>
         </div>
+        
+        <div className="relative mb-8">
+          {/* Card Shadow Layer */}
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-600 to-teal-700 rounded-3xl transform rotate-1 opacity-20"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl transform -rotate-1 opacity-30"></div>
+          
+          {/* Main Card */}
+          <div className="relative bg-white/98 backdrop-blur-xl rounded-3xl shadow-2xl p-10 border-2 border-white/60 hover:shadow-3xl transition-all duration-500 hover:transform hover:scale-102">
+            {/* Decorative Elements */}
+            <div className="absolute -top-4 left-0 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full p-3 shadow-lg">
+              <span className="text-2xl">👥</span>
+            </div>
+
+
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center space-x-3 mb-4">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <h2 className="text-3xl font-black text-gray-800">What's your team name?</h2>
+                <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse animation-delay-500"></div>
+              </div>
+              <div className="w-16 h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full mx-auto"></div>
+            </div>
+            
+            <div className="relative">
+              {/* Input Container */}
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-2xl transform scale-105 opacity-20"></div>
+                <input
+                  type="text"
+                  value={familyName}
+                  onChange={(e) => setFamilyName(e.target.value)}
+                  placeholder="Enter your team name..."
+                  className="relative w-full p-5 border-3 border-gray-200 rounded-2xl text-xl font-semibold placeholder-gray-400 focus:border-emerald-500 focus:ring-6 focus:ring-emerald-200 transition-all duration-400 bg-gradient-to-br from-gray-50 to-white shadow-inner hover:shadow-lg"
+                />
+
+              </div>
+              
+              {/* Input Enhancement Line */}
+              <div className="mt-3 flex justify-center">
+                <div className="flex space-x-1">
+                  <div className="w-3 h-1 bg-emerald-400 rounded-full"></div>
+                  <div className="w-6 h-1 bg-teal-400 rounded-full"></div>
+                  <div className="w-3 h-1 bg-green-400 rounded-full"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative mb-8">
+          {/* Card Shadow Layers */}
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-pink-700 rounded-3xl transform rotate-2 opacity-15"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl transform -rotate-1 opacity-25"></div>
+          
+          {/* Main Adventure Selection Card */}
+          <div className="relative bg-white/98 backdrop-blur-xl rounded-3xl shadow-2xl p-10 border-2 border-white/60 hover:shadow-3xl transition-all duration-500">
+            {/* Decorative Corner Elements */}
+            <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full p-4 shadow-xl">
+              <span className="text-3xl">🎯</span>
+            </div>
+            <div className="absolute -bottom-4 -right-6 bg-gradient-to-br from-orange-400 to-red-500 rounded-full p-3 shadow-lg opacity-90">
+              <span className="text-xl">🌟</span>
+            </div>
+            <div className="absolute -bottom-3 -left-5 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full p-2 shadow-lg opacity-70">
+              <span className="text-sm">✨</span>
+            </div>
+
+            <div className="text-center mb-10 pt-8">
+              <div className="inline-flex items-center space-x-4 mb-6">
+                <div className="w-3 h-3 bg-purple-400 rounded-full animate-bounce"></div>
+                <h3 className="text-3xl font-black text-gray-800">Choose Your Adventure Level</h3>
+                <div className="w-3 h-3 bg-pink-400 rounded-full animate-bounce animation-delay-300"></div>
+              </div>
+              <div className="flex justify-center space-x-2 mb-4">
+                <div className="w-4 h-1 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full"></div>
+                <div className="w-8 h-1 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full"></div>
+                <div className="w-4 h-1 bg-gradient-to-r from-pink-400 to-red-500 rounded-full"></div>
+              </div>
+              <p className="text-gray-600 font-medium">Select the perfect challenge for your group!</p>
+            </div>
+            
+            <div className="space-y-5">
+              {/* All Levels Button */}
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl transform scale-105 opacity-0 group-hover:opacity-30 transition-all duration-300"></div>
+                <button
+                  onClick={() => setSelectedDifficulty('all')}
+                  className={`relative w-full p-6 rounded-2xl text-left transition-all duration-400 transform hover:scale-102 hover:shadow-2xl ${
+                    selectedDifficulty === 'all' 
+                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-2xl border-3 border-blue-300 scale-102' 
+                      : 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 hover:border-blue-300 shadow-lg hover:shadow-xl'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-3 mb-3">
+                        <div className={`p-2 rounded-full ${selectedDifficulty === 'all' ? 'bg-white/20' : 'bg-blue-100'}`}>
+                          <span className="text-2xl">🌟</span>
+                        </div>
+                        <div className="font-black text-xl">All Levels Adventure</div>
+                      </div>
+                      <div className={`text-sm font-semibold ${selectedDifficulty === 'all' ? 'text-blue-100' : 'text-gray-600'}`}>
+                        9 riddles • Perfect for mixed ages • Maximum fun!
+                      </div>
+                      <div className="mt-3 flex space-x-1">
+                        <div className={`w-2 h-2 rounded-full ${selectedDifficulty === 'all' ? 'bg-white/60' : 'bg-blue-300'}`}></div>
+                        <div className={`w-4 h-2 rounded-full ${selectedDifficulty === 'all' ? 'bg-white/80' : 'bg-blue-400'}`}></div>
+                        <div className={`w-2 h-2 rounded-full ${selectedDifficulty === 'all' ? 'bg-white/60' : 'bg-blue-300'}`}></div>
+                      </div>
+                    </div>
+                    <div className="ml-4">
+                      <div className={`p-3 rounded-full ${selectedDifficulty === 'all' ? 'bg-white/20' : 'bg-blue-50'}`}>
+                        <span className="text-3xl">🎯</span>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+              </div>
+
+              {/* Easy Button */}
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-2xl transform scale-105 opacity-0 group-hover:opacity-30 transition-all duration-300"></div>
+                <button
+                  onClick={() => setSelectedDifficulty('easy')}
+                  className={`relative w-full p-6 rounded-2xl text-left transition-all duration-400 transform hover:scale-102 hover:shadow-2xl ${
+                    selectedDifficulty === 'easy' 
+                      ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white shadow-2xl border-3 border-green-300 scale-102' 
+                      : 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 hover:border-green-300 shadow-lg hover:shadow-xl'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-3 mb-3">
+                        <div className={`p-2 rounded-full ${selectedDifficulty === 'easy' ? 'bg-white/20' : 'bg-green-100'}`}>
+                          <span className="text-2xl">🟢</span>
+                        </div>
+                        <div className="font-black text-xl">Easy Adventure</div>
+                      </div>
+                      <div className={`text-sm font-semibold ${selectedDifficulty === 'easy' ? 'text-green-100' : 'text-gray-600'}`}>
+                        3 riddles • Ages 4-8 • Simple and fun words
+                      </div>
+                      <div className="mt-3 flex space-x-1">
+                        <div className={`w-6 h-2 rounded-full ${selectedDifficulty === 'easy' ? 'bg-white/80' : 'bg-green-400'}`}></div>
+                        <div className={`w-2 h-2 rounded-full ${selectedDifficulty === 'easy' ? 'bg-white/60' : 'bg-green-300'}`}></div>
+                        <div className={`w-2 h-2 rounded-full ${selectedDifficulty === 'easy' ? 'bg-white/60' : 'bg-green-300'}`}></div>
+                      </div>
+                    </div>
+                    <div className="ml-4">
+                      <div className={`p-3 rounded-full ${selectedDifficulty === 'easy' ? 'bg-white/20' : 'bg-green-50'}`}>
+                        <span className="text-3xl">🐣</span>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+              </div>
+
+              {/* Medium Button */}
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl transform scale-105 opacity-0 group-hover:opacity-30 transition-all duration-300"></div>
+                <button
+                  onClick={() => setSelectedDifficulty('medium')}
+                  className={`relative w-full p-6 rounded-2xl text-left transition-all duration-400 transform hover:scale-102 hover:shadow-2xl ${
+                    selectedDifficulty === 'medium' 
+                      ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white shadow-2xl border-3 border-yellow-300 scale-102' 
+                      : 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 hover:border-yellow-300 shadow-lg hover:shadow-xl'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-3 mb-3">
+                        <div className={`p-2 rounded-full ${selectedDifficulty === 'medium' ? 'bg-white/20' : 'bg-yellow-100'}`}>
+                          <span className="text-2xl">🟡</span>
+                        </div>
+                        <div className="font-black text-xl">Medium Quest</div>
+                      </div>
+                      <div className={`text-sm font-semibold ${selectedDifficulty === 'medium' ? 'text-yellow-100' : 'text-gray-600'}`}>
+                        3 riddles • Ages 8-12 • Science and discovery
+                      </div>
+                      <div className="mt-3 flex space-x-1">
+                        <div className={`w-2 h-2 rounded-full ${selectedDifficulty === 'medium' ? 'bg-white/60' : 'bg-yellow-300'}`}></div>
+                        <div className={`w-6 h-2 rounded-full ${selectedDifficulty === 'medium' ? 'bg-white/80' : 'bg-yellow-400'}`}></div>
+                        <div className={`w-2 h-2 rounded-full ${selectedDifficulty === 'medium' ? 'bg-white/60' : 'bg-yellow-300'}`}></div>
+                      </div>
+                    </div>
+                    <div className="ml-4">
+                      <div className={`p-3 rounded-full ${selectedDifficulty === 'medium' ? 'bg-white/20' : 'bg-yellow-50'}`}>
+                        <span className="text-3xl">🧪</span>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+              </div>
+
+              {/* Hard Button */}
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-600 rounded-2xl transform scale-105 opacity-0 group-hover:opacity-30 transition-all duration-300"></div>
+                <button
+                  onClick={() => setSelectedDifficulty('hard')}
+                  className={`relative w-full p-6 rounded-2xl text-left transition-all duration-400 transform hover:scale-102 hover:shadow-2xl ${
+                    selectedDifficulty === 'hard' 
+                      ? 'bg-gradient-to-r from-red-500 to-pink-600 text-white shadow-2xl border-3 border-red-300 scale-102' 
+                      : 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 hover:border-red-300 shadow-lg hover:shadow-xl'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-3 mb-3">
+                        <div className={`p-2 rounded-full ${selectedDifficulty === 'hard' ? 'bg-white/20' : 'bg-red-100'}`}>
+                          <span className="text-2xl">🔴</span>
+                        </div>
+                        <div className="font-black text-xl">Expert Challenge</div>
+                      </div>
+                      <div className={`text-sm font-semibold ${selectedDifficulty === 'hard' ? 'text-red-100' : 'text-gray-600'}`}>
+                        3 riddles • Ages 12+ • Conservation heroes
+                      </div>
+                      <div className="mt-3 flex space-x-1">
+                        <div className={`w-2 h-2 rounded-full ${selectedDifficulty === 'hard' ? 'bg-white/60' : 'bg-red-300'}`}></div>
+                        <div className={`w-2 h-2 rounded-full ${selectedDifficulty === 'hard' ? 'bg-white/60' : 'bg-red-300'}`}></div>
+                        <div className={`w-6 h-2 rounded-full ${selectedDifficulty === 'hard' ? 'bg-white/80' : 'bg-red-400'}`}></div>
+                      </div>
+                    </div>
+                    <div className="ml-4">
+                      <div className={`p-3 rounded-full ${selectedDifficulty === 'hard' ? 'bg-white/20' : 'bg-red-50'}`}>
+                        <span className="text-3xl">🔬</span>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <button
+          onClick={startAdventure}
+          disabled={!familyName.trim()}
+          className="w-full bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 hover:from-emerald-700 hover:via-green-700 hover:to-teal-700 disabled:from-gray-400 disabled:via-gray-400 disabled:to-gray-500 text-white font-bold py-5 px-8 rounded-2xl text-xl shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl disabled:hover:scale-100 disabled:hover:shadow-2xl border-2 border-white/30"
+        >
+          <div className="flex items-center justify-center space-x-3">
+            <span>🚀</span>
+            <span>Start Adventure!</span>
+            <span>🌟</span>
+          </div>
+        </button>
       </div>
-    )
-  }
+    </div>
+  )
+}
 
   // Limit reached screen
   if (showLimitReached) {
@@ -476,52 +681,96 @@ export default function Home() {
   // Success celebration screen
   if (showSuccess) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-yellow-100 to-green-100 p-4">
-        <div className="max-w-md mx-auto pt-10">
+      <div className="min-h-screen bg-gradient-to-br from-amber-200 via-orange-300 to-pink-500 p-4 relative overflow-hidden">
+        {/* Celebration Background Elements */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-10 left-8 text-4xl animate-spin">🌟</div>
+          <div className="absolute top-20 right-10 text-3xl animate-bounce">🎉</div>
+          <div className="absolute bottom-32 left-12 text-5xl animate-pulse">✨</div>
+          <div className="absolute bottom-20 right-6 text-4xl animate-spin animation-delay-1000">🌟</div>
+          <div className="absolute top-1/2 left-8 text-3xl animate-bounce animation-delay-500">🎈</div>
+          <div className="absolute top-1/3 right-16 text-4xl animate-pulse animation-delay-2000">🎆</div>
+        </div>
+
+        <div className="max-w-md mx-auto pt-8 relative z-10">
           <div className="text-center mb-8">
-            <div className="animate-bounce text-8xl mb-4">
-              {animalEmojis[currentRiddle.animal]}
+            <div className="mb-6">
+              <div className="text-8xl mb-4 animate-bounce">
+                {animalEmojis[currentRiddle.animal]}
+              </div>
+              <div className="flex justify-center space-x-2 text-3xl">
+                <span className="animate-pulse">🎉</span>
+                <span className="animate-pulse animation-delay-300">🎊</span>
+                <span className="animate-pulse animation-delay-600">✨</span>
+              </div>
             </div>
-            <h1 className="text-3xl font-bold text-green-800 mb-2 animate-pulse">
-              🎉 AMAZING DISCOVERY! 🎉
-            </h1>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
-              You found the {currentRiddle.animal}!
-            </h2>
             
-            <div className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full py-3 px-6 mb-4 animate-pulse">
-              <p className="text-xl font-bold">
-                +{currentRiddle.points} POINTS! 🌟
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-white border-4 border-blue-200 rounded-xl p-6 mb-6 shadow-lg">
-            <h3 className="text-lg font-bold text-blue-800 mb-2">
-              🤔 Did You Know?
-            </h3>
-            <p className="text-blue-700 leading-relaxed">
-              {currentRiddle.fact}
-            </p>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-            <div className="text-center">
-              <p className="text-2xl font-bold text-green-600 mb-2">
-                {currentPoints} Total Points!
-              </p>
-              <p className="text-gray-600 mb-4">
-                🏆 Animals Discovered: {discoveredAnimals.length}
-              </p>
+            <div className="bg-white/90 backdrop-blur-lg rounded-3xl p-8 shadow-3xl border-2 border-white/50 mb-6">
+              <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 mb-4 animate-pulse">
+                AMAZING DISCOVERY!
+              </h1>
+              <h2 className="text-3xl font-bold text-gray-800 mb-6">
+                You found the {currentRiddle.animal}!
+              </h2>
               
-              <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
+              <div className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 text-white rounded-2xl py-4 px-8 mb-6 shadow-xl animate-pulse">
+                <div className="flex items-center justify-center space-x-3">
+                  <span className="text-3xl">🏆</span>
+                  <div>
+                    <p className="text-2xl font-black">
+                      +{currentRiddle.points} POINTS!
+                    </p>
+                    <p className="text-sm font-semibold opacity-90">
+                      Outstanding work!
+                    </p>
+                  </div>
+                  <span className="text-3xl">🌟</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-blue-100 via-indigo-100 to-purple-100 border-4 border-blue-300 rounded-3xl p-8 mb-6 shadow-2xl">
+              <div className="flex items-start space-x-4">
+                <div className="text-4xl">🤓</div>
+                <div className="text-left">
+                  <h3 className="text-2xl font-black text-blue-800 mb-3">
+                    Did You Know?
+                  </h3>
+                  <p className="text-blue-700 leading-relaxed text-lg font-medium">
+                    {currentRiddle.fact}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl p-8 mb-6 border border-white/50">
+              <div className="grid grid-cols-2 gap-6 text-center">
+                <div>
+                  <div className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-emerald-600 mb-2">
+                    {currentPoints}
+                  </div>
+                  <div className="text-sm font-bold text-gray-700">
+                    🏆 Total Points
+                  </div>
+                </div>
+                <div>
+                  <div className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-600 mb-2">
+                    {discoveredAnimals.length}
+                  </div>
+                  <div className="text-sm font-bold text-gray-700">
+                    🦁 Animals Found
+                  </div>
+                </div>
+              </div>
+              
+              <div className="w-full bg-gray-200 rounded-full h-4 mt-6 shadow-inner">
                 <div 
-                  className="bg-gradient-to-r from-green-400 to-blue-500 h-3 rounded-full transition-all duration-1000"
+                  className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 h-4 rounded-full transition-all duration-2000 shadow-lg"
                   style={{width: `${(discoveredAnimals.length / filteredRiddles.length) * 100}%`}}
                 ></div>
               </div>
-              <p className="text-sm text-gray-500">
-                {discoveredAnimals.length} of {filteredRiddles.length} animals found
+              <p className="text-sm font-semibold text-gray-600 mt-3">
+                {discoveredAnimals.length} of {filteredRiddles.length} animals discovered
               </p>
             </div>
           </div>
@@ -529,23 +778,32 @@ export default function Home() {
           {!isLastRiddle && (
             <button
               onClick={nextRiddle}
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-xl text-xl shadow-lg transform hover:scale-105 transition-all"
+              className="w-full bg-gradient-to-r from-blue-500 via-purple-600 to-pink-600 hover:from-blue-600 hover:via-purple-700 hover:to-pink-700 text-white font-black py-5 px-8 rounded-2xl text-2xl shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl border-2 border-white/40"
             >
-              🚀 Next Adventure!
+              <div className="flex items-center justify-center space-x-3">
+                <span className="text-2xl">🚀</span>
+                <span>Next Adventure!</span>
+                <span className="text-2xl">🎯</span>
+              </div>
             </button>
           )}
           
           {isLastRiddle && (
             <div className="text-center">
-              <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl p-6 mb-4">
-                <h3 className="text-2xl font-bold mb-2">🏆 SAFARI COMPLETE!</h3>
-                <p className="text-lg">You&apos;re an amazing animal explorer!</p>
+              <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white rounded-3xl p-8 mb-6 shadow-2xl border-2 border-white/40">
+                <div className="text-4xl mb-4">🏆</div>
+                <h3 className="text-3xl font-black mb-3">SAFARI COMPLETE!</h3>
+                <p className="text-xl font-semibold">You're an amazing animal explorer!</p>
               </div>
               <button
                 onClick={() => window.location.reload()}
-                className="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white font-bold py-4 px-8 rounded-xl text-lg shadow-lg transform hover:scale-105 transition-all"
+                className="bg-gradient-to-r from-green-500 via-emerald-600 to-teal-600 hover:from-green-600 hover:via-emerald-700 hover:to-teal-700 text-white font-black py-5 px-8 rounded-2xl text-xl shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl border-2 border-white/40"
               >
-                🎯 Start New Adventure
+                <div className="flex items-center justify-center space-x-3">
+                  <span className="text-xl">🎯</span>
+                  <span>Start New Adventure</span>
+                  <span className="text-xl">🌟</span>
+                </div>
               </button>
             </div>
           )}
@@ -554,29 +812,172 @@ export default function Home() {
     )
   }
 
-  // Main game interface
+  // Limit reached screen
+  if (showLimitReached) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 p-4 relative overflow-hidden">
+        {/* Celebration Background Elements */}
+        <div className="absolute inset-0 opacity-15">
+          <div className="absolute top-12 left-10 text-5xl animate-spin">🎊</div>
+          <div className="absolute top-24 right-8 text-4xl animate-bounce">🎉</div>
+          <div className="absolute bottom-40 left-6 text-6xl animate-pulse">✨</div>
+          <div className="absolute bottom-24 right-12 text-5xl animate-spin animation-delay-1000">🌟</div>
+          <div className="absolute top-1/2 left-1/4 text-4xl animate-bounce animation-delay-500">🎈</div>
+          <div className="absolute top-1/3 right-1/4 text-5xl animate-pulse animation-delay-2000">🎆</div>
+        </div>
+
+        <div className="max-w-md mx-auto pt-8 relative z-10">
+          <div className="text-center mb-8">
+            <div className="mb-6">
+              <div className="text-8xl mb-4 animate-bounce">🎯</div>
+              <div className="flex justify-center space-x-2 text-4xl">
+                <span className="animate-pulse">🏆</span>
+                <span className="animate-pulse animation-delay-300">👑</span>
+                <span className="animate-pulse animation-delay-600">🌟</span>
+              </div>
+            </div>
+            
+            <div className="bg-white/95 backdrop-blur-lg rounded-3xl p-8 shadow-3xl border-2 border-white/50 mb-8">
+              <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 mb-3">
+                Demo Complete!
+              </h1>
+              <p className="text-xl font-semibold text-gray-700 leading-relaxed">
+                You've completed the demo! Sign up to be notified when the full Zoo Safari launches with 
+                <span className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600"> 50+ riddles</span>
+              </p>
+            </div>
+
+            <div className="bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl p-8 mb-8 border border-white/50">
+              <div className="grid grid-cols-2 gap-6 text-center mb-6">
+                <div>
+                  <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-emerald-600 mb-2">
+                    {currentPoints}
+                  </div>
+                  <div className="text-sm font-bold text-gray-700">
+                    🏆 Final Score
+                  </div>
+                </div>
+                <div>
+                  <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-600 mb-2">
+                    {discoveredAnimals.length}
+                  </div>
+                  <div className="text-sm font-bold text-gray-700">
+                    🦁 Animals Discovered
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mb-6">
+                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center justify-center space-x-2">
+                  <span>🏛️</span>
+                  <span>Your Digital Zoo</span>
+                  <span>🦒</span>
+                </h3>
+                <div className="flex flex-wrap justify-center gap-3">
+                  {discoveredAnimals.map((animal, index) => (
+                    <div key={index} className="bg-gradient-to-br from-yellow-200 via-orange-200 to-red-200 rounded-2xl p-4 shadow-lg border-2 border-yellow-300 transform hover:scale-110 transition-all duration-300">
+                      <span className="text-4xl">
+                        {animalEmojis[animal.animal]}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <a 
+              href="https://your-signup-page.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="block w-full bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 hover:from-purple-700 hover:via-pink-700 hover:to-red-700 text-white font-black py-5 px-8 rounded-2xl text-xl text-center shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-white/40"
+            >
+              <div className="flex items-center justify-center space-x-3">
+                <span className="text-2xl">🚀</span>
+                <span>Get Notified When Full Game Launches!</span>
+                <span className="text-2xl">📧</span>
+              </div>
+            </a>
+            
+            <button
+              onClick={() => window.location.reload()}
+              className="w-full bg-gradient-to-r from-gray-400 to-gray-600 hover:from-gray-500 hover:to-gray-700 text-white font-bold py-4 px-8 rounded-2xl text-lg shadow-xl transform hover:scale-105 transition-all duration-300"
+            >
+              <div className="flex items-center justify-center space-x-3">
+                <span className="text-xl">🔄</span>
+                <span>Try Demo Again</span>
+                <span className="text-xl">🎮</span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+// Main game interface
   return (
-    <div className="min-h-screen bg-green-50 p-4">
-      <div className="max-w-md mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-amber-100 via-orange-100 to-red-300 p-4 relative overflow-hidden">
+      {/* Safari Background Pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-16 left-6 text-4xl animate-pulse">🌴</div>
+        <div className="absolute top-8 right-12 text-3xl animate-pulse animation-delay-1000">🦎</div>
+        <div className="absolute bottom-32 left-4 text-5xl animate-pulse animation-delay-2000">🌊</div>
+        <div className="absolute bottom-16 right-8 text-4xl animate-pulse animation-delay-1500">🗻</div>
+        <div className="absolute top-40 left-1/3 text-3xl animate-pulse animation-delay-500">☀️</div>
+      </div>
+
+      <div className="max-w-md mx-auto relative z-10">
         {/* Header */}
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-xl font-bold text-green-800">
-            {familyName} Family
-          </h1>
-          <div className="text-right">
-            <p className="text-sm text-gray-600">Points</p>
-            <p className="text-lg font-bold text-green-600">{currentPoints}</p>
+        <div className="bg-white/90 backdrop-blur-lg rounded-2xl shadow-2xl p-6 mb-6 border border-white/50">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-xl font-black text-gray-800 mb-1">
+                {familyName} Family
+              </h1>
+              <div className="flex items-center space-x-2">
+                <span className="text-2xl">🏕️</span>
+                <span className="text-sm font-semibold text-gray-600">
+                  {selectedDifficulty === 'all' ? 'Mixed Adventure' : 
+                   selectedDifficulty === 'easy' ? 'Easy Adventure' :
+                   selectedDifficulty === 'medium' ? 'Medium Quest' : 'Expert Challenge'}
+                </span>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="bg-gradient-to-br from-yellow-400 to-orange-600 rounded-2xl p-4 shadow-lg">
+                <div className="text-2xl mb-1">🏆</div>
+                <div className="text-xs font-bold text-white mb-1">Points</div>
+                <div className="text-2xl font-black text-white">{currentPoints}</div>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Current Riddle */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <div className="text-center mb-4">
-            <h2 className="text-lg font-semibold text-gray-800 mb-2">
-              🔍 Riddle #{currentRiddleIndex + 1} ({currentRiddle.difficulty})
-            </h2>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <p className="text-gray-800 whitespace-pre-line leading-relaxed">
+        <div className="bg-amber-50/95 backdrop-blur-lg rounded-2xl shadow-2xl p-8 mb-6 border border-white/50">
+          <div className="text-center mb-6">
+            <div className="flex items-center justify-center space-x-3 mb-4">
+              <span className="text-3xl">🔍</span>
+              <h2 className="text-2xl font-bold text-gray-800">
+                Riddle #{currentRiddleIndex + 1}
+              </h2>
+              <span className="text-3xl">🧩</span>
+            </div>
+            
+            <div className={`inline-block px-4 py-2 rounded-full text-sm font-bold text-white mb-4 ${
+              currentRiddle.difficulty === 'easy' ? 'bg-gradient-to-r from-green-400 to-emerald-500' :
+              currentRiddle.difficulty === 'medium' ? 'bg-gradient-to-r from-yellow-400 to-orange-500' :
+              'bg-gradient-to-r from-red-500 to-pink-600'
+            }`}>
+              {currentRiddle.difficulty === 'easy' ? '🟢 Easy Adventure' :
+               currentRiddle.difficulty === 'medium' ? '🟡 Medium Quest' : '🔴 Expert Challenge'}
+            </div>
+
+            <div className="bg-gradient-to-br from-gray-50 via-zinc-50 to-stone-50 border-2 border-indigo-200 rounded-2xl p-6 shadow-inner">
+              <div className="text-4xl mb-4">📜</div>
+              <p className="text-gray-800 whitespace-pre-line leading-relaxed text-lg font-medium">
                 {currentRiddle.riddle}
               </p>
             </div>
@@ -586,92 +987,109 @@ export default function Home() {
           {!showHint && (
             <button
               onClick={() => setShowHint(true)}
-              className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg mb-4"
+              className="w-full bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-400 hover:from-yellow-500 hover:via-yellow-600 hover:to-orange-500 text-white font-bold py-4 px-6 rounded-xl mb-4 shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
             >
-              💡 Need a Hint?
+              <div className="flex items-center justify-center space-x-3">
+                <span className="text-xl">💡</span>
+                <span className="text-lg">Need a Hint?</span>
+                <span className="text-xl">🤔</span>
+              </div>
             </button>
           )}
 
           {/* Hint Display */}
           {showHint && (
-            <div className="bg-yellow-100 border border-yellow-400 rounded-lg p-3 mb-4">
-              <p className="text-sm text-yellow-800">
-                <strong>Hint:</strong> {currentRiddle.hint}
-              </p>
+            <div className="bg-gradient-to-br from-yellow-100 via-yellow-50 to-orange-100 border-2 border-yellow-400 rounded-2xl p-6 mb-4 shadow-inner">
+              <div className="flex items-start space-x-3">
+                <div className="text-2xl">💡</div>
+                <div>
+                  <div className="font-bold text-yellow-800 mb-2">Helpful Hint:</div>
+                  <p className="text-yellow-700 font-medium leading-relaxed">
+                    {currentRiddle.hint}
+                  </p>
+                </div>
+              </div>
             </div>
           )}
 
           {/* QR Scanner Button */}
           <button
             onClick={openScanner}
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-lg mb-2"
+            className="w-full bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 hover:from-emerald-600 hover:via-green-600 hover:to-teal-600 text-white font-bold py-5 px-8 rounded-xl text-xl mb-4 shadow-xl transform transition-all duration-300 hover:scale-105 hover:shadow-2xl border-2 border-white/30"
           >
-            📱 Scan QR Code
+            <div className="flex items-center justify-center space-x-3">
+              <span className="text-2xl">📱</span>
+              <span>Scan QR Code</span>
+              <span className="text-2xl">🎯</span>
+            </div>
           </button>
 
           {/* Manual Entry for Testing */}
           <button
             onClick={foundAnimal}
-            className="w-full bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded-lg text-sm"
+            className="w-full bg-gradient-to-r from-gray-400 to-gray-500 hover:from-gray-500 hover:to-gray-600 text-white font-semibold py-3 px-6 rounded-xl text-sm shadow-lg transform transition-all duration-300 hover:scale-102"
           >
-            🔧 Manual Complete (Testing Only)
+            <div className="flex items-center justify-center space-x-2">
+              <span>🔧</span>
+              <span>Manual Complete (Testing Only)</span>
+            </div>
           </button>
         </div>
 
-        {/* QR Scanner Modal */}
+        {/* QR Scanner Modal - Enhanced styling */}
         {showScanner && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-lg shadow-xl max-w-sm w-full p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold text-gray-800">
-                  📱 Find & Scan QR Code
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-white/95 backdrop-blur-lg rounded-2xl shadow-3xl max-w-sm w-full p-8 border border-white/50">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-xl font-bold text-gray-800 flex items-center space-x-2">
+                  <span>📱</span>
+                  <span>Find & Scan QR Code</span>
                 </h3>
                 <button
                   onClick={closeScanner}
-                  className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
+                  className="text-gray-500 hover:text-gray-700 text-3xl font-bold hover:bg-gray-100 rounded-full w-10 h-10 flex items-center justify-center transition-all duration-200"
                 >
                   ×
                 </button>
               </div>
 
               {/* Current riddle reminder */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
-              <p className="text-sm text-blue-800">
-               <strong>Did you solve the riddle?</strong>
-              </p>
-              <p className="text-xs text-blue-600 mt-1">
-                Find the correct exhibit and scan its QR code!
+              <div className="bg-gradient-to-br from-gray-50 to-zinc-100 border-2 border-stone-200 rounded-xl p-4 mb-6">
+                <p className="text-sm font-bold text-blue-800 mb-2">
+                  <span className="text-lg">🎯</span> Did you solve the riddle?
+                </p>
+                <p className="text-xs text-blue-600">
+                  Find the correct exhibit and scan its QR code!
                 </p>
               </div>
 
               {/* Scanner Component */}
-              <div className="mb-4">
-              <style jsx>{scannerButtonStyles}</style>
-              <div 
-                id="qr-reader" 
-                ref={scannerRef}
-                className="w-full"
-                style={{ minHeight: '250px' }}
-              ></div>
+              <div className="mb-6">
+                <div 
+                  id="qr-reader" 
+                  ref={scannerRef}
+                  className="w-full rounded-xl overflow-hidden border-2 border-gray-200"
+                  style={{ minHeight: '250px' }}
+                ></div>
               </div>
 
               {/* Success feedback */}
               {scanResult && !scanError && (
-                <div className="bg-green-100 border border-green-400 text-green-700 px-3 py-2 rounded mb-4 text-sm">
-                  ✅ Code scanned: {scanResult}
+                <div className="bg-gradient-to-r from-green-100 to-emerald-100 border-2 border-green-400 text-green-800 px-4 py-3 rounded-xl mb-4 text-sm font-semibold">
+                  <span className="text-lg">✅</span> Code scanned: {scanResult}
                 </div>
               )}
 
               {/* Error feedback */}
               {scanError && (
-                <div className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded mb-4 text-sm">
-                  ⚠ {scanError}
+                <div className="bg-gradient-to-r from-red-100 to-pink-100 border-2 border-red-400 text-red-700 px-4 py-3 rounded-xl mb-4 text-sm font-semibold">
+                  <span className="text-lg">⚠️</span> {scanError}
                 </div>
               )}
 
               {/* Instructions */}
-              <div className="text-center mb-4">
-                <p className="text-sm text-gray-600 mb-2">
+              <div className="text-center mb-6">
+                <p className="text-sm font-semibold text-gray-700 mb-2">
                   🔍 Find the exhibit for your riddle answer and scan its QR code
                 </p>
                 <p className="text-xs text-gray-500">
@@ -680,20 +1098,20 @@ export default function Home() {
               </div>
 
               {/* Action Buttons */}
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <button
                   onClick={closeScanner}
-                  className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg"
+                  className="w-full bg-gradient-to-r from-gray-300 to-gray-400 hover:from-gray-400 hover:to-gray-500 text-gray-800 font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105"
                 >
-                  📖 Read Riddle Again
+                  <span className="text-lg">📖</span> Read Riddle Again
                 </button>
                 
                 {/* Emergency manual entry */}
                 <details className="text-center">
-                  <summary className="text-xs text-gray-500 cursor-pointer">Having trouble scanning?</summary>
+                  <summary className="text-xs text-gray-500 cursor-pointer font-medium">Having trouble scanning?</summary>
                   <button
                     onClick={() => { closeScanner(); foundAnimal(); }}
-                    className="mt-2 text-xs bg-yellow-400 hover:bg-yellow-500 text-yellow-800 px-3 py-1 rounded"
+                    className="mt-3 text-xs bg-gradient-to-r from-yellow-400 to-orange-400 hover:from-yellow-500 hover:to-orange-500 text-white font-bold px-4 py-2 rounded-lg transition-all duration-200"
                   >
                     Skip Scanning (Testing)
                   </button>
@@ -704,16 +1122,38 @@ export default function Home() {
         )}
 
         {/* Digital Zoo Collection */}
-        <div className="bg-white rounded-lg shadow-md p-4">
-          <h3 className="font-semibold text-gray-800 mb-2">Your Digital Zoo</h3>
-          <p className="text-sm text-gray-600">
-            Discovered: {discoveredAnimals.length} animals
-          </p>
-          <div className="mt-2">
+        <div className="bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl p-6 border border-white/50">
+          <div className="flex items-center justify-center space-x-3 mb-4">
+            <span className="text-2xl">🦒</span>
+            <h3 className="text-xl font-bold text-gray-800">Your Digital Zoo</h3>
+            <span className="text-2xl">🦓</span>
+          </div>
+          
+          <div className="text-center mb-4">
+            <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full px-4 py-2 inline-block font-bold text-sm">
+              <span className="text-lg">🏆</span> Discovered: {discoveredAnimals.length} animals
+            </div>
+          </div>
+
+          {/* Progress Bar */}
+          <div className="w-full bg-gray-200 rounded-full h-3 mb-4 shadow-inner">
+            <div 
+              className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 h-3 rounded-full transition-all duration-1000 shadow-lg"
+              style={{width: `${(discoveredAnimals.length / filteredRiddles.length) * 100}%`}}
+            ></div>
+          </div>
+          
+          <div className="text-center text-sm font-semibold text-gray-600 mb-4">
+            {discoveredAnimals.length} of {filteredRiddles.length} animals found
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-2">
             {discoveredAnimals.map((animal, index) => (
-              <span key={index} className="inline-block mr-2 text-2xl">
-                {animalEmojis[animal.animal]}
-              </span>
+              <div key={index} className="bg-gradient-to-br from-yellow-100 to-orange-100 rounded-xl p-3 shadow-lg border border-yellow-200">
+                <span className="text-3xl">
+                  {animalEmojis[animal.animal]}
+                </span>
+              </div>
             ))}
           </div>
         </div>
