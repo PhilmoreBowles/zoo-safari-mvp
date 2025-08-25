@@ -4,6 +4,57 @@ import { Html5QrcodeScanner } from 'html5-qrcode'
 
 /* eslint-disable react/no-unescaped-entities */
 
+// Custom CSS for html5-qrcode scanner buttons
+const scannerButtonStyles = `
+  #qr-reader button {
+    background-color: #3B82F6 !important;
+    color: white !important;
+    padding: 12px 24px !important;
+    border-radius: 8px !important;
+    border: none !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    margin: 8px 4px !important;
+    transition: all 0.2s ease !important;
+    display: inline-block !important;
+    text-decoration: none !important;
+    min-width: 140px !important;
+    text-align: center !important;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3) !important;
+  }
+  
+  #qr-reader button:hover {
+    background-color: #2563EB !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4) !important;
+  }
+  
+  #qr-reader a {
+    background-color: #10B981 !important;
+    color: white !important;
+    padding: 12px 24px !important;
+    border-radius: 8px !important;
+    border: none !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    margin: 8px 4px !important;
+    transition: all 0.2s ease !important;
+    display: inline-block !important;
+    text-decoration: none !important;
+    min-width: 140px !important;
+    text-align: center !important;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3) !important;
+  }
+  
+  #qr-reader a:hover {
+    background-color: #059669 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 8px rgba(16, 185, 129, 0.4) !important;
+  }
+`
+
 // Expanded riddles with QR codes for comprehensive testing
 const sampleRiddles = [
   // EASY RIDDLES (Ages 4-8)
@@ -595,12 +646,13 @@ export default function Home() {
 
               {/* Scanner Component */}
               <div className="mb-4">
-                <div 
-                  id="qr-reader" 
-                  ref={scannerRef}
-                  className="w-full"
-                  style={{ minHeight: '250px' }}
-                ></div>
+              <style jsx>{scannerButtonStyles}</style>
+              <div 
+                id="qr-reader" 
+                ref={scannerRef}
+                className="w-full"
+                style={{ minHeight: '250px' }}
+              ></div>
               </div>
 
               {/* Success feedback */}
