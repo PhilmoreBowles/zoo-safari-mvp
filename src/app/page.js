@@ -71,7 +71,7 @@ const sampleRiddles = [
   {
     id: 2,
     animal: 'Elephant',
-    riddle: "I’m reeealy big and my skin is gray.\nMy nose is so long — I can use it to play!\nI flap my ears to help me cool down.\nWhen you find me, you won't have a frown!",
+    riddle: "I’m reeealy big\nand my skin is gray.\nMy nose is so long\nI can use it to play!\nI flap my ears\nto help me cool down.\nWhen you find me,\nyou won't have a frown!",
     hint: "Look for the biggest animal with a long nose!",
     difficulty: 'easy',
     points: 50,
@@ -81,7 +81,7 @@ const sampleRiddles = [
   {
     id: 3,
     animal: 'Monkey',
-    riddle: "I love bananas, they're my favorite treat!\nI can swing on branches with my hands and feet.\nI'm playful and silly, I love to have fun.\nCan you find me before the day is done?",
+    riddle: "I love bananas,\nthey're my favorite treat!\nI can swing on branches\nwith my hands and feet.\nI'm playful and silly,\nI love to have fun.\nCan you find me before\nthe day is done?",
     hint: "Look for the animal that swings and plays!",
     difficulty: 'easy',
     points: 50,
@@ -92,7 +92,7 @@ const sampleRiddles = [
   {
     id: 4,
     animal: 'Giraffe',
-    riddle: "I'm the tallest animal, reaching up to the sky,\nMy extra long neck helps me eat up high.\nMy spots are unique, like a big fingerprint,\nCan you guess my name, or do you need a hint?",
+    riddle: "I'm the tallest animal,\nwith my head in the sky,\nMy extra long neck\nlet's me munch up high.\nMy spots are unique,\nlike a big fingerprint.\nCan you guess my name,\nor do you need a hint?",
     hint: "Look up! I'm the tallest animal in the world!",
     difficulty: 'medium',
     points: 100,
@@ -102,7 +102,7 @@ const sampleRiddles = [
   {
     id: 5,
     animal: 'Penguin',
-    riddle: "I wear a tuxedo but can't fly through air,\nI waddle on land and swim without care.\nIn icy cold water, I'm graceful and quick,\nFinding my colony would be quite a trick!",
+    riddle: "I wear a tuxedo\nlike a stylish guy.\nI'm really a bird,\nbut I'll never fly.\nIn icy cold water,\nI'm graceful and quick.\nFind me today and\nI'll show you a trick!",
     hint: "Look for the bird that swims better than it flies!",
     difficulty: 'medium',
     points: 100,
@@ -112,7 +112,7 @@ const sampleRiddles = [
   {
     id: 6,
     animal: 'Tiger',
-    riddle: "Orange and black stripes make me unique,\nI'm a powerful hunter, strong and sleek.\nUnlike other cats, I love to swim,\nCan you find me before the sun grows dim?!",
+    riddle: "Orange and black stripes\nmake me unique,\nI'm a powerful hunter,\nstrong and sleek.\nUnlike other cats,\nI love to swim.\nI'm out on the prowl\nwhen the sun grows dim!",
     hint: "Look for the striped cat that loves water!",
     difficulty: 'medium',
     points: 100,
@@ -123,7 +123,7 @@ const sampleRiddles = [
   {
     id: 7,
     animal: 'Rhino',
-    riddle: "My horn is not bone, but compressed hair so tight,\nI'm a herbivore giant with poor eyesight.\nThough I look prehistoric,I'm gentle at heart,\nConservation efforts play a crucial part.",
+    riddle: "My horn is not bone,\nbut compressed hair so tight,\nI'm a herbivore giant\nwith poor eyesight.\nThough I look prehistoric,\nbut I'm gentle at heart,\nConservation efforts\nplay a crucial part.",
     hint: "Look for the armored giant with a horn!",
     difficulty: 'hard',
     points: 150,
@@ -143,7 +143,7 @@ const sampleRiddles = [
   {
     id: 9,
     animal: 'Snow Leopard',
-    riddle: "In mountains so high where the air is thin,\nMy spotted coat helps my species win.\nMy tail's like a scarf, thick and so long,\nEnviromental threats make my future less strong.",
+    riddle: "In mountains so high\nwhere the air is thin,\nMy spotted coat\nhelps my species win.\nMy tail's like a scarf,\nso thick and so long,\nI hunt on the cliffs,\nso I have to be strong.",
     hint: "Look for the ghost of the mountains!",
     difficulty: 'hard',
     points: 150,
@@ -464,13 +464,13 @@ if (!gameStarted) {
               <span className="animate-pulse animation-delay-400">🐧</span>
             </div>
           </div>
-                    <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6 border border-white/30">
-          <h1 className="text-6xl font-black text-gray-700 mb-0 drop-shadow-lg leading-relaxed">
+                    <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-white/30">
+          <h1 className="text-6xl font-black text-gray-700 mb-0 drop-shadow-lg leading-tight">
             Zoo Safari
           </h1>
 
-            <h2 className="text-2x1 font-black text-gray-500-lg leading-relaxed">
-              Make every visit an adventure!
+            <h2 className="text-2x1 font-black text-gray-500-lg leading-tight mt-0 mb-4">
+              Start your educational expedition!
             </h2>
           </div>
         </div>
@@ -483,7 +483,8 @@ if (!gameStarted) {
           {/* Main Card */}
           <div className="relative bg-white/98 backdrop-blur-xl rounded-3xl shadow-2xl p-10 border-2 border-white/60 hover:shadow-3xl transition-all duration-500 hover:transform hover:scale-102">
             {/* Decorative Elements */}
-            <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full p-3 shadow-lg">              <span className="text-2xl">👥</span>
+            <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full p-3 shadow-lg">
+                <span className="text-2xl">👥</span>
             </div>
 
 
@@ -493,7 +494,7 @@ if (!gameStarted) {
                 <h3 className="text-2xl font-black text-gray-800">What's your team name?</h3>
             
               </div>
-              <div className="w-16 h-1 bg-gradient-to-r from-orange-400 to-red-500 rounded-full mx-auto"></div>
+              <div className="w-42 h-1 bg-gradient-to-r from-orange-400 to-red-500 rounded-full mx-auto"></div>
             </div>
             
             <div className="relative">
@@ -504,12 +505,10 @@ if (!gameStarted) {
                   type="text"
                   value={familyName}
                   onChange={(e) => setFamilyName(e.target.value)}
-                  placeholder="Enter your team name..."
+                  placeholder="Enter team name..."
                   className="relative w-full p-5 border-3 border-gray-200 rounded-2xl text-xl font-semibold placeholder-gray-400 focus:border-emerald-500 focus:ring-6 focus:ring-emerald-200 transition-all duration-400 bg-gradient-to-br from-gray-50 to-white shadow-inner hover:shadow-lg"
                 />
-
               </div>
-
             </div>
           </div>
         </div>
@@ -533,7 +532,7 @@ if (!gameStarted) {
 
               </div>
               <div className="flex justify-center space-x-2 mb-4">
-              <div className="w-16 h-1 bg-gradient-to-r from-purple-400 to-red-500 rounded-full mx-auto"></div>
+              <div className="w-42 h-1 bg-gradient-to-r from-orange-400 to-red-500 rounded-full mx-auto"></div>
               </div>
               <p className="text-gray-600 font-medium">Select the perfect challenge for your group!</p>
             </div>
@@ -976,13 +975,13 @@ if (!gameStarted) {
 
       <div className="max-w-md mx-auto relative z-10">
 {/* Enhanced Header */}
-        <div className="relative mb-12">
+        <div className="relative mb-12 mt-10">
           {/* Header Shadow Layers */}
           <div className="absolute inset-0 bg-gradient-to-br from-orange-600 to-red-700 rounded-3xl transform rotate-1 opacity-15"></div>
           <div className="absolute inset-0 bg-gradient-to-br from-amber-500 to-orange-600 rounded-3xl transform -rotate-1 opacity-25"></div>
           
           {/* Main Header Card */}
-          <div className="relative bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-10 border-10 border-white/60 hover:shadow-3xl transition-all duration-500">
+          <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-10 border-10 border-white/60 hover:shadow-3xl transition-all duration-500">
             
             {/* Decorative Corner Elements */}
             <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full p-4 shadow-xl">
@@ -1115,7 +1114,7 @@ if (!gameStarted) {
                 
                 {/* Scroll Decoration */}
                 <div className="flex justify-center mb-6">
-                  <div className="bg-gradient-to-r from-amber-300 to-yellow-400 rounded-full p-3 shadow-lg">
+                  <div className="bg-gradient-to-r from-amber-200 to-yellow-300 rounded-full p-3 shadow-lg">
                     <span className="text-4xl">📜</span>
                   </div>
                 </div>
@@ -1128,7 +1127,7 @@ if (!gameStarted) {
                   
                   {/* Decorative Lines */}
                   <div className="flex justify-center mt-6 space-x-2">
-                    <div className="w-22 h-1 bg-gradient-to-r from-orange-400 to-red-500 rounded-full"></div>
+                    <div className="w-40 h-1 bg-gradient-to-r from-orange-400 to-red-500 rounded-full"></div>
                   </div>
                 </div>
               </div>
@@ -1372,7 +1371,7 @@ if (!gameStarted) {
         <div className="relative">
           
           {/* Main Collection Card */}
-          <div className="relative bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-10 border-2 border-white/60 hover:shadow-3xl transition-all duration-500">
+          <div className="relative bg-white/20 backdrop-blur-xl rounded-3xl shadow-2xl p-10 border-2 border-white/60 hover:shadow-3xl transition-all duration-500">
             
             {/* Decorative Corner Elements */}
         <div className="text-center mb-0 pt-8">
