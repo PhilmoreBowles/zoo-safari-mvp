@@ -470,7 +470,7 @@ if (!gameStarted) {
           </h1>
 
             <h2 className="text-2x1 font-black text-gray-500-lg leading-tight mt-0 mb-4">
-              Start your educational expedition!
+              Learn - Explore - Collect
             </h2>
           </div>
         </div>
