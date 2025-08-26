@@ -92,7 +92,7 @@ const sampleRiddles = [
   {
     id: 4,
     animal: 'Giraffe',
-    riddle: "I'm the tallest animal,\nwith my head in the sky,\nMy extra long neck\nlet's me munch up high.\nMy spots are unique,\nlike a big fingerprint.\nCan you guess my name,\nor do you need a hint?",
+    riddle: "I'm the tallest animal,\nwith my head in the sky.\nMy extra long neck\nlet's me munch up high.\nMy spots are unique,\nlike a big fingerprint.\nCan you guess my name,\nor do you need a hint?",
     hint: "Look up! I'm the tallest animal in the world!",
     difficulty: 'medium',
     points: 100,
