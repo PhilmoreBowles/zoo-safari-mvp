@@ -143,7 +143,7 @@ const sampleRiddles = [
   {
     id: 9,
     animal: 'Snow Leopard',
-    riddle: "In mountains so high\nwhere the air is thin,\nMy spotted coat\nhelps my species win.\nMy tail's like a scarf,\nso thick and so long,\nI hunt on the cliffs,\nso I have to be strong.",
+    riddle: "In mountains so high\nwhere the air is thin,\nMy spotted coat\nhelps my species win.\nMy tail's like a scarf,\nso thick and so long,\nI hunt on the cliffs,\nso I'm nimble and strong.",
     hint: "Look for the ghost of the mountains!",
     difficulty: 'hard',
     points: 150,
