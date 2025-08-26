@@ -123,7 +123,7 @@ const sampleRiddles = [
   {
     id: 7,
     animal: 'Rhino',
-    riddle: "My horn is not bone,\nbut compressed hair so tight,\nI'm a herbivore giant\nwith poor eyesight.\nThough I look prehistoric,\nbut I'm gentle at heart,\nConservation efforts\nplay a crucial part.",
+    riddle: "My horn is not bone,\nbut hair compressed tight,\nI'm a herbivore giant\nwith poor eyesight.\nThough I look prehistoric,\nI'm gentle at heart,\nConservation efforts\nplay a crucial part.",
     hint: "Look for the armored giant with a horn!",
     difficulty: 'hard',
     points: 150,
