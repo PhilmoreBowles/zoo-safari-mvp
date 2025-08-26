@@ -133,7 +133,7 @@ const sampleRiddles = [
   {
     id: 8,
     animal: 'Orangutan',
-    riddle: "I share 97% of DNA with you,\nMy intelligence and tool use are certainly true.\nIn Borneo's canopy, I make my bed,\nDeforestation fills my species with dread.",
+    riddle: "I share 97% of\nDNA with you.\nMy intelligence and tool\nuse are certainly true.\nIn Borneo's canopy,\nI make my bed.\nDeforestation fills\nmy species with dread.",
     hint: "Look for our closest relative in the trees!",
     difficulty: 'hard',
     points: 150,
