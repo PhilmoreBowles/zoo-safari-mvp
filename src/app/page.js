@@ -152,7 +152,7 @@ const sampleRiddles = [
   }
 ]
 
-const RIDDLE_LIMIT = 6
+const RIDDLE_LIMIT = 9
 
 export default function Home() {
   // State variables
