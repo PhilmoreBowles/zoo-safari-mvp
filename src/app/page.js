@@ -189,22 +189,30 @@ export default function Home() {
 }
 
   // Load saved data when app starts
-  useEffect(() => {
-    const savedFamily = localStorage.getItem('zooSafariFamilyName')
-    const savedPoints = localStorage.getItem('zooSafariPoints')
-    const savedAnimals = localStorage.getItem('zooSafariAnimals')
-    
-    if (savedFamily) {
-      setFamilyName(savedFamily)
-      setGameStarted(true)
-    }
-    if (savedPoints) {
-      setCurrentPoints(parseInt(savedPoints))
-    }
-    if (savedAnimals) {
-      setDiscoveredAnimals(JSON.parse(savedAnimals))
-    }
-  }, [])
+useEffect(() => {
+  const savedFamily = localStorage.getItem('zooSafariFamilyName')
+  const savedPoints = localStorage.getItem('zooSafariPoints')
+  const savedAnimals = localStorage.getItem('zooSafariAnimals')
+  const savedRiddleIndex = localStorage.getItem('zooSafariCurrentRiddle')
+  const savedDifficulty = localStorage.getItem('zooSafariDifficulty')
+  
+  if (savedFamily) {
+    setFamilyName(savedFamily)
+    setGameStarted(true)
+  }
+  if (savedPoints) {
+    setCurrentPoints(parseInt(savedPoints))
+  }
+  if (savedAnimals) {
+    setDiscoveredAnimals(JSON.parse(savedAnimals))
+  }
+  if (savedRiddleIndex) {
+    setCurrentRiddleIndex(parseInt(savedRiddleIndex))
+  }
+  if (savedDifficulty) {
+    setSelectedDifficulty(savedDifficulty)
+  }
+}, [])
 
   // Style QR scanner buttons
 useEffect(() => {
@@ -276,11 +284,13 @@ useEffect(() => {
   const isLastRiddle = currentRiddleIndex >= filteredRiddles.length - 1
 
   // Game functions
- const startAdventure = () => {
+const startAdventure = () => {
   if (familyName.trim()) {
     transitionToScreen(() => {
       setGameStarted(true)
       localStorage.setItem('zooSafariFamilyName', familyName)
+      localStorage.setItem('zooSafariDifficulty', selectedDifficulty)
+      localStorage.setItem('zooSafariCurrentRiddle', '0')
     })
   }
 }
@@ -314,7 +324,9 @@ const nextRiddle = () => {
     setShowSuccess(false)
     setShowHint(false)
     if (currentRiddleIndex < filteredRiddles.length - 1) {
-      setCurrentRiddleIndex(currentRiddleIndex + 1)
+      const newIndex = currentRiddleIndex + 1
+      setCurrentRiddleIndex(newIndex)
+      localStorage.setItem('zooSafariCurrentRiddle', newIndex.toString())
     }
   })
 }
@@ -324,6 +336,8 @@ const resetDemo = () => {
   localStorage.removeItem('zooSafariFamilyName')
   localStorage.removeItem('zooSafariPoints')
   localStorage.removeItem('zooSafariAnimals')
+  localStorage.removeItem('zooSafariCurrentRiddle')
+  localStorage.removeItem('zooSafariDifficulty')
   
   // Reset all state
   setFamilyName('')
@@ -842,6 +856,17 @@ if (!gameStarted) {
               </button>
             </div>
           )}
+          {/* Add this notification link */}
+<div className="text-center mt-6">
+  <a 
+    href="https://zoosafari.app" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="text-sm text-gray-600 hover:text-gray-800 underline transition-colors duration-200"
+  >
+    Get notified when the full game is released
+  </a>
+</div>
         </div>
       </div>
     )
