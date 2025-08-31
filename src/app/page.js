@@ -1,4 +1,5 @@
 'use client'
+import { supabase } from '../lib/supabase'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Html5QrcodeScanner } from 'html5-qrcode'
 
@@ -54,104 +55,6 @@ const scannerButtonStyles = `
     box-shadow: 0 4px 8px rgba(16, 185, 129, 0.4) !important;
   }
 `
-
-// Expanded riddles with QR codes for comprehensive testing
-const sampleRiddles = [
-  // EASY RIDDLES (Ages 4-8)
-  {
-    id: 1,
-    animal: 'Lion',
-    riddle: "I'm big and yellow\nwith a fluffy mane.\nI roar so loud\nit can't be contained!\nThey call me the king,\nbut I sleep on the ground.\nDo you know where\nmy pride can be found?",
-    hint: "Look for the biggest, loudest cat!",
-    difficulty: 'easy',
-    points: 50,
-    fact: "Lions live in groups called prides, like big families!",
-    qrCode: "LION_KING_SAFARI"
-  },
-  {
-    id: 2,
-    animal: 'Elephant',
-    riddle: "I’m reeealy big\nand my skin is gray.\nMy nose is so long\nI can use it to play!\nI flap my ears\nto help me cool down.\nWhen you find me,\nyou won't have a frown!",
-    hint: "Look for the biggest animal with a long nose!",
-    difficulty: 'easy',
-    points: 50,
-    fact: "Elephants use their trunks like we use our hands!",
-    qrCode: "ELEPHANT_TRUNK_SAFARI"
-  },
-  {
-    id: 3,
-    animal: 'Monkey',
-    riddle: "I love bananas,\nthey're my favorite treat!\nI can swing on branches\nwith my hands and feet.\nI'm playful and silly,\nI love to have fun.\nCan you find me before\nthe day is done?",
-    hint: "Look for the animal that swings and plays!",
-    difficulty: 'easy',
-    points: 50,
-    fact: "Monkeys can hang upside down by their tails!",
-    qrCode: "MONKEY_SWING_SAFARI"
-  },
-  // MEDIUM RIDDLES (Ages 8-12)
-  {
-    id: 4,
-    animal: 'Giraffe',
-    riddle: "I'm the tallest animal,\nwith my head in the sky.\nMy extra long neck\nlet's me munch up high.\nMy spots are unique,\nlike a big fingerprint.\nCan you guess my name,\nor do you need a hint?",
-    hint: "Look up! I'm the tallest animal in the world!",
-    difficulty: 'medium',
-    points: 100,
-    fact: "A giraffe's tongue is 18-20 inches long and dark purple!",
-    qrCode: "GIRAFFE_TALL_SAFARI"
-  },
-  {
-    id: 5,
-    animal: 'Penguin',
-    riddle: "I wear a tuxedo\nlike a stylish guy.\nI'm really a bird,\nbut I'll never fly.\nIn icy cold water,\nI'm graceful and quick.\nFind me today and\nI'll show you a trick!",
-    hint: "Look for the bird that swims better than it flies!",
-    difficulty: 'medium',
-    points: 100,
-    fact: "Penguins can swim up to 22 mph and dive 500 feet deep!",
-    qrCode: "PENGUIN_SWIM_SAFARI"
-  },
-  {
-    id: 6,
-    animal: 'Tiger',
-    riddle: "Orange and black stripes\nmake me unique,\nI'm a powerful hunter,\nstrong and sleek.\nUnlike other cats,\nI love to swim.\nI'm out on the prowl\nwhen the sun grows dim!",
-    hint: "Look for the striped cat that loves water!",
-    difficulty: 'medium',
-    points: 100,
-    fact: "Tigers are the only big cats that truly love swimming!",
-    qrCode: "TIGER_STRIPE_SAFARI"
-  },
-  // HARD RIDDLES (Ages 12+)
-  {
-    id: 7,
-    animal: 'Rhino',
-    riddle: "My horn is not bone,\nbut hair compressed tight,\nI'm a herbivore giant\nwith poor eyesight.\nThough I look prehistoric,\nI'm gentle at heart.\nYour conservation efforts\nhelp my woes depart.",
-    hint: "Look for the armored giant with a horn!",
-    difficulty: 'hard',
-    points: 150,
-    fact: "Rhino horns are made of keratin, the same stuff as your fingernails!",
-    qrCode: "RHINO_HORN_SAFARI"
-  },
-  {
-    id: 8,
-    animal: 'Orangutan',
-    riddle: "I share 97% of\nDNA with you.\nMy intelligence and tool\nuse are certainly true.\nIn Borneo's canopy,\nI make my bed.\nDeforestation fills\nmy species with dread.",
-    hint: "Look for our closest relative in the trees!",
-    difficulty: 'hard',
-    points: 150,
-    fact: "Orangutans are so smart they've been observed using tools and learning sign language!",
-    qrCode: "ORANGUTAN_SMART_SAFARI"
-  },
-  {
-    id: 9,
-    animal: 'Snow Leopard',
-    riddle: "In mountains so high\nwhere the air is thin,\nMy spotted coat\nhelps my species win.\nMy tail's like a scarf,\nso thick and so long,\nI hunt on the cliffs,\nso I'm nimble and strong.",
-    hint: "Look for the ghost of the mountains!",
-    difficulty: 'hard',
-    points: 150,
-    fact: "Snow leopards can't roar - they chuff, growl, and purr instead!",
-    qrCode: "SNOW_LEOPARD_GHOST_SAFARI"
-  }
-]
-
 const RIDDLE_LIMIT = 9
 
 export default function Home() {
@@ -171,6 +74,7 @@ export default function Home() {
   const [showLimitReached, setShowLimitReached] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [transitionDirection, setTransitionDirection] = useState('forward')
+  const [riddles, setRiddles] = useState([])
 
   // QR Scanner ref
   const scannerRef = useRef(null)
@@ -188,30 +92,67 @@ export default function Home() {
   }, 300)
 }
 
-  // Load saved data when app starts
+// Load saved data when app starts
 useEffect(() => {
-  const savedFamily = localStorage.getItem('zooSafariFamilyName')
-  const savedPoints = localStorage.getItem('zooSafariPoints')
-  const savedAnimals = localStorage.getItem('zooSafariAnimals')
-  const savedRiddleIndex = localStorage.getItem('zooSafariCurrentRiddle')
-  const savedDifficulty = localStorage.getItem('zooSafariDifficulty')
+  const checkExistingFamily = async () => {
+    const savedFamilyId = localStorage.getItem('zooSafariFamilyId')
+    const savedFamily = localStorage.getItem('zooSafariFamilyName')
+    const savedPoints = localStorage.getItem('zooSafariPoints')
+    const savedAnimals = localStorage.getItem('zooSafariAnimals')
+    const savedRiddleIndex = localStorage.getItem('zooSafariCurrentRiddle')
+    const savedDifficulty = localStorage.getItem('zooSafariDifficulty')
+    
+    // If we have a family ID, verify it still exists in database
+    if (savedFamilyId && savedFamily) {
+      try {
+        const { data, error } = await supabase
+          .from('families')
+          .select('*')
+          .eq('id', savedFamilyId)
+          .single()
+        
+        if (data && !error) {
+          // Family exists in database, restore session
+          setFamilyName(savedFamily)
+          setGameStarted(true)
+          if (savedDifficulty) setSelectedDifficulty(savedDifficulty)
+        } else {
+          // Family doesn't exist, clear localStorage
+          localStorage.removeItem('zooSafariFamilyId')
+          localStorage.removeItem('zooSafariFamilyName')
+        }
+      } catch (err) {
+        console.error('Error checking family session:', err)
+      }
+    }
+    
+    // Load other saved data
+    if (savedPoints) setCurrentPoints(parseInt(savedPoints))
+    if (savedAnimals) setDiscoveredAnimals(JSON.parse(savedAnimals))
+    if (savedRiddleIndex) setCurrentRiddleIndex(parseInt(savedRiddleIndex))
+  }
   
-  if (savedFamily) {
-    setFamilyName(savedFamily)
-    setGameStarted(true)
+  checkExistingFamily()
+}, [])
+
+// Load riddles from Supabase
+useEffect(() => {
+  async function fetchRiddles() {
+    const { data, error } = await supabase
+      .from('riddles')
+      .select('*')
+      .eq('active', true)
+      .order('id')
+    
+    if (error) {
+      console.error('Error fetching riddles:', error)
+    } else {
+      console.log('Riddles loaded:', data.length)
+      setRiddles(data)
+    }
   }
-  if (savedPoints) {
-    setCurrentPoints(parseInt(savedPoints))
-  }
-  if (savedAnimals) {
-    setDiscoveredAnimals(JSON.parse(savedAnimals))
-  }
-  if (savedRiddleIndex) {
-    setCurrentRiddleIndex(parseInt(savedRiddleIndex))
-  }
-  if (savedDifficulty) {
-    setSelectedDifficulty(savedDifficulty)
-  }
+  
+  fetchRiddles()
 }, [])
 
   // Style QR scanner buttons
@@ -274,28 +215,60 @@ useEffect(() => {
 }, []);
 
   // Filter riddles by difficulty
-  const getFilteredRiddles = () => {
-    if (selectedDifficulty === 'all') return sampleRiddles
-    return sampleRiddles.filter(riddle => riddle.difficulty === selectedDifficulty)
-  }
+const getFilteredRiddles = () => {
+  if (selectedDifficulty === 'all') return riddles
+  return riddles.filter(riddle => riddle.difficulty === selectedDifficulty)
+}
 
   const filteredRiddles = getFilteredRiddles()
   const currentRiddle = filteredRiddles[currentRiddleIndex]
   const isLastRiddle = currentRiddleIndex >= filteredRiddles.length - 1
 
+
+
   // Game functions
-const startAdventure = () => {
+const startAdventure = async () => {
   if (familyName.trim()) {
-    transitionToScreen(() => {
-      setGameStarted(true)
+    try {
+      // Insert family into database
+      const { data, error } = await supabase
+        .from('families')
+        .insert([
+          { 
+            family_name: familyName.trim(),
+            selected_difficulty: selectedDifficulty 
+          }
+        ])
+        .select()
+        .single()
+
+      if (error) {
+        console.error('Error creating family:', error)
+        alert('Error starting adventure. Please try again.')
+        return
+      }
+
+      // Store family ID for this session
+      const familyId = data.id
+      localStorage.setItem('zooSafariFamilyId', familyId)
       localStorage.setItem('zooSafariFamilyName', familyName)
       localStorage.setItem('zooSafariDifficulty', selectedDifficulty)
-      localStorage.setItem('zooSafariCurrentRiddle', '0')
-    })
+      
+      transitionToScreen(() => {
+        setGameStarted(true)
+        localStorage.setItem('zooSafariCurrentRiddle', '0')
+      })
+      
+    } catch (err) {
+      console.error('Database error:', err)
+      alert('Error connecting to database. Please try again.')
+    }
   }
 }
 
 const foundAnimal = useCallback(() => {
+  if (!currentRiddle) return; // Safety check for undefined currentRiddle
+  
   const newPoints = currentPoints + currentRiddle.points
   const newAnimals = [...discoveredAnimals, {
     ...currentRiddle,
@@ -331,8 +304,71 @@ const nextRiddle = () => {
   })
 }
 
-const resetDemo = () => {
+// Family database functions
+const createFamily = async (familyName, difficulty) => {
+  try {
+    const { data, error } = await supabase
+      .from('families')
+      .insert([
+        {
+          family_name: familyName,
+          selected_difficulty: difficulty,
+          created_at: new Date().toISOString(),
+          last_active: new Date().toISOString()
+        }
+      ])
+      .select()
+      .single()
+    
+    if (error) {
+      console.error('Error creating family:', error)
+      return null
+    }
+    
+    return data
+  } catch (error) {
+    console.error('Error creating family:', error)
+    return null
+  }
+}
+
+const getFamilyById = async (familyId) => {
+  try {
+    const { data, error } = await supabase
+      .from('families')
+      .select('*')
+      .eq('id', familyId)
+      .single()
+    
+    if (error) {
+      console.error('Error fetching family:', error)
+      return null
+    }
+    
+    return data
+  } catch (error) {
+    console.error('Error fetching family:', error)
+    return null
+  }
+}
+
+const resetDemo = async () => {
+  const familyId = localStorage.getItem('zooSafariFamilyId')
+  
+  // Optional: Delete family from database (or just clear localStorage)
+  if (familyId) {
+    try {
+      await supabase
+        .from('families')
+        .delete()
+        .eq('id', familyId)
+    } catch (err) {
+      console.error('Error cleaning up group record:', err)
+    }
+  }
+  
   // Clear localStorage
+  localStorage.removeItem('zooSafariFamilyId')
   localStorage.removeItem('zooSafariFamilyName')
   localStorage.removeItem('zooSafariPoints')
   localStorage.removeItem('zooSafariAnimals')
@@ -353,7 +389,6 @@ const resetDemo = () => {
   setScanResult('')
   setScanError('')
 }
-
   // QR Scanner functions
   const openScanner = () => {
     setShowScanner(true)
@@ -368,22 +403,22 @@ const resetDemo = () => {
   }
 
   const handleScanSuccess = useCallback((decodedText) => {
-    setScanResult(decodedText)
-    
-    // Check if scanned code matches current riddle
-    if (decodedText === currentRiddle.qrCode) {
-      // Correct answer! 
-      setShowScanner(false)
-      foundAnimal()
-    } else {
-      // Wrong code scanned
-      setScanError(`That&apos;s not the right animal! You scanned: ${decodedText}`)
-      // Auto-clear error after 3 seconds
-      setTimeout(() => {
-        setScanError('')
-      }, 3000)
-    }
-  }, [currentRiddle.qrCode, foundAnimal])
+  setScanResult(decodedText)
+  
+  // Check if scanned code matches current riddle
+  if (currentRiddle && decodedText === currentRiddle.qrCode) {
+    // Correct answer! 
+    setShowScanner(false)
+    foundAnimal()
+  } else if (currentRiddle) {
+    // Wrong code scanned (only show error if currentRiddle exists)
+    setScanError(`That's not the right animal! You scanned: ${decodedText}`)
+    // Auto-clear error after 3 seconds
+    setTimeout(() => {
+      setScanError('')
+    }, 3000)
+  }
+}, [currentRiddle, foundAnimal])
 
   const handleScanError = useCallback((error) => {
     // Only log actual errors, not routine scanning messages
@@ -448,6 +483,23 @@ const resetDemo = () => {
     'Orangutan': '🦧',
     'Snow Leopard': '🐆'
   }
+
+    // Show loading screen while riddles are being fetched
+if (riddles.length === 0) {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-amber-200 via-orange-300 to-red-400 p-4 flex items-center justify-center">
+      <div className="text-center">
+        <div className="text-6xl mb-4">🦁</div>
+        <h1 className="text-3xl font-bold text-gray-800 mb-2">Loading Safari...</h1>
+        <div className="flex justify-center space-x-2">
+          <div className="w-2 h-2 bg-gray-600 rounded-full animate-pulse"></div>
+          <div className="w-2 h-2 bg-gray-600 rounded-full animate-pulse animation-delay-300"></div>
+          <div className="w-2 h-2 bg-gray-600 rounded-full animate-pulse animation-delay-600"></div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 // Welcome/Setup Screen
 if (!gameStarted) {
@@ -1146,9 +1198,9 @@ if (!gameStarted) {
 
                 {/* Riddle Text */}
                 <div className="relative">
-                  <p className="text-gray-800 whitespace-pre-line leading-relaxed text-xl font-semibold text-center px-4">
-                    {currentRiddle.riddle}
-                  </p>
+                  <p className="text-gray-800 leading-relaxed text-xl font-semibold text-center px-4" style={{whiteSpace: 'pre-line'}}>
+  {currentRiddle.riddle.replace(/\\n/g, '\n')}
+</p>
                   
                   {/* Decorative Lines */}
                   <div className="flex justify-center mt-6 space-x-2">
