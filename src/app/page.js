@@ -55,7 +55,8 @@ const scannerButtonStyles = `
     box-shadow: 0 4px 8px rgba(16, 185, 129, 0.4) !important;
   }
 `
-const RIDDLE_LIMIT = 9
+// Dynamic limit based on available riddles for selected difficulty
+const RIDDLE_LIMIT = filteredRiddles.length
 
 export default function Home() {
   // State variables
@@ -356,13 +357,15 @@ const foundAnimal = useCallback(async () => {
     // localStorage.setItem('zooSafariPoints', newPoints.toString())
     // localStorage.setItem('zooSafariAnimals', JSON.stringify(newAnimals))
 
-    transitionToScreen(() => {
-      if (newAnimals.length >= RIDDLE_LIMIT) {
-        setShowLimitReached(true)
-      } else {
-        setShowSuccess(true)
-      }
-    })
+transitionToScreen(() => {
+  if (newAnimals.length >= filteredRiddles.length) {
+    console.log('Triggering showLimitReached - completed all available riddles')
+    setShowLimitReached(true)
+  } else {
+    console.log('Triggering showSuccess')
+    setShowSuccess(true)
+  }
+})
 
   } catch (err) {
     console.error('Database error in foundAnimal:', err)
