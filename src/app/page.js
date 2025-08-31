@@ -646,7 +646,7 @@ if (!gameStarted) {
                   type="text"
                   value={familyName}
                   onChange={(e) => setFamilyName(e.target.value)}
-                  placeholder="Enter team name..."
+                  placeholder="Enter team name"
                   className="relative w-full p-5 border-3 border-gray-200 rounded-2xl text-xl font-semibold placeholder-gray-400 focus:border-emerald-500 focus:ring-6 focus:ring-emerald-200 transition-all duration-400 bg-gradient-to-br from-gray-50 to-white shadow-inner hover:shadow-lg"
                 />
               </div>
