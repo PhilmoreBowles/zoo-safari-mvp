@@ -94,25 +94,49 @@ export default function Home() {
 
 // Load saved data when app starts
 useEffect(() => {
-  const checkExistingFamily = async () => {
+  const loadFamilySession = async () => {
     const savedFamilyId = localStorage.getItem('zooSafariFamilyId')
     const savedFamily = localStorage.getItem('zooSafariFamilyName')
-    const savedPoints = localStorage.getItem('zooSafariPoints')
-    const savedAnimals = localStorage.getItem('zooSafariAnimals')
     const savedRiddleIndex = localStorage.getItem('zooSafariCurrentRiddle')
     const savedDifficulty = localStorage.getItem('zooSafariDifficulty')
     
-    // If we have a family ID, verify it still exists in database
     if (savedFamilyId && savedFamily) {
       try {
-        const { data, error } = await supabase
+        // Verify family exists and load their progress
+        const { data: familyData, error: familyError } = await supabase
           .from('families')
           .select('*')
           .eq('id', savedFamilyId)
           .single()
         
-        if (data && !error) {
-          // Family exists in database, restore session
+        if (familyData && !familyError) {
+          // Family exists, load their progress
+          const { data: progressData, error: progressError } = await supabase
+            .from('family_progress')
+            .select(`
+              *,
+              riddles (*)
+            `)
+            .eq('family_id', savedFamilyId)
+          
+          if (!progressError && progressData) {
+            console.log('Loaded family progress:', progressData)
+            
+            // Calculate total points from database
+            const totalPoints = progressData.reduce((sum, record) => sum + record.points_earned, 0)
+            setCurrentPoints(totalPoints)
+            
+            // Reconstruct discovered animals array
+            const discoveredAnimals = progressData.map(record => ({
+              ...record.riddles,
+              discoveredAt: record.completed_at
+            }))
+            setDiscoveredAnimals(discoveredAnimals)
+            
+            console.log('Restored session - Points:', totalPoints, 'Animals:', discoveredAnimals.length)
+          }
+          
+          // Restore family session
           setFamilyName(savedFamily)
           setGameStarted(true)
           if (savedDifficulty) setSelectedDifficulty(savedDifficulty)
@@ -122,18 +146,17 @@ useEffect(() => {
           localStorage.removeItem('zooSafariFamilyName')
         }
       } catch (err) {
-        console.error('Error checking family session:', err)
+        console.error('Error loading family session:', err)
       }
     }
     
-    // Load other saved data
-    if (savedPoints) setCurrentPoints(parseInt(savedPoints))
-    if (savedAnimals) setDiscoveredAnimals(JSON.parse(savedAnimals))
+    // Load current riddle index from localStorage (temporary)
     if (savedRiddleIndex) setCurrentRiddleIndex(parseInt(savedRiddleIndex))
   }
   
-  checkExistingFamily()
+  loadFamilySession()
 }, [])
+
 
 // Load riddles from Supabase
 useEffect(() => {
@@ -230,7 +253,6 @@ const getFilteredRiddles = () => {
 const startAdventure = async () => {
   if (familyName.trim()) {
     try {
-      // Insert family into database
       const { data, error } = await supabase
         .from('families')
         .insert([
@@ -248,7 +270,9 @@ const startAdventure = async () => {
         return
       }
 
-      // Store family ID for this session
+      console.log('Family created successfully:', data)
+      
+      // Only store family ID and name for session management
       const familyId = data.id
       localStorage.setItem('zooSafariFamilyId', familyId)
       localStorage.setItem('zooSafariFamilyName', familyName)
@@ -256,7 +280,8 @@ const startAdventure = async () => {
       
       transitionToScreen(() => {
         setGameStarted(true)
-        localStorage.setItem('zooSafariCurrentRiddle', '0')
+        // Remove this localStorage call:
+        // localStorage.setItem('zooSafariCurrentRiddle', '0')
       })
       
     } catch (err) {
@@ -265,32 +290,6 @@ const startAdventure = async () => {
     }
   }
 }
-
-const foundAnimal = useCallback(() => {
-  if (!currentRiddle) return; // Safety check for undefined currentRiddle
-  
-  const newPoints = currentPoints + currentRiddle.points
-  const newAnimals = [...discoveredAnimals, {
-    ...currentRiddle,
-    discoveredAt: new Date().toISOString()
-  }]
-
-  setCurrentPoints(newPoints)
-  setDiscoveredAnimals(newAnimals)
-
-  // Save to browser storage
-  localStorage.setItem('zooSafariPoints', newPoints.toString())
-  localStorage.setItem('zooSafariAnimals', JSON.stringify(newAnimals))
-
-  // Use transition for success screen
-  transitionToScreen(() => {
-    if (newAnimals.length >= RIDDLE_LIMIT) {
-      setShowLimitReached(true)
-    } else {
-      setShowSuccess(true)
-    }
-  })
-}, [currentPoints, currentRiddle, discoveredAnimals, transitionToScreen])
 
 const nextRiddle = () => {
   transitionToScreen(() => {
@@ -303,6 +302,74 @@ const nextRiddle = () => {
     }
   })
 }
+
+const foundAnimal = useCallback(async () => {
+  if (!currentRiddle) return;
+  
+  const familyId = localStorage.getItem('zooSafariFamilyId')
+  if (!familyId) {
+    console.error('No family ID found')
+    return
+  }
+
+  try {
+    // Check if this riddle was already completed by this family
+    const { data: existingProgress } = await supabase
+      .from('family_progress')
+      .select('id')
+      .eq('family_id', familyId)
+      .eq('riddle_id', currentRiddle.id)
+      .single()
+
+    if (!existingProgress) {
+      // Only insert if not already completed
+      const { data: progressData, error: progressError } = await supabase
+        .from('family_progress')
+        .insert([{
+          family_id: familyId,
+          riddle_id: currentRiddle.id,
+          points_earned: currentRiddle.points
+        }])
+        .select()
+
+      if (progressError) {
+        console.error('Error saving progress:', progressError)
+        return // Don't continue if database save fails
+      } else {
+        console.log('Progress saved to database:', progressData)
+      }
+    } else {
+      console.log('Riddle already completed, skipping database insert')
+    }
+
+    // Update local state (immediate UI updates only)
+    const newPoints = currentPoints + currentRiddle.points
+    const newAnimals = [...discoveredAnimals, {
+      ...currentRiddle,
+      discoveredAt: new Date().toISOString()
+    }]
+
+    setCurrentPoints(newPoints)
+    setDiscoveredAnimals(newAnimals)
+
+    // Remove these localStorage calls:
+    // localStorage.setItem('zooSafariPoints', newPoints.toString())
+    // localStorage.setItem('zooSafariAnimals', JSON.stringify(newAnimals))
+
+    transitionToScreen(() => {
+      if (newAnimals.length >= RIDDLE_LIMIT) {
+        setShowLimitReached(true)
+      } else {
+        setShowSuccess(true)
+      }
+    })
+
+  } catch (err) {
+    console.error('Database error in foundAnimal:', err)
+    alert('Unable to save progress. Please check your connection.')
+  }
+}, [currentPoints, currentRiddle, discoveredAnimals, transitionToScreen])
+
 
 // Family database functions
 const createFamily = async (familyName, difficulty) => {
@@ -355,25 +422,28 @@ const getFamilyById = async (familyId) => {
 const resetDemo = async () => {
   const familyId = localStorage.getItem('zooSafariFamilyId')
   
-  // Optional: Delete family from database (or just clear localStorage)
+  // Delete family and their progress from database
   if (familyId) {
     try {
+      // Delete family (cascade will handle family_progress)
       await supabase
         .from('families')
         .delete()
         .eq('id', familyId)
+      console.log('Family deleted from database')
     } catch (err) {
-      console.error('Error cleaning up group record:', err)
+      console.error('Error cleaning up family record:', err)
     }
   }
   
-  // Clear localStorage
+  // Only clear session-related localStorage
   localStorage.removeItem('zooSafariFamilyId')
   localStorage.removeItem('zooSafariFamilyName')
-  localStorage.removeItem('zooSafariPoints')
-  localStorage.removeItem('zooSafariAnimals')
-  localStorage.removeItem('zooSafariCurrentRiddle')
   localStorage.removeItem('zooSafariDifficulty')
+  // Remove these - no longer needed:
+  // localStorage.removeItem('zooSafariPoints')
+  // localStorage.removeItem('zooSafariAnimals')
+  // localStorage.removeItem('zooSafariCurrentRiddle')
   
   // Reset all state
   setFamilyName('')
@@ -389,6 +459,8 @@ const resetDemo = async () => {
   setScanResult('')
   setScanError('')
 }
+
+
   // QR Scanner functions
   const openScanner = () => {
     setShowScanner(true)
