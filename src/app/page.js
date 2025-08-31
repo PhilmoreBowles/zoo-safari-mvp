@@ -55,8 +55,7 @@ const scannerButtonStyles = `
     box-shadow: 0 4px 8px rgba(16, 185, 129, 0.4) !important;
   }
 `
-// Dynamic limit based on available riddles for selected difficulty
-const RIDDLE_LIMIT = filteredRiddles.length
+const RIDDLE_LIMIT = 9  // Keep this as is
 
 export default function Home() {
   // State variables
@@ -358,6 +357,7 @@ const foundAnimal = useCallback(async () => {
     // localStorage.setItem('zooSafariAnimals', JSON.stringify(newAnimals))
 
 transitionToScreen(() => {
+  // Use filteredRiddles.length instead of RIDDLE_LIMIT for the actual completion check
   if (newAnimals.length >= filteredRiddles.length) {
     console.log('Triggering showLimitReached - completed all available riddles')
     setShowLimitReached(true)
