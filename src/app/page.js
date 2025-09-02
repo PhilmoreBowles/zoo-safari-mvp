@@ -214,6 +214,54 @@ useEffect(() => {
   console.log('showWrongCodeScreen state changed to:', showWrongCodeScreen)
 }, [showWrongCodeScreen])
 
+  // Style QR scanner buttons
+useEffect(() => {
+  const styleSheet = document.createElement('style');
+  styleSheet.textContent = `
+/* Target ALL interactive elements in QR scanner */
+#qr-reader button,
+#qr-reader a,
+#qr-reader a[href],
+#qr-reader span[role="button"],
+#qr-reader [onclick],
+#qr-reader [style*="cursor"],
+#qr-reader *[style*="text-decoration: underline"],
+#qr-reader *:not(video):not(canvas):not(div):not(span):hover {
+  background: linear-gradient(135deg, #3B82F6, #1E40AF) !important;
+  color: white !important;
+  padding: 12px 24px !important;
+  border-radius: 12px !important;
+  border: none !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  cursor: pointer !important;
+  margin: 8px 4px !important;
+  transition: all 0.2s ease !important;
+  display: inline-block !important;
+  text-decoration: none !important;
+  min-width: 140px !important;
+  text-align: center !important;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Hover states */
+#qr-reader button:hover,
+#qr-reader a:hover,
+#qr-reader a[href]:hover,
+#qr-reader span[role="button"]:hover,
+#qr-reader [onclick]:hover {
+  background: linear-gradient(135deg, #1E40AF, #1E3A8A) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4) !important;
+}
+
+  `;
+  document.head.appendChild(styleSheet);
+
+  return () => {
+    document.head.removeChild(styleSheet);
+  };
+}, []);
 
   // Filter riddles by difficulty
 // No longer need this function - we'll use shuffledRiddles state instead
