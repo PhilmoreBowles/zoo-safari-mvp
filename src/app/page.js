@@ -79,7 +79,7 @@ export default function Home() {
   const [riddles, setRiddles] = useState([])
   const [completedRiddle, setCompletedRiddle] = useState(null)
   const [shuffledRiddles, setShuffledRiddles] = useState([])
-  const [showWrongCodeDialog, setShowWrongCodeDialog] = useState(false)
+  const [showWrongCodeScreen, setShowWrongCodeScreen] = useState(false)
   const [wrongCodeScanned, setWrongCodeScanned] = useState('')
 
 
