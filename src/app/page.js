@@ -592,8 +592,39 @@ useEffect(() => {
       (error) => handleScanError(error)
     )
 
-    html5QrcodeScannerRef.current = html5QrcodeScanner
-    setScannerInitialized(true)
+    // Force apply styling to Select Camera link after scanner loads
+const applyCameraLinkStyling = () => {
+  const selectCameraLink = document.getElementById('html5-qrcode-anchor-scan-type-change');
+  if (selectCameraLink) {
+    selectCameraLink.style.cssText = `
+      background: linear-gradient(135deg, #3B82F6, #1E40AF) !important;
+      color: white !important;
+      padding: 12px 24px !important;
+      border-radius: 12px !important;
+      border: none !important;
+      font-weight: 600 !important;
+      font-size: 14px !important;
+      cursor: pointer !important;
+      margin: 8px 4px !important;
+      transition: all 0.2s ease !important;
+      display: inline-block !important;
+      text-decoration: none !important;
+      min-width: 140px !important;
+      text-align: center !important;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+    `;
+  } else {
+    // Try again in 500ms if element not found
+    setTimeout(applyCameraLinkStyling, 500);
+  }
+};
+
+// Start applying styling after scanner renders
+setTimeout(applyCameraLinkStyling, 100);
+
+html5QrcodeScannerRef.current = html5QrcodeScanner
+setScannerInitialized(true)
+
   }
 }, [showScanner, scannerInitialized, handleScanSuccess, handleScanError])
 
