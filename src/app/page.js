@@ -57,6 +57,8 @@ const scannerButtonStyles = `
 `
 const RIDDLE_LIMIT = 9  // Keep this as is
 
+
+
 export default function Home() {
   // State variables
   const [familyName, setFamilyName] = useState('')
@@ -75,6 +77,8 @@ export default function Home() {
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [transitionDirection, setTransitionDirection] = useState('forward')
   const [riddles, setRiddles] = useState([])
+  const [completedRiddle, setCompletedRiddle] = useState(null)
+  const [shuffledRiddles, setShuffledRiddles] = useState([])
 
   // QR Scanner ref
   const scannerRef = useRef(null)
@@ -171,12 +175,35 @@ useEffect(() => {
       console.error('Error fetching riddles:', error)
     } else {
       console.log('Riddles loaded:', data.length)
+      console.log('Riddle difficulties:', data.map(r => `${r.animal}: "${r.difficulty}"`))
+      console.log('Riddle difficulties:', data.map(r => `${r.animal}: "${r.difficulty}"`))
+console.log('Selected difficulty:', selectedDifficulty)
+console.log('Filtered riddles count:', shuffledRiddles.length)
+console.log('Current riddle index:', currentRiddleIndex)
+console.log('Current riddle should be:', shuffledRiddles[currentRiddleIndex]?.animal)
       setRiddles(data)
     }
   }
   
   fetchRiddles()
 }, [])
+
+// Shuffle riddles when riddles load or difficulty changes
+useEffect(() => {
+  if (riddles && riddles.length > 0) {
+    let filtered
+    if (selectedDifficulty === 'all') {
+      filtered = riddles
+    } else {
+      filtered = riddles.filter(riddle => riddle.difficulty === selectedDifficulty)
+    }
+    
+    // Shuffle once and store in state
+    const shuffled = shuffleArray([...filtered])
+    setShuffledRiddles(shuffled)
+    console.log('Shuffled riddles for', selectedDifficulty, ':', shuffled.map(r => r.animal))
+  }
+}, [riddles, selectedDifficulty])
 
   // Style QR scanner buttons
 useEffect(() => {
@@ -238,12 +265,39 @@ useEffect(() => {
 }, []);
 
   // Filter riddles by difficulty
-const getFilteredRiddles = () => {
-  if (selectedDifficulty === 'all') return riddles
-  return riddles.filter(riddle => riddle.difficulty === selectedDifficulty)
+// No longer need this function - we'll use shuffledRiddles state instead
+
+// Add shuffle function
+const shuffleArray = (array) => {
+  const shuffled = [...array]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
 }
 
-  const filteredRiddles = getFilteredRiddles()
+  const filteredRiddles = shuffledRiddles
+  // Calculate riddle counts by difficulty
+const getRiddleCounts = () => {
+  if (!riddles || riddles.length === 0) {
+    return { easy: 0, medium: 0, hard: 0, all: 0 }
+  }
+  
+  const counts = riddles.reduce((acc, riddle) => {
+    acc[riddle.difficulty] = (acc[riddle.difficulty] || 0) + 1
+    return acc
+  }, {})
+  
+  return {
+    easy: counts.easy || 0,
+    medium: counts.medium || 0,
+    hard: counts.hard || 0,
+    all: riddles.length
+  }
+}
+
+const riddleCounts = getRiddleCounts()
   const currentRiddle = filteredRiddles[currentRiddleIndex]
   const isLastRiddle = currentRiddleIndex >= filteredRiddles.length - 1
 
@@ -305,7 +359,10 @@ const nextRiddle = () => {
 
 const foundAnimal = useCallback(async () => {
   if (!currentRiddle) return;
-  
+ 
+  // Store the completed riddle for the celebration screen
+  setCompletedRiddle(currentRiddle)
+ 
   const familyId = localStorage.getItem('zooSafariFamilyId')
   if (!familyId) {
     console.error('No family ID found')
@@ -352,20 +409,15 @@ const foundAnimal = useCallback(async () => {
     setCurrentPoints(newPoints)
     setDiscoveredAnimals(newAnimals)
 
-    // Remove these localStorage calls:
-    // localStorage.setItem('zooSafariPoints', newPoints.toString())
-    // localStorage.setItem('zooSafariAnimals', JSON.stringify(newAnimals))
-
-transitionToScreen(() => {
-  // Use filteredRiddles.length instead of RIDDLE_LIMIT for the actual completion check
-  if (newAnimals.length >= filteredRiddles.length) {
-    console.log('Triggering showLimitReached - completed all available riddles')
-    setShowLimitReached(true)
-  } else {
-    console.log('Triggering showSuccess')
-    setShowSuccess(true)
-  }
-})
+    transitionToScreen(() => {
+      if (newAnimals.length >= filteredRiddles.length) {
+        console.log('Triggering showLimitReached - completed all available riddles')
+        setShowLimitReached(true)
+      } else {
+        console.log('Triggering showSuccess')
+        setShowSuccess(true)
+      }
+    })
 
   } catch (err) {
     console.error('Database error in foundAnimal:', err)
@@ -546,18 +598,6 @@ const resetDemo = async () => {
     }
   }, [showScanner])
 
-  // Animal emoji mapping
-  const animalEmojis = {
-    'Lion': '🦁',
-    'Elephant': '🐘', 
-    'Giraffe': '🦒',
-    'Penguin': '🐧',
-    'Monkey': '🐵',
-    'Tiger': '🐅',
-    'Rhino': '🦏',
-    'Orangutan': '🦧',
-    'Snow Leopard': '🐆'
-  }
 
     // Show loading screen while riddles are being fetched
 if (riddles.length === 0) {
@@ -699,7 +739,7 @@ if (!gameStarted) {
                         <div className="font-black text-xl">All Levels Adventure</div>
                       </div>
                       <div className={`text-sm font-semibold ${selectedDifficulty === 'all' ? 'text-blue-100' : 'text-gray-600'}`}>
-                        9 riddles • Perfect for mixed ages • Maximum fun!
+                        {riddleCounts.all} riddles • Perfect for mixed ages • Maximum fun!
                       </div>
                       <div className="mt-3 flex space-x-1">
                         <div className={`w-2 h-2 rounded-full ${selectedDifficulty === 'all' ? 'bg-white/60' : 'bg-blue-300'}`}></div>
@@ -736,7 +776,7 @@ if (!gameStarted) {
                         <div className="font-black text-xl">Easy Adventure</div>
                       </div>
                       <div className={`text-sm font-semibold ${selectedDifficulty === 'easy' ? 'text-green-100' : 'text-gray-600'}`}>
-                        3 riddles • Ages 4-8 • Simple and fun words
+                        {riddleCounts.easy} riddles • Ages 4-8 • Simple and fun words
                       </div>
                       <div className="mt-3 flex space-x-1">
                         <div className={`w-6 h-2 rounded-full ${selectedDifficulty === 'easy' ? 'bg-white/80' : 'bg-green-400'}`}></div>
@@ -773,7 +813,7 @@ if (!gameStarted) {
                         <div className="font-black text-xl">Medium Quest</div>
                       </div>
                       <div className={`text-sm font-semibold ${selectedDifficulty === 'medium' ? 'text-yellow-100' : 'text-gray-600'}`}>
-                        3 riddles • Ages 8-12 • Science and discovery
+                        {riddleCounts.medium} riddles • Ages 8-12 • Science and discovery
                       </div>
                       <div className="mt-3 flex space-x-1">
                         <div className={`w-2 h-2 rounded-full ${selectedDifficulty === 'medium' ? 'bg-white/60' : 'bg-yellow-300'}`}></div>
@@ -810,7 +850,7 @@ if (!gameStarted) {
                         <div className="font-black text-xl">Expert Challenge</div>
                       </div>
                       <div className={`text-sm font-semibold ${selectedDifficulty === 'hard' ? 'text-red-100' : 'text-gray-600'}`}>
-                        3 riddles • Ages 12+ • Conservation heroes
+                        {riddleCounts.hard} riddles • Ages 12+ • Conservation heroes
                       </div>
                       <div className="mt-3 flex space-x-1">
                         <div className={`w-2 h-2 rounded-full ${selectedDifficulty === 'hard' ? 'bg-white/60' : 'bg-red-300'}`}></div>
@@ -872,8 +912,8 @@ if (!gameStarted) {
           <div className="text-center mb-8">
             <div className="mb-6">
               <div className="text-8xl mb-4 animate-bounce">
-                {animalEmojis[currentRiddle.animal]}
-              </div>
+  {completedRiddle?.icon || '🐾'}
+</div>
               <div className="flex justify-center space-x-2 text-3xl">
                 <span className="animate-pulse">🎉</span>
                 <span className="animate-pulse animation-delay-300">🎊</span>
@@ -886,7 +926,7 @@ if (!gameStarted) {
                 AMAZING DISCOVERY!
               </h1>
               <h2 className="text-3xl font-bold text-gray-800 mb-6">
-                You found the {currentRiddle.animal}!
+                You found the {completedRiddle.animal}!
               </h2>
               
               <div className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 text-white rounded-2xl py-4 px-8 mb-6 shadow-xl animate-pulse">
@@ -894,7 +934,7 @@ if (!gameStarted) {
                   <span className="text-3xl">🏆</span>
                   <div>
                     <p className="text-2xl font-black">
-                      +{currentRiddle.points} POINTS!
+                      +{completedRiddle.points} POINTS!
                     </p>
                     <p className="text-sm font-semibold opacity-90">
                       Outstanding work!
@@ -913,7 +953,7 @@ if (!gameStarted) {
                     Did You Know?
                   </h3>
                   <p className="text-blue-700 leading-relaxed text-lg font-medium">
-                    {currentRiddle.fact}
+                    {completedRiddle.fact}
                   </p>
                 </div>
               </div>
@@ -983,6 +1023,7 @@ if (!gameStarted) {
               </button>
             </div>
           )}
+
           {/* Add this notification link */}
 <div className="text-center mt-6">
   <a 
@@ -1069,7 +1110,7 @@ if (!gameStarted) {
                   {discoveredAnimals.map((animal, index) => (
                     <div key={index} className="bg-gradient-to-br from-yellow-200 via-orange-200 to-red-200 rounded-2xl p-4 shadow-lg border-2 border-yellow-300 transform hover:scale-110 transition-all duration-300">
                       <span className="text-4xl">
-                        {animalEmojis[animal.animal]}
+                        {animal.icon || '🐾'}
                       </span>
                     </div>
                   ))}
@@ -1600,8 +1641,8 @@ if (!gameStarted) {
                       <div className="relative bg-gradient-to-br from-yellow-100 via-orange-100 to-red-100 rounded-2xl p-4 shadow-xl border-2 border-yellow-200 transform hover:scale-110 hover:rotate-2 transition-all duration-300 cursor-pointer">
                         <div className="text-center">
                           <div className="text-4xl mb-2">
-                            {animalEmojis[animal.animal]}
-                          </div>
+  {animal.icon || '🐾'}
+</div>
                           <div className="text-xs font-bold text-gray-700">
                             {animal.animal}
                           </div>
