@@ -574,12 +574,14 @@ const handleScanSuccess = useCallback((decodedText) => {
 // Initialize QR scanner when modal opens
 useEffect(() => {
   if (showScanner && !scannerInitialized && scannerRef.current) {
-    const config = {
-      fps: 10,
-      qrbox: { width: 250, height: 250 },
-      aspectRatio: 1.0,
-      rememberLastUsedCamera: false
-    }
+const config = {
+  fps: 10,
+  qrbox: { width: 250, height: 250 },
+  aspectRatio: 1.0,
+  rememberLastUsedCamera: false,
+  defaultCameraIdOrConfig: { facingMode: "environment" },
+  supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
+}
 
     const html5QrcodeScanner = new Html5QrcodeScanner(
       "qr-reader",
