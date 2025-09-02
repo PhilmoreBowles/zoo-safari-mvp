@@ -208,6 +208,11 @@ useEffect(() => {
   }
 }, [riddles, selectedDifficulty])
 
+// DEBUG: Monitor wrong code screen state
+useEffect(() => {
+  console.log('showWrongCodeScreen state changed to:', showWrongCodeScreen)
+}, [showWrongCodeScreen])
+
   // Style QR scanner buttons
 useEffect(() => {
   const styleSheet = document.createElement('style');
@@ -549,6 +554,12 @@ const handleScanSuccess = useCallback((decodedText) => {
     setShowScanner(false)
     setWrongCodeScanned(decodedText)
     setShowWrongCodeScreen(true)
+
+      // DEBUG: Log state changes
+  console.log('State updates called:')
+  console.log('- setShowScanner(false)')  
+  console.log('- setWrongCodeScanned:', decodedText)
+  console.log('- setShowWrongCodeScreen(true)')
   }
 }, [currentRiddle, foundAnimal])
 
