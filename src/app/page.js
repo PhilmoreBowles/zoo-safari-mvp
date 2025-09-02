@@ -592,6 +592,42 @@ const handleScanSuccess = useCallback((decodedText) => {
         (error) => handleScanError(error)
       )
 
+      // Force style the Select Camera link after scanner renders
+setTimeout(() => {
+  const qrReaderElement = document.getElementById('qr-reader');
+  if (qrReaderElement) {
+    // Find all text elements that might be the camera selector
+    const allElements = qrReaderElement.querySelectorAll('*');
+    allElements.forEach(element => {
+      const text = element.textContent?.trim();
+      if (text && (
+        text.includes('Select Camera') || 
+        text.includes('camera') ||
+        text.includes('Switch') ||
+        text.includes('Change')
+      )) {
+        // Apply button styling directly
+        element.style.cssText = `
+          background: linear-gradient(135deg, #3B82F6, #1E40AF) !important;
+          color: white !important;
+          padding: 12px 24px !important;
+          border-radius: 12px !important;
+          border: none !important;
+          font-weight: 600 !important;
+          font-size: 14px !important;
+          cursor: pointer !important;
+          margin: 8px 4px !important;
+          display: inline-block !important;
+          text-decoration: none !important;
+          min-width: 140px !important;
+          text-align: center !important;
+          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+        `;
+      }
+    });
+  }
+}, 1000); // Wait 1 second for scanner to fully load
+
       html5QrcodeScannerRef.current = html5QrcodeScanner
       setScannerInitialized(true)
     }
