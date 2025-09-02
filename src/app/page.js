@@ -79,6 +79,8 @@ export default function Home() {
   const [riddles, setRiddles] = useState([])
   const [completedRiddle, setCompletedRiddle] = useState(null)
   const [shuffledRiddles, setShuffledRiddles] = useState([])
+  const [showWrongCodeDialog, setShowWrongCodeDialog] = useState(false)
+  const [wrongCodeScanned, setWrongCodeScanned] = useState('')
 
   // QR Scanner ref
   const scannerRef = useRef(null)
@@ -534,25 +536,20 @@ const handleScanSuccess = useCallback((decodedText) => {
   console.log('Scanned text:', decodedText)
   console.log('Current riddle:', currentRiddle?.animal)
   console.log('Expected QR code:', currentRiddle?.qr_code)
-  console.log('Match check:', decodedText === currentRiddle?.qr_code)
-  console.log('Scanner should close:', decodedText === currentRiddle?.qr_code)
   
   setScanResult(decodedText)
   
   // Check if scanned code matches current riddle
   if (currentRiddle && decodedText === currentRiddle.qr_code) {
     console.log('SUCCESS: Codes match! Proceeding to celebration...')
-    // Correct answer! 
     setShowScanner(false)
     foundAnimal()
   } else if (currentRiddle) {
-    console.log('ERROR: Codes do not match')
-    // Wrong code scanned (only show error if currentRiddle exists)
-    setScanError(`That's not the right animal! You scanned: ${decodedText}`)
-    // Auto-clear error after 3 seconds
-    setTimeout(() => {
-      setScanError('')
-    }, 3000)
+    console.log('ERROR: Wrong code, showing dialog')
+    // Close scanner immediately and show error dialog
+    setShowScanner(false)
+    setWrongCodeScanned(decodedText)
+    setShowWrongCodeDialog(true)
   }
 }, [currentRiddle, foundAnimal])
 
@@ -606,6 +603,43 @@ const handleScanSuccess = useCallback((decodedText) => {
       setScannerInitialized(false)
     }
   }, [showScanner])
+
+  {/* Wrong Code Dialog */}
+{showWrongCodeDialog && (
+  <div className="fixed inset-0 bg-black/80 backdrop-blur-lg z-50 flex items-center justify-center p-4">
+    <div className="bg-white rounded-3xl shadow-3xl p-8 max-w-sm w-full border-2 border-red-300">
+      <div className="text-center">
+        <div className="text-6xl mb-4">❌</div>
+        <h3 className="text-2xl font-black text-red-700 mb-4">Wrong Animal!</h3>
+        <p className="text-gray-700 mb-2">You scanned: <strong>{wrongCodeScanned}</strong></p>
+        <p className="text-gray-700 mb-6">Look for the <strong>{currentRiddle?.animal}</strong> exhibit and scan that QR code instead.</p>
+        
+        <div className="space-y-3">
+          <button
+            onClick={() => {
+              setShowWrongCodeDialog(false)
+              setShowScanner(true)
+              setWrongCodeScanned('')
+            }}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl"
+          >
+            Try Scanning Again
+          </button>
+          
+          <button
+            onClick={() => {
+              setShowWrongCodeDialog(false)
+              setWrongCodeScanned('')
+            }}
+            className="w-full bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 px-6 rounded-xl"
+          >
+            Read Riddle Again
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
 
 
     // Show loading screen while riddles are being fetched
