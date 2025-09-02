@@ -223,7 +223,6 @@ useEffect(() => {
 #qr-reader a,
 #qr-reader a[href],
 #qr-reader span[role="button"],
-#qr-reader [onclick],
 #qr-reader [style*="cursor"],
 #qr-reader *[style*="text-decoration: underline"],
 #qr-reader *:not(video):not(canvas):not(div):not(span):hover {
