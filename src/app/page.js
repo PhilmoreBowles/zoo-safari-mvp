@@ -81,6 +81,7 @@ export default function Home() {
   const [shuffledRiddles, setShuffledRiddles] = useState([])
   const [showWrongCodeScreen, setShowWrongCodeScreen] = useState(false)
   const [wrongCodeScanned, setWrongCodeScanned] = useState('')
+  const [wrongCodeMessage, setWrongCodeMessage] = useState('')
 
 
   // QR Scanner ref
@@ -548,19 +549,12 @@ const handleScanSuccess = useCallback((decodedText) => {
     console.log('SUCCESS: Codes match! Proceeding to celebration...')
     setShowScanner(false)
     foundAnimal()
-  } else if (currentRiddle) {
-    console.log('ERROR: Wrong code, showing wrong code screen')
-    // Close scanner and show wrong code screen
-    setShowScanner(false)
-    setWrongCodeScanned(decodedText)
-    setShowWrongCodeScreen(true)
-
-      // DEBUG: Log state changes
-  console.log('State updates called:')
-  console.log('- setShowScanner(false)')  
-  console.log('- setWrongCodeScanned:', decodedText)
-  console.log('- setShowWrongCodeScreen(true)')
-  }
+} else if (currentRiddle) {
+  console.log('ERROR: Wrong code, showing wrong code screen')
+  // Close scanner and show wrong code message
+  setShowScanner(false)
+  setWrongCodeMessage(`Oops! You scanned "${decodedText}" but need to find a different exhibit.`)
+}
 }, [currentRiddle, foundAnimal])
 
   const handleScanError = useCallback((error) => {
@@ -614,48 +608,24 @@ const handleScanSuccess = useCallback((decodedText) => {
     }
   }, [showScanner])
 
-{/* Wrong Code Screen - MOBILE OPTIMIZED */}
-{showWrongCodeScreen && (
-  <div className="fixed inset-0 bg-gradient-to-br from-red-400 via-pink-400 to-orange-400 flex items-center justify-center p-4" 
-       style={{ 
-         zIndex: 9999,
-         position: 'fixed',
-         top: 0,
-         left: 0,
-         right: 0,
-         bottom: 0,
-         width: '100vw',
-         height: '100vh'
-       }}>
-    <div className="max-w-md mx-auto text-center w-full">
-      <div className="bg-white rounded-3xl shadow-3xl p-8 mx-4">
-        
-        <div className="text-6xl mb-4">❌</div>
-        
-        <h1 className="text-3xl font-black text-red-700 mb-4">
-          Wrong Animal!
-        </h1>
-        
-        <p className="text-lg font-bold text-red-800 mb-4">
-          You scanned: {wrongCodeScanned}
-        </p>
-        <p className="text-lg font-bold text-red-800 mb-6">
-          Look for the {currentRiddle?.animal} exhibit instead!
-        </p>
-        
-        <button
-          onClick={() => {
-            setShowWrongCodeScreen(false)
-            setWrongCodeScanned('')
-          }}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl text-xl"
-        >
-          OK, I'll Try Again
-        </button>
+  // Wrong code screen - replaces entire interface
+  if (wrongCodeMessage) {
+    return (
+      <div className="min-h-screen bg-red-400 p-4 flex items-center justify-center">
+        <div className="bg-white rounded-3xl p-8 text-center max-w-md w-full">
+          <div className="text-6xl mb-4">❌</div>
+          <h1 className="text-3xl font-bold text-red-700 mb-4">Wrong Animal!</h1>
+          <p className="text-lg mb-6">{wrongCodeMessage}</p>
+          <button
+            onClick={() => setWrongCodeMessage('')}
+            className="w-full bg-blue-600 text-white font-bold py-4 px-6 rounded-xl text-xl"
+          >
+            OK, Try Again
+          </button>
+        </div>
       </div>
-    </div>
-  </div>
-)}
+    )
+  }
 
 
     // Show loading screen while riddles are being fetched
