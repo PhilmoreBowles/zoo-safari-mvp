@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../../lib/supabase'
 import { useRouter } from 'next/navigation'
+import QRCode from 'qrcode'
+
 
 export default function RiddlesAdmin() {
   const [riddles, setRiddles] = useState([])
@@ -169,6 +171,174 @@ const handleSubmit = async (e) => {
     router.push('/admin')
   }
 
+  // QR Code generation functions
+const generateQRCode = async (qrCodeValue, animalName) => {
+  try {
+    // Generate QR code as data URL
+    const qrDataURL = await QRCode.toDataURL(qrCodeValue, {
+      width: 200,
+      margin: 2,
+      color: {
+        dark: '#000000',
+        light: '#FFFFFF'
+      }
+    })
+    return qrDataURL
+  } catch (error) {
+    console.error('Error generating QR code:', error)
+    alert('Error generating QR code: ' + error.message)
+    return null
+  }
+}
+
+const downloadSingleQR = async (riddle) => {
+  const qrDataURL = await generateQRCode(riddle.qr_code, riddle.animal)
+  if (!qrDataURL) return
+
+  // Create download link
+  const link = document.createElement('a')
+  link.href = qrDataURL
+  link.download = `${riddle.animal}-QR.png`
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
+
+const downloadAllQRCodes = async () => {
+  if (riddles.length === 0) {
+    alert('No riddles available to generate QR codes')
+    return
+  }
+
+  // Create a new window with all QR codes for printing
+  const printWindow = window.open('', '_blank', 'width=800,height=600')
+  if (!printWindow) {
+    alert('Please allow popups to generate QR codes')
+    return
+  }
+
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>Zoo Safari QR Codes</title>
+        <style>
+          body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px;
+            background: white;
+          }
+          .qr-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 30px; 
+            margin-top: 20px;
+          }
+          .qr-item { 
+            text-align: center; 
+            border: 2px solid #333; 
+            padding: 20px; 
+            border-radius: 10px;
+            page-break-inside: avoid;
+          }
+          .animal-name { 
+            font-size: 24px; 
+            font-weight: bold; 
+            margin-bottom: 10px; 
+            color: #333;
+          }
+          .qr-code-text { 
+            font-size: 14px; 
+            color: #666; 
+            margin-bottom: 15px; 
+          }
+          .qr-image { 
+            margin: 0 auto 15px auto; 
+            display: block;
+          }
+          .instructions { 
+            font-size: 12px; 
+            color: #888; 
+            margin-top: 10px;
+            font-style: italic;
+          }
+          .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 20px;
+          }
+          @media print {
+            .qr-grid { grid-template-columns: repeat(2, 1fr); }
+            .qr-item { page-break-inside: avoid; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>Zoo Safari QR Codes</h1>
+          <p>Print and place these QR codes at the corresponding animal exhibits</p>
+          <p><strong>Generated:</strong> ${new Date().toLocaleDateString()}</p>
+        </div>
+        <div class="qr-grid" id="qr-container">
+          <p>Generating QR codes...</p>
+        </div>
+      </body>
+    </html>
+  `)
+
+  const container = printWindow.document.getElementById('qr-container')
+  container.innerHTML = ''
+
+  // Generate QR codes for each riddle
+  for (const riddle of riddles) {
+    try {
+      const qrDataURL = await generateQRCode(riddle.qr_code, riddle.animal)
+      if (qrDataURL) {
+        const qrItem = printWindow.document.createElement('div')
+        qrItem.className = 'qr-item'
+        qrItem.innerHTML = `
+          <div class="animal-name">${riddle.animal}</div>
+          <div class="qr-code-text">Scan Code: ${riddle.qr_code}</div>
+          <img src="${qrDataURL}" alt="QR Code for ${riddle.animal}" class="qr-image">
+          <div class="instructions">
+            Place this QR code at the ${riddle.animal} exhibit.<br>
+            Difficulty: ${riddle.difficulty} | Points: ${riddle.points}
+          </div>
+        `
+        container.appendChild(qrItem)
+      }
+    } catch (error) {
+      console.error(`Error generating QR for ${riddle.animal}:`, error)
+    }
+  }
+
+  // Add print button
+  const printButton = printWindow.document.createElement('div')
+  printButton.style.cssText = 'text-align: center; margin: 30px 0; page-break-before: avoid;'
+  printButton.innerHTML = `
+    <button onclick="window.print()" style="
+      background: #4CAF50; 
+      color: white; 
+      padding: 15px 30px; 
+      border: none; 
+      border-radius: 5px; 
+      font-size: 16px; 
+      cursor: pointer;
+      margin-right: 10px;
+    ">Print All QR Codes</button>
+    <button onclick="window.close()" style="
+      background: #f44336; 
+      color: white; 
+      padding: 15px 30px; 
+      border: none; 
+      border-radius: 5px; 
+      font-size: 16px; 
+      cursor: pointer;
+    ">Close</button>
+  `
+  printWindow.document.body.appendChild(printButton)
+}
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-100 p-4 flex items-center justify-center">
@@ -214,6 +384,14 @@ const handleSubmit = async (e) => {
 >
   Add New Riddle
 </button>
+
+<button
+  onClick={downloadAllQRCodes}
+  className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
+>
+  Generate All QR Codes
+</button>
+
               <button
                 onClick={handleLogout}
                 className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
@@ -434,6 +612,14 @@ const handleSubmit = async (e) => {
                         >
                           Edit
                         </button>
+
+                        <button
+  onClick={() => downloadSingleQR(riddle)}
+  className="bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded text-sm"
+>
+  QR
+</button>
+                        
                         <button
                           onClick={() => handleDelete(riddle.id)}
                           className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm"

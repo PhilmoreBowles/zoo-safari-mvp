@@ -529,15 +529,24 @@ const resetDemo = async () => {
     setScanError('')
   }
 
-  const handleScanSuccess = useCallback((decodedText) => {
+const handleScanSuccess = useCallback((decodedText) => {
+  console.log('=== QR SCAN DEBUG ===')
+  console.log('Scanned text:', decodedText)
+  console.log('Current riddle:', currentRiddle?.animal)
+  console.log('Expected QR code:', currentRiddle?.qr_code)
+  console.log('Match check:', decodedText === currentRiddle?.qr_code)
+  console.log('Scanner should close:', decodedText === currentRiddle?.qr_code)
+  
   setScanResult(decodedText)
   
   // Check if scanned code matches current riddle
-  if (currentRiddle && decodedText === currentRiddle.qrCode) {
+  if (currentRiddle && decodedText === currentRiddle.qr_code) {
+    console.log('SUCCESS: Codes match! Proceeding to celebration...')
     // Correct answer! 
     setShowScanner(false)
     foundAnimal()
   } else if (currentRiddle) {
+    console.log('ERROR: Codes do not match')
     // Wrong code scanned (only show error if currentRiddle exists)
     setScanError(`That's not the right animal! You scanned: ${decodedText}`)
     // Auto-clear error after 3 seconds
