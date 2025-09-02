@@ -614,29 +614,33 @@ const handleScanSuccess = useCallback((decodedText) => {
     }
   }, [showScanner])
 
-  {/* Wrong Code Screen */}
+{/* Wrong Code Screen - MOBILE OPTIMIZED */}
 {showWrongCodeScreen && (
-  <div className="fixed inset-0 bg-gradient-to-br from-red-400 via-pink-400 to-orange-400 z-50 flex items-center justify-center p-4">
-    <div className="max-w-md mx-auto text-center">
-      <div className="bg-white/98 backdrop-blur-xl rounded-3xl shadow-3xl p-12 border-2 border-white/60">
+  <div className="fixed inset-0 bg-gradient-to-br from-red-400 via-pink-400 to-orange-400 flex items-center justify-center p-4" 
+       style={{ 
+         zIndex: 9999,
+         position: 'fixed',
+         top: 0,
+         left: 0,
+         right: 0,
+         bottom: 0,
+         width: '100vw',
+         height: '100vh'
+       }}>
+    <div className="max-w-md mx-auto text-center w-full">
+      <div className="bg-white rounded-3xl shadow-3xl p-8 mx-4">
         
-        <div className="text-8xl mb-6">❌</div>
+        <div className="text-6xl mb-4">❌</div>
         
-        <h1 className="text-4xl font-black text-red-700 mb-4">
+        <h1 className="text-3xl font-black text-red-700 mb-4">
           Wrong Animal!
         </h1>
         
-        <div className="bg-red-100 border-2 border-red-300 rounded-2xl p-6 mb-6">
-          <p className="text-lg font-bold text-red-800 mb-3">
-            You scanned: <span className="text-xl">{wrongCodeScanned}</span>
-          </p>
-          <p className="text-lg font-bold text-red-800">
-            Look for the <span className="text-xl text-green-700">{currentRiddle?.animal}</span> exhibit instead!
-          </p>
-        </div>
-        
-        <p className="text-gray-700 font-semibold mb-8 text-lg leading-relaxed">
-          Find the correct animal exhibit and scan that QR code to continue your safari adventure.
+        <p className="text-lg font-bold text-red-800 mb-4">
+          You scanned: {wrongCodeScanned}
+        </p>
+        <p className="text-lg font-bold text-red-800 mb-6">
+          Look for the {currentRiddle?.animal} exhibit instead!
         </p>
         
         <button
@@ -644,7 +648,7 @@ const handleScanSuccess = useCallback((decodedText) => {
             setShowWrongCodeScreen(false)
             setWrongCodeScanned('')
           }}
-          className="w-full bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:from-blue-600 hover:via-blue-700 hover:to-blue-800 text-white font-black py-5 px-8 rounded-2xl text-2xl shadow-2xl transform transition-all duration-300 hover:scale-105"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl text-xl"
         >
           OK, I'll Try Again
         </button>
