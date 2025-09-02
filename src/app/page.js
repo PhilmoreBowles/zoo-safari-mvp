@@ -1,7 +1,7 @@
 'use client'
 import { supabase } from '../lib/supabase'
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Html5QrcodeScanner } from 'html5-qrcode'
+import { Html5QrcodeScanner, Html5QrcodeScanType } from 'html5-qrcode'
 
 /* eslint-disable react/no-unescaped-entities */
 
