@@ -443,7 +443,33 @@ const foundAnimal = useCallback(async () => {
 }, [currentPoints, currentRiddle, discoveredAnimals, transitionToScreen])
 
 
-
+// Family database functions
+const createFamily = async (familyName, difficulty) => {
+  try {
+    const { data, error } = await supabase
+      .from('families')
+      .insert([
+        {
+          family_name: familyName,
+          selected_difficulty: difficulty,
+          created_at: new Date().toISOString(),
+          last_active: new Date().toISOString()
+        }
+      ])
+      .select()
+      .single()
+    
+    if (error) {
+      console.error('Error creating family:', error)
+      return null
+    }
+    
+    return data
+  } catch (error) {
+    console.error('Error creating family:', error)
+    return null
+  }
+}
 
 const getFamilyById = async (familyId) => {
   try {
@@ -1078,25 +1104,7 @@ if (!gameStarted) {
             </button>
           )}
           
-          {isLastRiddle && (
-            <div className="text-center">
-              <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white rounded-3xl p-8 mb-6 shadow-2xl border-2 border-white/40">
-                <div className="text-4xl mb-4">🏆</div>
-                <h3 className="text-3xl font-black mb-3">SAFARI COMPLETE!</h3>
-                <p className="text-xl font-semibold">You're an amazing animal explorer!</p>
-              </div>
-              <button
-                onClick={() => window.location.reload()}
-                className="bg-gradient-to-r from-green-500 via-emerald-600 to-teal-600 hover:from-green-600 hover:via-emerald-700 hover:to-teal-700 text-white font-black py-5 px-8 rounded-2xl text-xl shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl border-2 border-white/40"
-              >
-                <div className="flex items-center justify-center space-x-3">
-                  <span className="text-xl">🎯</span>
-                  <span>Start New Adventure</span>
-                  <span className="text-xl">🌟</span>
-                </div>
-              </button>
-            </div>
-          )}
+
 
           {/* Add this notification link */}
 <div className="text-center mt-6">
