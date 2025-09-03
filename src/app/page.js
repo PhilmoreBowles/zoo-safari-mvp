@@ -316,7 +316,7 @@ const getRiddleCounts = () => {
 
 const riddleCounts = getRiddleCounts()
   const currentRiddle = filteredRiddles[currentRiddleIndex]
- 
+ const isLastRiddle = currentRiddleIndex >= filteredRiddles.length - 1 
 
 
 
@@ -388,12 +388,12 @@ const foundAnimal = useCallback(async () => {
 
   try {
     // Check if this riddle was already completed by this family
-    const { data: existingProgress } = await supabase
-      .from('family_progress')
-      .select('id')
-      .eq('family_id', familyId)
-      .eq('riddle_id', currentRiddle.id)
-      .single()
+const { data: existingProgress, error: checkError } = await supabase
+  .from('family_progress')
+  .select('id')
+  .eq('family_id', familyId)
+  .eq('riddle_id', currentRiddle.id)
+  .maybeSingle()
 
     if (!existingProgress) {
       // Only insert if not already completed
