@@ -154,10 +154,6 @@ useEffect(() => {
   }
 }, [riddles, selectedDifficulty])
 
-// DEBUG: Monitor wrong code screen state
-useEffect(() => {
- 
-}, [showWrongCodeScreen])
 
 // Style QR scanner buttons
 useEffect(() => {
@@ -233,7 +229,6 @@ useEffect(() => {
 }, []);
 
   // Filter riddles by difficulty
-// No longer need this function - we'll use shuffledRiddles state instead
 
 // Add shuffle function
 const shuffleArray = (array) => {
@@ -302,7 +297,6 @@ const startAdventure = async () => {
       
       transitionToScreen(() => {
         setGameStarted(true)
-        // Remove this localStorage call:
         // localStorage.setItem('zooSafariCurrentRiddle', '0')
       })
       
@@ -395,26 +389,6 @@ const foundAnimal = useCallback(async () => {
 
 
 
-const getFamilyById = async (familyId) => {
-  try {
-    const { data, error } = await supabase
-      .from('families')
-      .select('*')
-      .eq('id', familyId)
-      .single()
-    
-    if (error) {
-      
-      return null
-    }
-    
-    return data
-  } catch (error) {
-    
-    return null
-  }
-}
-
 const resetDemo = async () => {
   const familyId = localStorage.getItem('zooSafariFamilyId')
   
@@ -436,10 +410,6 @@ const resetDemo = async () => {
   localStorage.removeItem('zooSafariFamilyId')
   localStorage.removeItem('zooSafariFamilyName')
   localStorage.removeItem('zooSafariDifficulty')
-  // Remove these - no longer needed:
-  // localStorage.removeItem('zooSafariPoints')
-  // localStorage.removeItem('zooSafariAnimals')
-  // localStorage.removeItem('zooSafariCurrentRiddle')
   
   // Reset all state
   setFamilyName('')
