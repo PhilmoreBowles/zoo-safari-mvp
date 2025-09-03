@@ -316,7 +316,7 @@ const getRiddleCounts = () => {
 
 const riddleCounts = getRiddleCounts()
   const currentRiddle = filteredRiddles[currentRiddleIndex]
-  const isLastRiddle = currentRiddleIndex >= filteredRiddles.length - 1
+
 
 
 
