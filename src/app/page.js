@@ -267,13 +267,16 @@ useEffect(() => {
     }
       #qr-reader *:not(button):not(video):not(canvas) {
   font-weight: bold !important;
+  font-size: 18px !important;
   margin: 20px 4px !important;
+  
 }
 
 #qr-reader span,
 #qr-reader div:not([style*="position"]),
 #qr-reader p {
   font-weight: bold !important;
+  font-size: 18px !important;
   margin: 20px 4px !important;
 }
   `;
