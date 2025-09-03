@@ -5,7 +5,56 @@ import { Html5QrcodeScanner } from 'html5-qrcode'
 
 /* eslint-disable react/no-unescaped-entities */
 
-
+// Custom CSS for html5-qrcode scanner buttons
+const scannerButtonStyles = `
+  #qr-reader button {
+    background-color: #3B82F6 !important;
+    color: white !important;
+    padding: 12px 24px !important;
+    border-radius: 8px !important;
+    border: none !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    margin: 8px 4px !important;
+    transition: all 0.2s ease !important;
+    display: inline-block !important;
+    text-decoration: none !important;
+    min-width: 140px !important;
+    text-align: center !important;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3) !important;
+  }
+  
+  #qr-reader button:hover {
+    background-color: #2563EB !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4) !important;
+  }
+  
+  #qr-reader a {
+    background-color: #10B981 !important;
+    color: white !important;
+    padding: 12px 24px !important;
+    border-radius: 8px !important;
+    border: none !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    margin: 8px 4px !important;
+    transition: all 0.2s ease !important;
+    display: inline-block !important;
+    text-decoration: none !important;
+    min-width: 140px !important;
+    text-align: center !important;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3) !important;
+  }
+  
+  #qr-reader a:hover {
+    background-color: #059669 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 8px rgba(16, 185, 129, 0.4) !important;
+  }
+`
 const RIDDLE_LIMIT = 9  // Keep this as is
 
 
@@ -79,7 +128,7 @@ useEffect(() => {
             .eq('family_id', savedFamilyId)
           
           if (!progressError && progressData) {
-            
+            console.log('Loaded family progress:', progressData)
             
             // Calculate total points from database
             const totalPoints = progressData.reduce((sum, record) => sum + record.points_earned, 0)
@@ -92,7 +141,7 @@ useEffect(() => {
             }))
             setDiscoveredAnimals(discoveredAnimals)
             
-           
+            console.log('Restored session - Points:', totalPoints, 'Animals:', discoveredAnimals.length)
           }
           
           // Restore family session
@@ -129,7 +178,13 @@ useEffect(() => {
     if (error) {
       console.error('Error fetching riddles:', error)
     } else {
-
+      console.log('Riddles loaded:', data.length)
+      console.log('Riddle difficulties:', data.map(r => `${r.animal}: "${r.difficulty}"`))
+      console.log('Riddle difficulties:', data.map(r => `${r.animal}: "${r.difficulty}"`))
+console.log('Selected difficulty:', selectedDifficulty)
+console.log('Filtered riddles count:', shuffledRiddles.length)
+console.log('Current riddle index:', currentRiddleIndex)
+console.log('Current riddle should be:', shuffledRiddles[currentRiddleIndex]?.animal)
       setRiddles(data)
     }
   }
@@ -150,13 +205,13 @@ useEffect(() => {
     // Shuffle once and store in state
     const shuffled = shuffleArray([...filtered])
     setShuffledRiddles(shuffled)
-    
+    console.log('Shuffled riddles for', selectedDifficulty, ':', shuffled.map(r => r.animal))
   }
 }, [riddles, selectedDifficulty])
 
 // DEBUG: Monitor wrong code screen state
 useEffect(() => {
- 
+  console.log('showWrongCodeScreen state changed to:', showWrongCodeScreen)
 }, [showWrongCodeScreen])
 
 // Style QR scanner buttons
@@ -292,7 +347,7 @@ const startAdventure = async () => {
         return
       }
 
-      
+      console.log('Family created successfully:', data)
       
       // Only store family ID and name for session management
       const familyId = data.id
@@ -361,10 +416,10 @@ const foundAnimal = useCallback(async () => {
         console.error('Error saving progress:', progressError)
         return // Don't continue if database save fails
       } else {
-        
+        console.log('Progress saved to database:', progressData)
       }
     } else {
-      
+      console.log('Riddle already completed, skipping database insert')
     }
 
     // Update local state (immediate UI updates only)
@@ -379,10 +434,10 @@ const foundAnimal = useCallback(async () => {
 
     transitionToScreen(() => {
       if (newAnimals.length >= filteredRiddles.length) {
-       
+        console.log('Triggering showLimitReached - completed all available riddles')
         setShowLimitReached(true)
       } else {
-       
+        console.log('Triggering showSuccess')
         setShowSuccess(true)
       }
     })
@@ -453,7 +508,7 @@ const resetDemo = async () => {
         .from('families')
         .delete()
         .eq('id', familyId)
-     
+      console.log('Family deleted from database')
     } catch (err) {
       console.error('Error cleaning up family record:', err)
     }
@@ -498,15 +553,18 @@ const resetDemo = async () => {
   }
 
 const handleScanSuccess = useCallback((decodedText) => {
-
+  console.log('=== QR SCAN DEBUG ===')
+  console.log('Scanned text:', decodedText)
+  console.log('Current riddle:', currentRiddle?.animal)
+  console.log('Expected QR code:', currentRiddle?.qr_code)
   
   // Check if scanned code matches current riddle
   if (currentRiddle && decodedText === currentRiddle.qr_code) {
-   
+    console.log('SUCCESS: Codes match! Proceeding to celebration...')
     setShowScanner(false)
     foundAnimal()
 } else if (currentRiddle) {
- 
+  console.log('ERROR: Wrong code, showing wrong code screen')
   // Close scanner and show wrong code message
   setShowScanner(false)
   setWrongCodeMessage(`Oops! You scanned "${decodedText}" but need to find a different exhibit.`)
@@ -519,7 +577,7 @@ const handleScanSuccess = useCallback((decodedText) => {
       // These are normal "no QR code detected" messages, ignore them
       return
     }
-    
+    console.log('Scan error:', error)
     if (error.includes('NotAllowedError') || error.includes('Permission denied')) {
       setScanError('Camera permission denied. Please allow camera access and try again.')
     } else {
@@ -557,7 +615,7 @@ useEffect(() => {
   useEffect(() => {
     if (!showScanner && html5QrcodeScannerRef.current) {
       html5QrcodeScannerRef.current.clear().catch(error => {
-       
+        console.log('Error clearing scanner:', error)
       })
       html5QrcodeScannerRef.current = null
       setScannerInitialized(false)
