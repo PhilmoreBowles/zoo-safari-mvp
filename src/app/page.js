@@ -265,6 +265,15 @@ useEffect(() => {
       transform: translateY(-1px) !important;
       box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4) !important;
     }
+      #qr-reader *:not(button):not(video):not(canvas) {
+  font-weight: bold !important;
+}
+
+#qr-reader span,
+#qr-reader div:not([style*="position"]),
+#qr-reader p {
+  font-weight: bold !important;
+}
   `;
   document.head.appendChild(styleSheet);
 
