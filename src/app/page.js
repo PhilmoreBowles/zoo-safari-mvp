@@ -622,24 +622,90 @@ useEffect(() => {
     }
   }, [showScanner])
 
-  // Wrong code screen - replaces entire interface
-  if (wrongCodeMessage) {
-    return (
-      <div className="min-h-screen bg-red-400 p-4 flex items-center justify-center">
-        <div className="bg-white rounded-3xl p-8 text-center max-w-md w-full">
-          <div className="text-6xl mb-4">❌</div>
-          <h1 className="text-3xl font-bold text-red-700 mb-4">Wrong Animal!</h1>
-          <p className="text-lg mb-6">{wrongCodeMessage}</p>
-          <button
-            onClick={() => setWrongCodeMessage('')}
-            className="w-full bg-blue-600 text-white font-bold py-4 px-6 rounded-xl text-xl"
-          >
-            OK, Try Again
-          </button>
+// Wrong code screen - replaces entire interface
+if (wrongCodeMessage) {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-red-400 via-pink-500 to-orange-600 p-4 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 opacity-15">
+        <div className="absolute top-16 left-8 text-4xl animate-pulse">⚠️</div>
+        <div className="absolute top-32 right-12 text-3xl animate-bounce">❌</div>
+        <div className="absolute bottom-40 left-12 text-5xl animate-pulse animation-delay-1000">🔍</div>
+        <div className="absolute bottom-24 right-8 text-4xl animate-bounce animation-delay-500">❓</div>
+        <div className="absolute top-1/2 left-1/4 text-3xl animate-pulse animation-delay-2000">⭐</div>
+      </div>
+
+      <div className="max-w-md mx-auto pt-16 relative z-10 flex items-center justify-center min-h-screen">
+        <div className="relative w-full">
+          {/* Multi-layered Shadow Effects */}
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-600 to-red-700 rounded-3xl transform rotate-2 opacity-20"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-pink-500 to-red-600 rounded-3xl transform -rotate-1 opacity-25"></div>
+          
+          {/* Main Card */}
+          <div className="relative bg-white/95 backdrop-blur-xl rounded-3xl shadow-3xl p-10 border-2 border-white/60">
+            
+            {/* Decorative Corner Element */}
+            <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-br from-red-500 to-pink-600 rounded-full p-4 shadow-xl">
+              <span className="text-3xl">❌</span>
+            </div>
+
+            <div className="text-center pt-8">
+              {/* Large Icon */}
+              <div className="mb-6">
+                <div className="text-8xl mb-4 animate-pulse">❌</div>
+                <div className="flex justify-center space-x-2 text-3xl">
+                  <span className="animate-pulse">⚠️</span>
+                  <span className="animate-pulse animation-delay-300">❓</span>
+                  <span className="animate-pulse animation-delay-600">🔍</span>
+                </div>
+              </div>
+              
+              {/* Title */}
+              <div className="bg-gradient-to-br from-red-100/90 via-pink-100/90 to-orange-100/90 rounded-3xl p-6 mb-6 border-2 border-red-200 shadow-inner">
+                <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-pink-600 mb-4">
+                  Wrong Animal!
+                </h1>
+                <p className="text-lg font-semibold text-red-700 leading-relaxed">
+                  {wrongCodeMessage}
+                </p>
+              </div>
+
+              {/* Helpful Message */}
+              <div className="bg-gradient-to-br from-blue-100/90 via-indigo-100/90 to-purple-100/90 rounded-2xl p-6 mb-8 border-2 border-blue-200 shadow-inner">
+                <div className="flex items-center justify-center space-x-3 mb-3">
+                  <span className="text-2xl">💡</span>
+                  <h3 className="text-xl font-black text-blue-800">Keep Exploring!</h3>
+                </div>
+                <p className="text-blue-700 font-semibold text-sm">
+                  Look around for the correct animal exhibit and try scanning again.
+                </p>
+              </div>
+
+              {/* Enhanced Button */}
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl transform scale-105 opacity-30"></div>
+                <button
+                  onClick={() => setWrongCodeMessage('')}
+                  className="relative w-full bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 text-white font-black py-5 px-8 rounded-2xl text-xl shadow-2xl transform transition-all duration-300 hover:scale-102 hover:shadow-3xl border-2 border-white/40"
+                >
+                  <div className="flex items-center justify-center space-x-3">
+                    <div className="bg-white/20 rounded-full p-2">
+                      <span className="text-2xl">🎯</span>
+                    </div>
+                    <span>Try Again!</span>
+                    <div className="bg-white/20 rounded-full p-2">
+                      <span className="text-2xl">🔍</span>
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    )
-  }
+    </div>
+  )
+}
 
 
     // Show loading screen while riddles are being fetched
