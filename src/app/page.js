@@ -443,33 +443,7 @@ const foundAnimal = useCallback(async () => {
 }, [currentPoints, currentRiddle, discoveredAnimals, transitionToScreen])
 
 
-// Family database functions
-const createFamily = async (familyName, difficulty) => {
-  try {
-    const { data, error } = await supabase
-      .from('families')
-      .insert([
-        {
-          family_name: familyName,
-          selected_difficulty: difficulty,
-          created_at: new Date().toISOString(),
-          last_active: new Date().toISOString()
-        }
-      ])
-      .select()
-      .single()
-    
-    if (error) {
-      console.error('Error creating family:', error)
-      return null
-    }
-    
-    return data
-  } catch (error) {
-    console.error('Error creating family:', error)
-    return null
-  }
-}
+
 
 const getFamilyById = async (familyId) => {
   try {
