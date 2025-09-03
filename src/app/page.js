@@ -105,7 +105,7 @@ useEffect(() => {
           localStorage.removeItem('zooSafariFamilyName')
         }
       } catch (err) {
-        
+        console.error('Error loading family session:', err)
       }
     }
     
@@ -127,7 +127,7 @@ useEffect(() => {
       .order('id')
     
     if (error) {
-      
+      console.error('Error fetching riddles:', error)
     } else {
 
       setRiddles(data)
@@ -154,6 +154,10 @@ useEffect(() => {
   }
 }, [riddles, selectedDifficulty])
 
+// DEBUG: Monitor wrong code screen state
+useEffect(() => {
+ 
+}, [showWrongCodeScreen])
 
 // Style QR scanner buttons
 useEffect(() => {
@@ -229,6 +233,7 @@ useEffect(() => {
 }, []);
 
   // Filter riddles by difficulty
+// No longer need this function - we'll use shuffledRiddles state instead
 
 // Add shuffle function
 const shuffleArray = (array) => {
@@ -282,7 +287,7 @@ const startAdventure = async () => {
         .single()
 
       if (error) {
-        
+        console.error('Error creating family:', error)
         alert('Error starting adventure. Please try again.')
         return
       }
@@ -297,11 +302,12 @@ const startAdventure = async () => {
       
       transitionToScreen(() => {
         setGameStarted(true)
+        // Remove this localStorage call:
         // localStorage.setItem('zooSafariCurrentRiddle', '0')
       })
       
     } catch (err) {
-      
+      console.error('Database error:', err)
       alert('Error connecting to database. Please try again.')
     }
   }
@@ -327,7 +333,7 @@ const foundAnimal = useCallback(async () => {
  
   const familyId = localStorage.getItem('zooSafariFamilyId')
   if (!familyId) {
-    
+    console.error('No family ID found')
     return
   }
 
@@ -352,7 +358,7 @@ const foundAnimal = useCallback(async () => {
         .select()
 
       if (progressError) {
-        
+        console.error('Error saving progress:', progressError)
         return // Don't continue if database save fails
       } else {
         
@@ -382,7 +388,7 @@ const foundAnimal = useCallback(async () => {
     })
 
   } catch (err) {
-    
+    console.error('Database error in foundAnimal:', err)
     alert('Unable to save progress. Please check your connection.')
   }
 }, [currentPoints, currentRiddle, discoveredAnimals, transitionToScreen])
@@ -402,7 +408,7 @@ const resetDemo = async () => {
         .eq('id', familyId)
      
     } catch (err) {
-      
+      console.error('Error cleaning up family record:', err)
     }
   }
   
@@ -410,6 +416,10 @@ const resetDemo = async () => {
   localStorage.removeItem('zooSafariFamilyId')
   localStorage.removeItem('zooSafariFamilyName')
   localStorage.removeItem('zooSafariDifficulty')
+  // Remove these - no longer needed:
+  // localStorage.removeItem('zooSafariPoints')
+  // localStorage.removeItem('zooSafariAnimals')
+  // localStorage.removeItem('zooSafariCurrentRiddle')
   
   // Reset all state
   setFamilyName('')
