@@ -105,7 +105,7 @@ useEffect(() => {
           localStorage.removeItem('zooSafariFamilyName')
         }
       } catch (err) {
-        console.error('Error loading family session:', err)
+        
       }
     }
     
@@ -127,7 +127,7 @@ useEffect(() => {
       .order('id')
     
     if (error) {
-      console.error('Error fetching riddles:', error)
+      
     } else {
 
       setRiddles(data)
@@ -287,7 +287,7 @@ const startAdventure = async () => {
         .single()
 
       if (error) {
-        console.error('Error creating family:', error)
+        
         alert('Error starting adventure. Please try again.')
         return
       }
@@ -307,7 +307,7 @@ const startAdventure = async () => {
       })
       
     } catch (err) {
-      console.error('Database error:', err)
+      
       alert('Error connecting to database. Please try again.')
     }
   }
@@ -333,7 +333,7 @@ const foundAnimal = useCallback(async () => {
  
   const familyId = localStorage.getItem('zooSafariFamilyId')
   if (!familyId) {
-    console.error('No family ID found')
+    
     return
   }
 
@@ -358,7 +358,7 @@ const foundAnimal = useCallback(async () => {
         .select()
 
       if (progressError) {
-        console.error('Error saving progress:', progressError)
+        
         return // Don't continue if database save fails
       } else {
         
@@ -388,39 +388,12 @@ const foundAnimal = useCallback(async () => {
     })
 
   } catch (err) {
-    console.error('Database error in foundAnimal:', err)
+    
     alert('Unable to save progress. Please check your connection.')
   }
 }, [currentPoints, currentRiddle, discoveredAnimals, transitionToScreen])
 
 
-// Family database functions
-const createFamily = async (familyName, difficulty) => {
-  try {
-    const { data, error } = await supabase
-      .from('families')
-      .insert([
-        {
-          family_name: familyName,
-          selected_difficulty: difficulty,
-          created_at: new Date().toISOString(),
-          last_active: new Date().toISOString()
-        }
-      ])
-      .select()
-      .single()
-    
-    if (error) {
-      console.error('Error creating family:', error)
-      return null
-    }
-    
-    return data
-  } catch (error) {
-    console.error('Error creating family:', error)
-    return null
-  }
-}
 
 const getFamilyById = async (familyId) => {
   try {
@@ -431,13 +404,13 @@ const getFamilyById = async (familyId) => {
       .single()
     
     if (error) {
-      console.error('Error fetching family:', error)
+      
       return null
     }
     
     return data
   } catch (error) {
-    console.error('Error fetching family:', error)
+    
     return null
   }
 }
@@ -455,7 +428,7 @@ const resetDemo = async () => {
         .eq('id', familyId)
      
     } catch (err) {
-      console.error('Error cleaning up family record:', err)
+      
     }
   }
   
