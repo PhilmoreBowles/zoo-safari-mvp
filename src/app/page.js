@@ -316,7 +316,7 @@ const getRiddleCounts = () => {
 
 const riddleCounts = getRiddleCounts()
   const currentRiddle = filteredRiddles[currentRiddleIndex]
-
+ 
 
 
 
@@ -736,7 +736,7 @@ if (!gameStarted) {
       </div>
       
       <div className="max-w-md mx-auto pt-10 relative z-10">
-        <div className="text-center mb-1">
+        <div className="text-center mb-8">
           <div className="mb-6 animate-bounce">
             <div className="text-7xl mb-2">🦁</div>
             <div className="flex justify-center space-x-2 text-2xl">
@@ -746,7 +746,7 @@ if (!gameStarted) {
             </div>
           </div>
                     <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-white/30">
-          <h1 className="text-6xl font-black text-gray-700 mb-6 drop-shadow-lg leading-tight">
+          <h1 className="text-6xl font-black text-gray-700 mb-0 drop-shadow-lg leading-tight">
             Zoo Safari
           </h1>
 
