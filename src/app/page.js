@@ -154,7 +154,7 @@ useEffect(() => {
           localStorage.removeItem('zooSafariFamilyName')
         }
       } catch (err) {
-        console.error('Error loading family session:', err)
+      
       }
     }
     
@@ -176,7 +176,7 @@ useEffect(() => {
       .order('id')
     
     if (error) {
-      console.error('Error fetching riddles:', error)
+     
     } else {
 
       setRiddles(data)
@@ -336,7 +336,7 @@ const startAdventure = async () => {
         .single()
 
       if (error) {
-        console.error('Error creating family:', error)
+      
         alert('Error starting adventure. Please try again.')
         return
       }
@@ -437,7 +437,7 @@ const foundAnimal = useCallback(async () => {
     })
 
   } catch (err) {
-    console.error('Database error in foundAnimal:', err)
+    
     alert('Unable to save progress. Please check your connection.')
   }
 }, [currentPoints, currentRiddle, discoveredAnimals, transitionToScreen])
