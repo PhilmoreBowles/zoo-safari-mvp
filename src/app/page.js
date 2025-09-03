@@ -221,7 +221,7 @@ useEffect(() => {
     #qr-reader button {
       background: linear-gradient(135deg, #3B82F6, #1E40AF) !important;
       color: white !important;
-      padding: 12px 24px !important;
+      padding: 20px 24px !important;
       border-radius: 12px !important;
       border: none !important;
       font-weight: 600 !important;
@@ -245,13 +245,13 @@ useEffect(() => {
     #qr-reader a {
       background: linear-gradient(135deg, #10B981, #059669) !important;
       color: white !important;
-      padding: 20px 24px !important;
+      padding: 12px 24px !important;
       border-radius: 12px !important;
       border: none !important;
       font-weight: 900 !important;
       font-size: 18px !important;
       cursor: pointer !important;
-      margin: 8px 4px 20px 4px !important;
+      margin: 8px 4px !important;
       transition: all 0.2s ease !important;
       display: inline-block !important;
       text-decoration: none !important;
