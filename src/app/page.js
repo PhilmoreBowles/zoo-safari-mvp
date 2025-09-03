@@ -736,7 +736,7 @@ if (!gameStarted) {
       </div>
       
       <div className="max-w-md mx-auto pt-10 relative z-10">
-        <div className="text-center mb-8">
+        <div className="text-center mb-1">
           <div className="mb-6 animate-bounce">
             <div className="text-7xl mb-2">🦁</div>
             <div className="flex justify-center space-x-2 text-2xl">
