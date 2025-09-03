@@ -227,7 +227,7 @@ useEffect(() => {
       font-weight: 600 !important;
       font-size: 14px !important;
       cursor: pointer !important;
-      margin: 20px 4px !important;
+      margin: 12px 4px !important;
       transition: all 0.2s ease !important;
       display: inline-block !important;
       text-decoration: none !important;
