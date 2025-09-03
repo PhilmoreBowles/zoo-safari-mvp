@@ -268,7 +268,7 @@ useEffect(() => {
       #qr-reader *:not(button):not(video):not(canvas) {
   font-weight: bold !important;
   font-size: 18px !important;
-  margin: 20px 4px !important;
+  padding: 20px 24px !important;
   
 }
 
@@ -277,7 +277,7 @@ useEffect(() => {
 #qr-reader p {
   font-weight: bold !important;
   font-size: 18px !important;
-  margin: 20px 4px !important;
+  padding: 20px 24px !important;
 }
   `;
   document.head.appendChild(styleSheet);
