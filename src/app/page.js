@@ -1,7 +1,7 @@
 'use client'
 import { supabase } from '../lib/supabase'
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Html5QrcodeScanner } from 'html5-qrcode'
+import { QrScanner } from '@yudiel/react-qr-scanner'
 
 /* eslint-disable react/no-unescaped-entities */
 
@@ -72,7 +72,6 @@ export default function Home() {
   const [showScanner, setShowScanner] = useState(false)
   const [scanResult, setScanResult] = useState('')
   const [scanError, setScanError] = useState('')
-  const [scannerInitialized, setScannerInitialized] = useState(false)
   const [showLimitReached, setShowLimitReached] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [transitionDirection, setTransitionDirection] = useState('forward')
@@ -83,10 +82,6 @@ export default function Home() {
   const [wrongCodeScanned, setWrongCodeScanned] = useState('')
   const [wrongCodeMessage, setWrongCodeMessage] = useState('')
 
-
-  // QR Scanner ref
-  const scannerRef = useRef(null)
-  const html5QrcodeScannerRef = useRef(null)
 
   const transitionToScreen = (callback, direction = 'forward') => {
   setIsTransitioning(true)
@@ -208,78 +203,6 @@ useEffect(() => {
   
 }, [showWrongCodeScreen])
 
-// Style QR scanner buttons
-useEffect(() => {
-  const styleSheet = document.createElement('style');
-  styleSheet.textContent = `
-    #qr-reader button {
-      background: linear-gradient(135deg, #3B82F6, #1E40AF) !important;
-      color: white !important;
-      padding: 12px 24px !important;
-      border-radius: 12px !important;
-      border: none !important;
-      font-weight: 600 !important;
-      font-size: 14px !important;
-      cursor: pointer !important;
-      margin: 12px 4px !important;
-      transition: all 0.2s ease !important;
-      display: inline-block !important;
-      text-decoration: none !important;
-      min-width: 140px !important;
-      text-align: center !important;
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
-    }
-    
-    #qr-reader button:hover {
-      background: linear-gradient(135deg, #1E40AF, #1E3A8A) !important;
-      transform: translateY(-1px) !important;
-      box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4) !important;
-    }
-    
-    #qr-reader a {
-      background: linear-gradient(135deg, #10B981, #059669) !important;
-      color: white !important;
-      padding: 20px 24px !important;
-      border-radius: 12px !important;
-      border: none !important;
-      font-weight: 900 !important;
-      font-size: 18px !important;
-      cursor: pointer !important;
-      margin: 20px 4px !important;
-      transition: all 0.2s ease !important;
-      display: inline-block !important;
-      text-decoration: none !important;
-      min-width: 140px !important;
-      text-align: center !important;
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
-    }
-    
-    #qr-reader a:hover {
-      background: linear-gradient(135deg, #059669, #047857) !important;
-      transform: translateY(-1px) !important;
-      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4) !important;
-    }
-      #qr-reader *:not(button):not(video):not(canvas) {
-  font-weight: bold !important;
-  font-size: 18px !important;
-  margin: 16px 4px !important;
-  
-}
-
-#qr-reader span,
-#qr-reader div:not([style*="position"]),
-#qr-reader p {
-  font-weight: bold !important;
-  font-size: 18px !important;
-  margin: 16px 4px !important;
-}
-  `;
-  document.head.appendChild(styleSheet);
-
-  return () => {
-    document.head.removeChild(styleSheet);
-  };
-}, []);
 
   // Filter riddles by difficulty
 // No longer need this function - we'll use shuffledRiddles state instead
@@ -546,72 +469,25 @@ const resetDemo = async () => {
     setScanError('')
   }
 
-const handleScanSuccess = useCallback((decodedText) => {
-
+const handleScanSuccess = useCallback((result) => {
+  const decodedText = result?.text || result
   
-  // Check if scanned code matches current riddle
   if (currentRiddle && decodedText === currentRiddle.qr_code) {
-   
     setShowScanner(false)
     foundAnimal()
-} else if (currentRiddle) {
-
-  // Close scanner and show wrong code message
-  setShowScanner(false)
-  setWrongCodeMessage(`Oops! You scanned "${decodedText}" but need to find a different exhibit.`)
-}
+  } else if (currentRiddle) {
+    setShowScanner(false)
+    setWrongCodeMessage(`Oops! You scanned "${decodedText}" but need to find a different exhibit.`)
+  }
 }, [currentRiddle, foundAnimal])
 
-  const handleScanError = useCallback((error) => {
-    // Only log actual errors, not routine scanning messages
-    if (error.includes('QR code parse error') || error.includes('No MultiFormat Readers')) {
-      // These are normal "no QR code detected" messages, ignore them
-      return
-    }
-   
-    if (error.includes('NotAllowedError') || error.includes('Permission denied')) {
-      setScanError('Camera permission denied. Please allow camera access and try again.')
-    } else {
-      setScanError('Having trouble scanning? Make sure the QR code is clear and well-lit.')
-    }
-  }, [])
-
-// Initialize QR scanner when modal opens
-useEffect(() => {
-  if (showScanner && !scannerInitialized && scannerRef.current) {
-    const config = {
-      fps: 10,
-      qrbox: { width: 250, height: 250 },
-      aspectRatio: 1.0,
-      rememberLastUsedCamera: false
-    }
-
-    const html5QrcodeScanner = new Html5QrcodeScanner(
-      "qr-reader",
-      config,
-      false
-    )
-
-    html5QrcodeScanner.render(
-      (decodedText) => handleScanSuccess(decodedText),
-      (error) => handleScanError(error)
-    )
-
-    html5QrcodeScannerRef.current = html5QrcodeScanner
-    setScannerInitialized(true)
+const handleScanError = useCallback((error) => {
+  if (error?.message?.includes('Permission denied')) {
+    setScanError('Camera permission denied. Please allow camera access and try again.')
   }
-}, [showScanner, scannerInitialized, handleScanSuccess, handleScanError])
+}, [])
 
-  // Cleanup scanner when modal closes
-  useEffect(() => {
-    if (!showScanner && html5QrcodeScannerRef.current) {
-      html5QrcodeScannerRef.current.clear().catch(error => {
-      
-      })
-      html5QrcodeScannerRef.current = null
-      setScannerInitialized(false)
-    }
-  }, [showScanner])
+
 
 // Wrong code screen - replaces entire interface
 if (wrongCodeMessage) {
@@ -1540,16 +1416,25 @@ if (!gameStarted) {
 
 
                 {/* Scanner Component Container */}
-                <div className="relative mb-8">
-                  <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl transform rotate-1 opacity-30"></div>                  <div className="relative bg-gradient-to-br from-gray-100 to-white rounded-2xl p-4 border-2 border-gray-200 shadow-inner">
-                    <div 
-                      id="qr-reader" 
-                      ref={scannerRef}
-                      className="w-full rounded-xl overflow-hidden"
-                      style={{ minHeight: '250px' }}
-                    ></div>
-                  </div>
-                </div>
+<div className="relative bg-gradient-to-br from-gray-100 to-white rounded-2xl p-4 border-2 border-gray-200 shadow-inner">
+  <QrScanner
+    onDecode={handleScanSuccess}
+    onError={handleScanError}
+    constraints={{
+      facingMode: 'environment'
+    }}
+    containerStyle={{
+      width: '100%',
+      height: '250px'
+    }}
+    videoStyle={{
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+      borderRadius: '12px'
+    }}
+  />
+</div>
 
                 {/* Success feedback */}
                 {scanResult && !scanError && (
