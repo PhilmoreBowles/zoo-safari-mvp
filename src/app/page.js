@@ -1,7 +1,7 @@
 'use client'
 import { supabase } from '../lib/supabase'
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { QrScanner } from '@yudiel/react-qr-scanner'
+import { Scanner } from '@yudiel/react-qr-scanner'
 
 /* eslint-disable react/no-unescaped-entities */
 
@@ -470,14 +470,16 @@ const resetDemo = async () => {
   }
 
 const handleScanSuccess = useCallback((result) => {
-  const decodedText = result?.text || result
-  
-  if (currentRiddle && decodedText === currentRiddle.qr_code) {
-    setShowScanner(false)
-    foundAnimal()
-  } else if (currentRiddle) {
-    setShowScanner(false)
-    setWrongCodeMessage(`Oops! You scanned "${decodedText}" but need to find a different exhibit.`)
+  if (result && result.length > 0) {
+    const decodedText = result[0].rawValue
+    
+    if (currentRiddle && decodedText === currentRiddle.qr_code) {
+      setShowScanner(false)
+      foundAnimal()
+    } else if (currentRiddle) {
+      setShowScanner(false)
+      setWrongCodeMessage(`Oops! You scanned "${decodedText}" but need to find a different exhibit.`)
+    }
   }
 }, [currentRiddle, foundAnimal])
 
@@ -1417,7 +1419,7 @@ if (!gameStarted) {
 
                 {/* Scanner Component Container */}
 <div className="relative bg-gradient-to-br from-gray-100 to-white rounded-2xl p-4 border-2 border-gray-200 shadow-inner">
-  <QrScanner
+  <Scanner
     onDecode={handleScanSuccess}
     onError={handleScanError}
     constraints={{
