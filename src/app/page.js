@@ -973,7 +973,7 @@ if (!gameStarted) {
             </div>
           </div>
 
-          {!isLastRiddle && (
+
             <button
               onClick={nextRiddle}
               className="w-full bg-gradient-to-r from-blue-500 via-purple-600 to-pink-600 hover:from-blue-600 hover:via-purple-700 hover:to-pink-700 text-white font-black py-5 px-8 rounded-2xl text-2xl shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl border-2 border-white/40"
@@ -984,7 +984,7 @@ if (!gameStarted) {
                 <span className="text-2xl">🎯</span>
               </div>
             </button>
-          )}
+          
           
 
 
