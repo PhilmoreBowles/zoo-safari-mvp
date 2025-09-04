@@ -89,6 +89,7 @@ export default function Home() {
   
   setTimeout(() => {
     callback()
+    window.scrollTo(0, 0) 
     setTimeout(() => {
       setIsTransitioning(false)
     }, 150)
@@ -435,10 +436,7 @@ const resetDemo = async () => {
   localStorage.removeItem('zooSafariFamilyId')
   localStorage.removeItem('zooSafariFamilyName')
   localStorage.removeItem('zooSafariDifficulty')
-  // Remove these - no longer needed:
-  // localStorage.removeItem('zooSafariPoints')
-  // localStorage.removeItem('zooSafariAnimals')
-  // localStorage.removeItem('zooSafariCurrentRiddle')
+
   
   // Reset all state
   setFamilyName('')
@@ -453,6 +451,7 @@ const resetDemo = async () => {
   setShowScanner(false)
   setScanResult('')
   setScanError('')
+  window.scrollTo(0, 0) 
 }
 
 
@@ -479,10 +478,11 @@ const handleScanSuccess = useCallback((result) => {
     if (currentRiddle && decodedText === currentRiddle.qr_code) {
       setShowScanner(false)
       foundAnimal()
-    } else if (currentRiddle) {
-      setShowScanner(false)
-      setWrongCodeMessage(`Oops! You scanned "${decodedText}" but need to find a different exhibit.`)
-    }
+} else if (currentRiddle) {
+  setShowScanner(false)
+  setWrongCodeMessage(`Oops! You scanned "${decodedText}" but you need to find a different exhibit.`)
+  window.scrollTo(0, 0) // Add this line
+}
   }
 }, [currentRiddle, foundAnimal])
 
