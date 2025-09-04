@@ -470,8 +470,11 @@ const resetDemo = async () => {
   }
 
 const handleScanSuccess = useCallback((result) => {
+  console.log('Scanner result:', result) // Temporary debug
+  
   if (result && result.length > 0) {
     const decodedText = result[0].rawValue
+    console.log('Decoded text:', decodedText) // Temporary debug
     
     if (currentRiddle && decodedText === currentRiddle.qr_code) {
       setShowScanner(false)
@@ -484,6 +487,7 @@ const handleScanSuccess = useCallback((result) => {
 }, [currentRiddle, foundAnimal])
 
 const handleScanError = useCallback((error) => {
+  console.log('Scanner error:', error) // Temporary debug
   if (error?.message?.includes('Permission denied')) {
     setScanError('Camera permission denied. Please allow camera access and try again.')
   }
@@ -1420,22 +1424,22 @@ if (!gameStarted) {
                 {/* Scanner Component Container */}
 <div className="relative bg-gradient-to-br from-gray-100 to-white rounded-2xl p-4 border-2 border-gray-200 shadow-inner">
   <Scanner
-    onDecode={handleScanSuccess}
-    onError={handleScanError}
-    constraints={{
-      facingMode: 'environment'
-    }}
-    containerStyle={{
-      width: '100%',
-      height: '250px'
-    }}
-    videoStyle={{
-      width: '100%',
-      height: '100%',
-      objectFit: 'cover',
-      borderRadius: '12px'
-    }}
-  />
+  onScan={handleScanSuccess}
+  onError={handleScanError}
+  allowMultiple={false}
+  scanDelay={500}
+  constraints={{
+    video: { 
+      facingMode: 'environment',
+      width: { ideal: 1280 },
+      height: { ideal: 720 }
+    }
+  }}
+  styles={{
+    container: { width: '100%', height: '250px' },
+    video: { width: '100%', height: '100%', objectFit: 'cover' }
+  }}
+/>
 </div>
 
                 {/* Success feedback */}
