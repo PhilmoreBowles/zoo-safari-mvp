@@ -239,7 +239,7 @@ const getRiddleCounts = () => {
 
 const riddleCounts = getRiddleCounts()
   const currentRiddle = filteredRiddles[currentRiddleIndex]
- const isLastRiddle = currentRiddleIndex >= filteredRiddles.length - 1 
+
 
 
 
@@ -984,8 +984,6 @@ if (!gameStarted) {
                 <span className="text-2xl">🎯</span>
               </div>
             </button>
-          
-          
 
 
           {/* Add this notification link */}
