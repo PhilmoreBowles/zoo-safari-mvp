@@ -464,6 +464,10 @@ const resetDemo = async () => {
 const handleScanSuccess = useCallback((result) => {
   
   if (result && result.length > 0) {
+
+    const audio = new Audio('/sounds/scan.mp3')
+    audio.play().catch(e => console.log('Audio play failed:', e))
+
     const decodedText = result[0].rawValue
     
     if (currentRiddle && decodedText === currentRiddle.qr_code) {
@@ -1414,6 +1418,7 @@ if (!gameStarted) {
   <Scanner
   onScan={handleScanSuccess}
   onError={handleScanError}
+  audio={false} 
   allowMultiple={false}
   scanDelay={500}
   constraints={{
