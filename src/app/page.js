@@ -515,7 +515,7 @@ if (wrongCodeMessage) {
           <div className="absolute inset-0 bg-gradient-to-br from-pink-500 to-red-600 rounded-3xl transform -rotate-1 opacity-25"></div>
           
           {/* Main Card */}
-          <div className="relative bg-white/95 backdrop-blur-xl rounded-3xl shadow-3xl p-10 border-2 border-white/60">
+          <div className="relative bg-white/95 backdrop-blur-xl rounded-3xl shadow-3xl p-6 sm:p-8 lg:p-10 border-2 border-white/60">
             
             {/* Decorative Corner Element */}
             <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-br from-red-500 to-pink-600 rounded-full p-4 shadow-xl">
@@ -547,7 +547,7 @@ if (wrongCodeMessage) {
               <div className="bg-gradient-to-br from-blue-100/90 via-indigo-100/90 to-purple-100/90 rounded-2xl p-6 mb-8 border-2 border-blue-200 shadow-inner">
                 <div className="flex items-center justify-center space-x-3 mb-3">
                   <span className="text-2xl">💡</span>
-                  <h3 className="text-xl font-black text-blue-800">Keep Exploring!</h3>
+                  <h3 className="text-lg sm:text-xl font-black text-blue-800">Keep Exploring!</h3>
                 </div>
                 <p className="text-blue-700 font-semibold text-sm">
                   Look around for the correct animal exhibit and try scanning again.
@@ -559,7 +559,7 @@ if (wrongCodeMessage) {
                 <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl transform scale-105 opacity-30"></div>
                 <button
                   onClick={() => setWrongCodeMessage('')}
-                  className="relative w-full bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 text-white font-black py-5 px-8 rounded-2xl text-xl shadow-2xl transform transition-all duration-300 hover:scale-102 hover:shadow-3xl border-2 border-white/40"
+                  className="relative w-full bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 text-white font-black py-3 sm:py-5 px-4 sm:px-8 rounded-2xl text-xl shadow-2xl transform transition-all duration-300 hover:scale-102 hover:shadow-3xl border-2 border-white/40"
                 >
                   <div className="flex items-center justify-center space-x-3">
                     <div className="bg-white/20 rounded-full p-2">
@@ -644,7 +644,7 @@ if (!gameStarted) {
           <div className="absolute inset-0 bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl transform -rotate-1 opacity-30"></div>
           
           {/* Main Card */}
-          <div className="relative bg-white/98 backdrop-blur-xl rounded-3xl shadow-2xl p-10 border-2 border-white/60 hover:shadow-3xl transition-all duration-500 hover:transform hover:scale-102">
+          <div className="relative bg-white/98 backdrop-blur-xl rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-10 border-2 border-white/60 hover:shadow-3xl transition-all duration-500 hover:transform hover:scale-102">
             {/* Decorative Elements */}
             <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full p-3 shadow-lg">
                 <span className="text-2xl">👥</span>
@@ -669,7 +669,7 @@ if (!gameStarted) {
                   value={familyName}
                   onChange={(e) => setFamilyName(e.target.value)}
                   placeholder="Enter team name"
-                  className="relative w-full p-5 border-3 border-gray-200 rounded-2xl text-xl font-semibold placeholder-gray-400 focus:border-emerald-500 focus:ring-6 focus:ring-emerald-200 transition-all duration-400 bg-gradient-to-br from-gray-50 to-white shadow-inner hover:shadow-lg"
+                  className="relative w-full p-3 sm:p-5 border-3 border-gray-200 rounded-2xl text-xl font-semibold placeholder-gray-400 focus:border-emerald-500 focus:ring-6 focus:ring-emerald-200 transition-all duration-400 bg-gradient-to-br from-gray-50 to-white shadow-inner hover:shadow-lg"
                 />
               </div>
             </div>
@@ -682,7 +682,7 @@ if (!gameStarted) {
           <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl transform -rotate-1 opacity-25"></div>
           
           {/* Main Adventure Selection Card */}
-          <div className="relative bg-white/98 backdrop-blur-xl rounded-3xl shadow-2xl p-10 border-2 border-white/60 hover:shadow-3xl transition-all duration-500">
+          <div className="relative bg-white/98 backdrop-blur-xl rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-10 border-2 border-white/60 hover:shadow-3xl transition-all duration-500">
             {/* Decorative Corner Elements */}
             <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-br from-amber-300 to-orange-500 rounded-full p-4 shadow-xl">
               <span className="text-3xl">🎯</span>
@@ -706,7 +706,7 @@ if (!gameStarted) {
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl transform scale-105 opacity-0 group-hover:opacity-30 transition-all duration-300"></div>
                 <button
                   onClick={() => setSelectedDifficulty('all')}
-                  className={`relative w-full p-6 rounded-2xl text-left transition-all duration-400 transform hover:scale-102 hover:shadow-2xl ${
+                  className={`relative w-full sm:p-6 rounded-2xl text-left transition-all duration-400 transform hover:scale-102 hover:shadow-2xl ${
                     selectedDifficulty === 'all' 
                       ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-2xl border-3 border-blue-300 scale-102' 
                       : 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 hover:border-blue-300 shadow-lg hover:shadow-xl'
@@ -743,7 +743,7 @@ if (!gameStarted) {
                 <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-2xl transform scale-105 opacity-0 group-hover:opacity-30 transition-all duration-300"></div>
                 <button
                   onClick={() => setSelectedDifficulty('easy')}
-                  className={`relative w-full p-6 rounded-2xl text-left transition-all duration-400 transform hover:scale-102 hover:shadow-2xl ${
+                  className={`relative w-full sm:p-6 rounded-2xl text-left transition-all duration-400 transform hover:scale-102 hover:shadow-2xl ${
                     selectedDifficulty === 'easy' 
                       ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white shadow-2xl border-3 border-green-300 scale-102' 
                       : 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 hover:border-green-300 shadow-lg hover:shadow-xl'
@@ -780,7 +780,7 @@ if (!gameStarted) {
                 <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl transform scale-105 opacity-0 group-hover:opacity-30 transition-all duration-300"></div>
                 <button
                   onClick={() => setSelectedDifficulty('medium')}
-                  className={`relative w-full p-6 rounded-2xl text-left transition-all duration-400 transform hover:scale-102 hover:shadow-2xl ${
+                  className={`relative w-full sm:p-6 rounded-2xl text-left transition-all duration-400 transform hover:scale-102 hover:shadow-2xl ${
                     selectedDifficulty === 'medium' 
                       ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white shadow-2xl border-3 border-yellow-300 scale-102' 
                       : 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 hover:border-yellow-300 shadow-lg hover:shadow-xl'
@@ -817,7 +817,7 @@ if (!gameStarted) {
                 <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-600 rounded-2xl transform scale-105 opacity-0 group-hover:opacity-30 transition-all duration-300"></div>
                 <button
                   onClick={() => setSelectedDifficulty('hard')}
-                  className={`relative w-full p-6 rounded-2xl text-left transition-all duration-400 transform hover:scale-102 hover:shadow-2xl ${
+                  className={`relative w-full sm:p-6 rounded-2xl text-left transition-all duration-400 transform hover:scale-102 hover:shadow-2xl ${
                     selectedDifficulty === 'hard' 
                       ? 'bg-gradient-to-r from-red-500 to-pink-600 text-white shadow-2xl border-3 border-red-300 scale-102' 
                       : 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 hover:border-red-300 shadow-lg hover:shadow-xl'
@@ -856,7 +856,7 @@ if (!gameStarted) {
         <button
           onClick={startAdventure}
           disabled={!familyName.trim()}
-          className="w-full bg-gradient-to-r from-sky-400 via-blue-400 to-indigo-500 hover:from-emerald-700 hover:via-green-700 hover:to-teal-700 disabled:from-gray-400 disabled:via-gray-400 disabled:to-gray-500 text-white font-bold py-5 px-8 rounded-2xl text-xl shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl disabled:hover:scale-100 disabled:hover:shadow-2xl border-2 border-white/30"
+          className="w-full bg-gradient-to-r from-sky-400 via-blue-400 to-indigo-500 hover:from-emerald-700 hover:via-green-700 hover:to-teal-700 disabled:from-gray-400 disabled:via-gray-400 disabled:to-gray-500 text-white font-bold py-3 sm:py-5 px-4 sm:px-8rounded-2xl text-xl shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl disabled:hover:scale-100 disabled:hover:shadow-2xl border-2 border-white/30"
         >
           <div className="flex items-center justify-center space-x-3">
             <span>🚀</span>
@@ -976,7 +976,7 @@ if (!gameStarted) {
 
             <button
               onClick={nextRiddle}
-              className="w-full bg-gradient-to-r from-blue-500 via-purple-600 to-pink-600 hover:from-blue-600 hover:via-purple-700 hover:to-pink-700 text-white font-black py-5 px-8 rounded-2xl text-2xl shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl border-2 border-white/40"
+              className="w-full bg-gradient-to-r from-blue-500 via-purple-600 to-pink-600 hover:from-blue-600 hover:via-purple-700 hover:to-pink-700 text-white font-black py-3 sm:py-5 px-4 sm:px-8 rounded-2xl text-2xl shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl border-2 border-white/40"
             >
               <div className="flex items-center justify-center space-x-3">
                 <span className="text-2xl">🚀</span>
@@ -1086,7 +1086,7 @@ if (!gameStarted) {
               href="https://zoosafari.app" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="block w-full bg-gradient-to-r from-yellow-500 via-amber-600 to-orange-600 hover:from-pink-700 hover:via-rose-700 hover:to-red-700 text-white font-black py-5 px-8 rounded-2xl text-xl text-center shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-white/40"
+              className="block w-full bg-gradient-to-r from-yellow-500 via-amber-600 to-orange-600 hover:from-pink-700 hover:via-rose-700 hover:to-red-700 text-white font-black py-3 sm:py-5 px-4 sm:px-8 rounded-2xl text-xl text-center shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-white/40"
             >
               <div className="flex items-center justify-center space-x-3">
                 <span className="text-2xl">🚀</span>
@@ -1136,7 +1136,7 @@ if (!gameStarted) {
           <div className="absolute inset-0 bg-gradient-to-br from-amber-500 to-orange-600 rounded-3xl transform -rotate-1 opacity-25"></div>
           
           {/* Main Header Card */}
-          <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-10 border-10 border-white/60 hover:shadow-3xl transition-all duration-500">
+          <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-10p-10 border-10 border-white/60 hover:shadow-3xl transition-all duration-500">
             
             {/* Decorative Corner Elements */}
             <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full p-4 shadow-xl">
@@ -1179,7 +1179,7 @@ if (!gameStarted) {
               {/* Points Display */}
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 to-red-500 rounded-3xl transform scale-110 opacity-20"></div>
-                <div className="relative bg-gradient-to-br from-yellow-400 to-red-500 rounded-3xl p-6 shadow-xl border-2 border-white/50">
+                <div className="relative bg-gradient-to-br from-yellow-400 to-red-500 rounded-3xl p-4 sm:p-6 shadow-xl border-2 border-white/50">
                   <div className="text-center">
                     <div className="bg-white/20 rounded-full p-2 mb-2 inline-block">
                       <span className="text-3xl">🏆</span>
@@ -1202,7 +1202,7 @@ if (!gameStarted) {
           <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-600 rounded-3xl transform rotate-1 opacity-10"></div>
           
           {/* Main Riddle Card */}
-          <div className="relative bg-white/98 backdrop-blur-xl rounded-3xl shadow-2xl p-10 border-2 border-white/70 hover:shadow-4xl transition-all duration-500">
+          <div className="relative bg-white/98 backdrop-blur-xl rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-10 border-2 border-white/70 hover:shadow-4xl transition-all duration-500">
             
             {/* Decorative Corner Elements */}
             <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full p-4 shadow-xl">
@@ -1294,13 +1294,13 @@ if (!gameStarted) {
                 <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-600 rounded-2xl transform scale-105 opacity-20"></div>
                 <button
                   onClick={() => setShowHint(true)}
-                  className="relative w-full bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 hover:from-yellow-500 hover:via-orange-500 hover:to-red-500 text-white font-bold py-5 px-8 rounded-2xl shadow-xl transform transition-all duration-300 hover:scale-102 hover:shadow-2xl border-2 border-white/40"
+                  className="relative w-full bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 hover:from-yellow-500 hover:via-orange-500 hover:to-red-500 text-white font-bold py-3 sm:py-5 px-4 sm:px-8 rounded-2xl shadow-xl transform transition-all duration-300 hover:scale-102 hover:shadow-2xl border-2 border-white/40"
                 >
                   <div className="flex items-center justify-center space-x-4">
                     <div className="bg-white/20 rounded-full p-2">
                       <span className="text-2xl">💡</span>
                     </div>
-                    <span className="text-xl font-black">Need a Hint?</span>
+                    <span className="text-lg sm:text-xl font-black">Need a Hint?</span>
                     <div className="bg-white/20 rounded-full p-2">
                       <span className="text-2xl">🤔</span>
                     </div>
@@ -1434,7 +1434,7 @@ if (!gameStarted) {
     }
   }}
   styles={{
-    container: { width: '100%', height: '250px' },
+    container: { width: '100%', minHeight: '15rem' },
     video: { width: '100%', height: '100%', objectFit: 'cover' }
   }}
 />
@@ -1535,7 +1535,7 @@ if (!gameStarted) {
         <div className="relative">
           
           {/* Main Collection Card */}
-          <div className="relative bg-white/20 backdrop-blur-xl rounded-3xl shadow-2xl p-10 border-2 border-white/60 hover:shadow-3xl transition-all duration-500">
+          <div className="relative bg-white/20 backdrop-blur-xl rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-10 border-2 border-white/60 hover:shadow-3xl transition-all duration-500">
             
             {/* Decorative Corner Elements */}
         <div className="text-center mb-0 pt-8">
@@ -1605,7 +1605,7 @@ if (!gameStarted) {
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4">
                   {discoveredAnimals.map((animal, index) => (
                     <div key={index} className="relative group">
                       <div className="absolute inset-0 bg-gradient-to-br from-yellow-200 to-orange-300 rounded-2xl transform rotate-3 opacity-0 group-hover:opacity-40 transition-all duration-300"></div>
