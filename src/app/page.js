@@ -275,12 +275,10 @@ const startAdventure = async () => {
       
       transitionToScreen(() => {
         setGameStarted(true)
-        // Remove this localStorage call:
-        // localStorage.setItem('zooSafariCurrentRiddle', '0')
+
       })
       
     } catch (err) {
-      console.error('Database error:', err)
       alert('Error connecting to database. Please try again.')
     }
   }
@@ -306,7 +304,6 @@ const foundAnimal = useCallback(async () => {
  
   const familyId = localStorage.getItem('zooSafariFamilyId')
   if (!familyId) {
-    console.error('No family ID found')
     return
   }
 
@@ -384,13 +381,11 @@ const createFamily = async (familyName, difficulty) => {
       .single()
     
     if (error) {
-      console.error('Error creating family:', error)
       return null
     }
     
     return data
   } catch (error) {
-    console.error('Error creating family:', error)
     return null
   }
 }
@@ -404,13 +399,11 @@ const getFamilyById = async (familyId) => {
       .single()
     
     if (error) {
-      console.error('Error fetching family:', error)
       return null
     }
     
     return data
   } catch (error) {
-    console.error('Error fetching family:', error)
     return null
   }
 }
@@ -469,11 +462,9 @@ const resetDemo = async () => {
   }
 
 const handleScanSuccess = useCallback((result) => {
-  console.log('Scanner result:', result) // Temporary debug
   
   if (result && result.length > 0) {
     const decodedText = result[0].rawValue
-    console.log('Decoded text:', decodedText) // Temporary debug
     
     if (currentRiddle && decodedText === currentRiddle.qr_code) {
       setShowScanner(false)
@@ -487,7 +478,6 @@ const handleScanSuccess = useCallback((result) => {
 }, [currentRiddle, foundAnimal])
 
 const handleScanError = useCallback((error) => {
-  console.log('Scanner error:', error) // Temporary debug
   if (error?.message?.includes('Permission denied')) {
     setScanError('Camera permission denied. Please allow camera access and try again.')
   }

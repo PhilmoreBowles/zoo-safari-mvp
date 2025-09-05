@@ -42,12 +42,10 @@ const [formData, setFormData] = useState({
         .order('id')
       
       if (error) {
-        console.error('Error loading riddles:', error)
       } else {
         setRiddles(data)
       }
     } catch (err) {
-      console.error('Error:', err)
     } finally {
       setLoading(false)
     }
@@ -97,7 +95,7 @@ const handleSubmit = async (e) => {
         // NOTE: Do NOT include 'id' or 'uuid' - let database generate both
       }
       
-      console.log('Clean insert data:', insertData)
+  
       
       const { data, error } = await supabase
         .from('riddles')
@@ -105,7 +103,6 @@ const handleSubmit = async (e) => {
         .select('*')
       
       if (error) throw error
-      console.log('New riddle created:', data)
       alert('Riddle added successfully!')
     }
     
@@ -125,7 +122,6 @@ const handleSubmit = async (e) => {
     loadRiddles()
     
   } catch (error) {
-    console.error('Error saving riddle:', error)
     alert('Error saving riddle: ' + error.message)
   }
 }
@@ -159,7 +155,6 @@ const handleSubmit = async (e) => {
         alert('Riddle deleted successfully!')
         loadRiddles()
       } catch (error) {
-        console.error('Error deleting riddle:', error)
         alert('Error deleting riddle: ' + error.message)
       }
     }
@@ -185,7 +180,6 @@ const generateQRCode = async (qrCodeValue, animalName) => {
     })
     return qrDataURL
   } catch (error) {
-    console.error('Error generating QR code:', error)
     alert('Error generating QR code: ' + error.message)
     return null
   }
@@ -308,7 +302,6 @@ const downloadAllQRCodes = async () => {
         container.appendChild(qrItem)
       }
     } catch (error) {
-      console.error(`Error generating QR for ${riddle.animal}:`, error)
     }
   }
 
