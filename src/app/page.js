@@ -696,7 +696,7 @@ if (!gameStarted) {
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl transform scale-105 opacity-0 group-hover:opacity-30 transition-all duration-300"></div>
                 <button
                   onClick={() => setSelectedDifficulty('all')}
-                  className={`relative w-full sm:p-6 rounded-2xl text-left transition-all duration-400 transform hover:scale-102 hover:shadow-2xl ${
+                  className={`relative w-full p-6 rounded-2xl text-left transition-all duration-400 transform hover:scale-102 hover:shadow-2xl ${
                     selectedDifficulty === 'all' 
                       ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-2xl border-3 border-blue-300 scale-102' 
                       : 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 hover:border-blue-300 shadow-lg hover:shadow-xl'
@@ -733,7 +733,7 @@ if (!gameStarted) {
                 <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-2xl transform scale-105 opacity-0 group-hover:opacity-30 transition-all duration-300"></div>
                 <button
                   onClick={() => setSelectedDifficulty('easy')}
-                  className={`relative w-full sm:p-6 rounded-2xl text-left transition-all duration-400 transform hover:scale-102 hover:shadow-2xl ${
+                  className={`relative w-full p-6 rounded-2xl text-left transition-all duration-400 transform hover:scale-102 hover:shadow-2xl ${
                     selectedDifficulty === 'easy' 
                       ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white shadow-2xl border-3 border-green-300 scale-102' 
                       : 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 hover:border-green-300 shadow-lg hover:shadow-xl'
@@ -770,7 +770,7 @@ if (!gameStarted) {
                 <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl transform scale-105 opacity-0 group-hover:opacity-30 transition-all duration-300"></div>
                 <button
                   onClick={() => setSelectedDifficulty('medium')}
-                  className={`relative w-full sm:p-6 rounded-2xl text-left transition-all duration-400 transform hover:scale-102 hover:shadow-2xl ${
+                  className={`relative w-full p-6 rounded-2xl text-left transition-all duration-400 transform hover:scale-102 hover:shadow-2xl ${
                     selectedDifficulty === 'medium' 
                       ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white shadow-2xl border-3 border-yellow-300 scale-102' 
                       : 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 hover:border-yellow-300 shadow-lg hover:shadow-xl'
@@ -807,7 +807,7 @@ if (!gameStarted) {
                 <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-600 rounded-2xl transform scale-105 opacity-0 group-hover:opacity-30 transition-all duration-300"></div>
                 <button
                   onClick={() => setSelectedDifficulty('hard')}
-                  className={`relative w-full sm:p-6 rounded-2xl text-left transition-all duration-400 transform hover:scale-102 hover:shadow-2xl ${
+                  className={`relative w-full p-6 rounded-2xl text-left transition-all duration-400 transform hover:scale-102 hover:shadow-2xl ${
                     selectedDifficulty === 'hard' 
                       ? 'bg-gradient-to-r from-red-500 to-pink-600 text-white shadow-2xl border-3 border-red-300 scale-102' 
                       : 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 hover:border-red-300 shadow-lg hover:shadow-xl'
