@@ -153,9 +153,8 @@ useEffect(() => {
       
       }
     }
+
     
-    // Load current riddle index from localStorage (temporary)
-    if (savedRiddleIndex) setCurrentRiddleIndex(parseInt(savedRiddleIndex))
   }
   
   loadFamilySession()
@@ -200,12 +199,31 @@ useEffect(() => {
   }
 }, [riddles, selectedDifficulty])
 
+// Wrong Code sound effect
+useEffect(() => {
+  if (wrongCodeMessage) {
+    const audio = new Audio('/sounds/wrong-code.mp3')
+    audio.play().catch(e => console.log('Audio play failed:', e))
+  }
+}, [wrongCodeMessage])
+
+
+// Success screen sound effect
 useEffect(() => {
   if (showSuccess) {
     const audio = new Audio('/sounds/celebration.mp3')
     audio.play().catch(e => console.log('Audio play failed:', e))
   }
 }, [showSuccess])
+
+// Demo Complete sound effect
+useEffect(() => {
+  if (showLimitReached) {
+    const audio = new Audio('/sounds/demo-complete.mp3')
+    audio.volume = 0.4 // Slightly louder for celebration
+    audio.play().catch(e => console.log('Audio play failed:', e))
+  }
+}, [showLimitReached])
 
 
 // Wrong code screen state
@@ -297,7 +315,8 @@ const nextRiddle = () => {
     if (currentRiddleIndex < filteredRiddles.length - 1) {
       const newIndex = currentRiddleIndex + 1
       setCurrentRiddleIndex(newIndex)
-      localStorage.setItem('zooSafariCurrentRiddle', newIndex.toString())
+      // Remove this localStorage line - it's causing conflicts
+      // localStorage.setItem('zooSafariCurrentRiddle', newIndex.toString())
     }
   })
 }
