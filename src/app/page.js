@@ -208,7 +208,7 @@ useEffect(() => {
 }, [showSuccess])
 
 
-// DEBUG: Monitor wrong code screen state
+// Wrong code screen state
 useEffect(() => {
   
 }, [showWrongCodeScreen])
