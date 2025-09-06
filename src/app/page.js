@@ -182,6 +182,7 @@ useEffect(() => {
   fetchRiddles()
 }, [])
 
+
 // Shuffle riddles when riddles load or difficulty changes
 useEffect(() => {
   if (riddles && riddles.length > 0) {
@@ -199,14 +200,19 @@ useEffect(() => {
   }
 }, [riddles, selectedDifficulty])
 
+useEffect(() => {
+  if (showSuccess) {
+    const audio = new Audio('/sounds/celebration.mp3')
+    audio.play().catch(e => console.log('Audio play failed:', e))
+  }
+}, [showSuccess])
+
+
 // DEBUG: Monitor wrong code screen state
 useEffect(() => {
   
 }, [showWrongCodeScreen])
 
-
-  // Filter riddles by difficulty
-// No longer need this function - we'll use shuffledRiddles state instead
 
 // Add shuffle function
 const shuffleArray = (array) => {
