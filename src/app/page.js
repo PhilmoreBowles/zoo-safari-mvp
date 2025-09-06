@@ -1418,7 +1418,7 @@ if (!gameStarted) {
   <Scanner
   onScan={handleScanSuccess}
   onError={handleScanError}
-  audio={false} 
+  sound={false}
   allowMultiple={false}
   scanDelay={500}
   constraints={{
