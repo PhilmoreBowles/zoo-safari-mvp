@@ -22,6 +22,7 @@ const [formData, setFormData] = useState({
   fact: '',
   qr_code: '',
   icon: '',
+  zone: '',
   active: true
 })
 
@@ -62,16 +63,18 @@ const handleSubmit = async (e) => {
   try {
     if (editingRiddle) {
       // Update existing riddle using integer ID
-      const updateData = {
-        animal: formData.animal,
-        riddle: formData.riddle,
-        hint: formData.hint,
-        difficulty: formData.difficulty,
-        points: formData.points,
-        fact: formData.fact,
-        qr_code: formData.qr_code,
-        active: formData.active
-      }
+      const [formData, setFormData] = useState({
+  animal: '',
+  riddle: '',
+  hint: '',
+  difficulty: 'easy',
+  points: 50,
+  fact: '',
+  qr_code: '',
+  icon: '',
+  zone: '', 
+  active: true
+})
       
       const { error } = await supabase
         .from('riddles')
@@ -81,19 +84,21 @@ const handleSubmit = async (e) => {
       if (error) throw error
       alert('Riddle updated successfully!')
       
-    } else {
-      // Add new riddle - let database auto-generate both id and uuid
-      const insertData = {
-        animal: formData.animal,
-        riddle: formData.riddle,
-        hint: formData.hint,
-        difficulty: formData.difficulty,
-        points: formData.points,
-        fact: formData.fact,
-        qr_code: formData.qr_code,
-        active: formData.active
-        // NOTE: Do NOT include 'id' or 'uuid' - let database generate both
-      }
+} else {
+  // Add new riddle - let database auto-generate both id and uuid
+  const insertData = {
+    animal: formData.animal,
+    riddle: formData.riddle,
+    hint: formData.hint,
+    difficulty: formData.difficulty,
+    points: formData.points,
+    fact: formData.fact,
+    qr_code: formData.qr_code,
+    icon: formData.icon, 
+    zone: formData.zone,
+    active: formData.active
+    // NOTE: Do NOT include 'id' or 'uuid' - let database generate both
+  }
       
   
       
@@ -107,7 +112,7 @@ const handleSubmit = async (e) => {
     }
     
     // Reset form and refresh riddles
-    setFormData({
+      setFormData({
       animal: '',
       riddle: '',
       hint: '',
@@ -115,8 +120,10 @@ const handleSubmit = async (e) => {
       points: 50,
       fact: '',
       qr_code: '',
+      icon: '',
+      zone: '',  
       active: true
-    })
+})
     setShowAddForm(false)
     setEditingRiddle(null)
     loadRiddles()
@@ -127,20 +134,22 @@ const handleSubmit = async (e) => {
 }
 
   // Handle edit
-  const handleEdit = (riddle) => {
-    setFormData({
-      animal: riddle.animal,
-      riddle: riddle.riddle,
-      hint: riddle.hint,
-      difficulty: riddle.difficulty,
-      points: riddle.points,
-      fact: riddle.fact,
-      qr_code: riddle.qr_code || '',
-      active: riddle.active
-    })
-    setEditingRiddle(riddle)
-    setShowAddForm(true)
-  }
+const handleEdit = (riddle) => {
+  setFormData({
+    animal: riddle.animal,
+    riddle: riddle.riddle,
+    hint: riddle.hint,
+    difficulty: riddle.difficulty,
+    points: riddle.points,
+    fact: riddle.fact,
+    qr_code: riddle.qr_code || '',
+    icon: riddle.icon || '',
+    zone: riddle.zone || '',
+    active: riddle.active
+  })
+  setEditingRiddle(riddle)
+  setShowAddForm(true)
+}
 
   // Handle delete
   const handleDelete = async (riddleId) => {
@@ -368,6 +377,8 @@ const downloadAllQRCodes = async () => {
       points: 50,
       fact: '',
       qr_code: '',
+      icon: '',     
+      zone: '',      
       active: true
     })
     setEditingRiddle(null)
@@ -432,6 +443,28 @@ const downloadAllQRCodes = async () => {
                   </select>
                 </div>
               </div>
+
+              {/* ADD ZONE FIELD HERE */}
+<div>
+  <label className="block text-sm font-bold text-gray-700 mb-2">
+    Zoo Zone/Area
+  </label>
+  <select
+    value={formData.zone}
+    onChange={(e) => setFormData({...formData, zone: e.target.value})}
+    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+  >
+    <option value="">Select Zone</option>
+    <option value="Africa">Africa</option>
+    <option value="Harmony Hill">Harmony Hill</option>
+    <option value="Tropical Discovery">Tropical Discovery</option>
+    <option value="The Edge">Arctic Zone</option>
+    <option value="Asia">Reptile House</option>
+    <option value="Down Under">Birds of Prey</option>
+    <option value="Primate Panorama">Primate Panoramak</option>
+  </select>
+  <p className="text-xs text-gray-500 mt-1">Groups riddles by physical zoo location</p>
+</div>
 
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">
@@ -548,6 +581,8 @@ const downloadAllQRCodes = async () => {
                       points: 50,
                       fact: '',
                       qr_code: '',
+                      icon: '', 
+                      zone: '', 
                       active: true
                     })
                   }}
@@ -583,6 +618,11 @@ const downloadAllQRCodes = async () => {
                             {riddle.difficulty}
                           </span>
                           <span className="text-sm text-gray-600">{riddle.points} points</span>
+                          {riddle.zone && (
+    <span className="px-2 py-1 rounded text-sm bg-blue-100 text-blue-800">
+      📍 {riddle.zone}
+    </span>
+  )}
                           <span className={`px-2 py-1 rounded text-sm ${
                             riddle.active ? 'bg-green-100 text-green-800' : 'bg-gray-200 text-gray-800'
                           }`}>

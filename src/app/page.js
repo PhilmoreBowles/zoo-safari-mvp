@@ -192,12 +192,47 @@ useEffect(() => {
       filtered = riddles.filter(riddle => riddle.difficulty === selectedDifficulty)
     }
     
-    // Shuffle once and store in state
-    const shuffled = shuffleArray([...filtered])
-    setShuffledRiddles(shuffled)
+    // Define fixed zone order for linear zoo path
+    const zoneOrder = [
+      'Africa',
+      'Harmony Hill',
+      'Tropical Discovery',
+      'The Edge',
+      'Asia',
+      'Down Under',
+      'Primate Panorama',
+    ]
     
+    // Group riddles by zone
+    const riddlesByZone = filtered.reduce((acc, riddle) => {
+      const zone = riddle.zone || 'unassigned'
+      if (!acc[zone]) acc[zone] = []
+      acc[zone].push(riddle)
+      return acc
+    }, {})
+    
+    // Shuffle riddles within each zone
+    Object.keys(riddlesByZone).forEach(zone => {
+      riddlesByZone[zone] = shuffleArray(riddlesByZone[zone])
+    })
+    
+    // Use fixed zone order, filtering out zones with no riddles
+    const orderedZones = zoneOrder.filter(zone => riddlesByZone[zone])
+    
+    // Add any unassigned or unlisted zones at the end
+    Object.keys(riddlesByZone).forEach(zone => {
+      if (!zoneOrder.includes(zone)) {
+        orderedZones.push(zone)
+      }
+    })
+    
+    // Flatten back into single array, maintaining zone order
+    const zonedRiddles = orderedZones.flatMap(zone => riddlesByZone[zone] || [])
+    
+    setShuffledRiddles(zonedRiddles)
   }
 }, [riddles, selectedDifficulty])
+
 
 // Wrong Code sound effect
 useEffect(() => {
@@ -1267,6 +1302,13 @@ if (!gameStarted) {
                   </div>
                 </div>
               </div>
+
+              {/* Add zone indicator in riddle header */}
+<div className="text-center mb-4">
+  <div className="inline-block bg-gradient-to-r from-green-400 to-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md">
+    📍 {currentRiddle.zone || 'Zoo Exploration'}
+  </div>
+</div>
 
               {/* Progress Indicator */}
               <div className="flex justify-center space-x-2 mb-8">
