@@ -37,7 +37,7 @@ const [formData, setFormData] = useState({
   // Load riddles from database
   const loadRiddles = async () => {
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('riddles')
         .select('*')
         .order('id')
@@ -63,18 +63,18 @@ const handleSubmit = async (e) => {
   try {
     if (editingRiddle) {
       // Update existing riddle using integer ID
-      const [formData, setFormData] = useState({
-  animal: '',
-  riddle: '',
-  hint: '',
-  difficulty: 'easy',
-  points: 50,
-  fact: '',
-  qr_code: '',
-  icon: '',
-  zone: '', 
-  active: true
-})
+      const updateData = {
+        animal: formData.animal,
+        riddle: formData.riddle,
+        hint: formData.hint,
+        difficulty: formData.difficulty,
+        points: formData.points,
+        fact: formData.fact,
+        qr_code: formData.qr_code,
+        icon: formData.icon,
+        zone: formData.zone,
+        active: formData.active
+      }
       
       const { error } = await supabase
         .from('riddles')
@@ -102,7 +102,7 @@ const handleSubmit = async (e) => {
       
   
       
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('riddles')
         .insert([insertData])
         .select('*')
@@ -128,7 +128,7 @@ const handleSubmit = async (e) => {
     setEditingRiddle(null)
     loadRiddles()
     
-  } catch (error) {
+  } catch {
     alert('Error saving riddle: ' + error.message)
   }
 }
@@ -163,7 +163,7 @@ const handleEdit = (riddle) => {
         if (error) throw error
         alert('Riddle deleted successfully!')
         loadRiddles()
-      } catch (error) {
+      } catch {
         alert('Error deleting riddle: ' + error.message)
       }
     }
@@ -176,7 +176,7 @@ const handleEdit = (riddle) => {
   }
 
   // QR Code generation functions
-const generateQRCode = async (qrCodeValue, animalName) => {
+const generateQRCode = async (qrCodeValue) => {
   try {
     // Generate QR code as data URL
     const qrDataURL = await QRCode.toDataURL(qrCodeValue, {
@@ -188,7 +188,7 @@ const generateQRCode = async (qrCodeValue, animalName) => {
       }
     })
     return qrDataURL
-  } catch (error) {
+  } catch {
     alert('Error generating QR code: ' + error.message)
     return null
   }
@@ -310,7 +310,7 @@ const downloadAllQRCodes = async () => {
         `
         container.appendChild(qrItem)
       }
-    } catch (error) {
+    } catch {
     }
   }
 

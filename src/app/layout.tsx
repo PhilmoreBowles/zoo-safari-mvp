@@ -13,6 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 // Add to your stylesheet or as inline style
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const accessibilityStyles = `
   .accessibility-container {
     min-height: fit-content !important;
