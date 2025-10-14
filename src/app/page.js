@@ -442,10 +442,12 @@ if (currentSessionId) {
 
     transitionToScreen(() => {
       if (newAnimals.length >= filteredRiddles.length) {
-       
+        // ✨ NEW: Mark session as completed
+        if (currentSessionId) {
+          completeSession(currentSessionId)
+        }
         setShowLimitReached(true)
       } else {
-        
         setShowSuccess(true)
       }
     })
