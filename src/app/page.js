@@ -132,6 +132,8 @@ useEffect(() => {
           .select('*')
           .eq('id', savedFamilyId)
           .single()
+
+          console.log('🔍 Family verification:', { familyData, familyError })
         
         if (familyData && !familyError) {
           // Family exists, load their progress
@@ -162,6 +164,7 @@ useEffect(() => {
           
           // Restore family session
           setFamilyName(savedFamily)
+          console.log('✅ Setting gameStarted to TRUE')
           setGameStarted(true)
           if (savedDifficulty) setSelectedDifficulty(savedDifficulty)
             // ✨ NEW: Restore session for continued analytics tracking
