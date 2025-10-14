@@ -383,6 +383,12 @@ const foundAnimal = useCallback(async () => {
  
   // Store the completed riddle for the celebration screen
   setCompletedRiddle(currentRiddle)
+
+  // ✨ NEW: Track correct scan with time spent
+if (currentSessionId && riddleStartTime) {
+  const timeSpent = calculateTimeSpent(riddleStartTime)
+  trackCorrectScan(currentSessionId, currentRiddle.id, timeSpent)
+}
  
   const familyId = localStorage.getItem('zooSafariFamilyId')
   if (!familyId) {
@@ -428,6 +434,11 @@ const { data: existingProgress } = await supabase
 
     setCurrentPoints(newPoints)
     setDiscoveredAnimals(newAnimals)
+
+    // ✨ NEW: Update session progress
+if (currentSessionId) {
+  updateSessionProgress(currentSessionId, newAnimals.length, newPoints)
+}
 
     transitionToScreen(() => {
       if (newAnimals.length >= filteredRiddles.length) {
