@@ -136,8 +136,8 @@ useEffect(() => {
           console.log('🔍 Family verification:', { familyData, familyError })
         
         if (familyData && !familyError) {
-          // Family exists, load their progress
-          const { error: progressError } = await supabase
+         // Family exists, load their progress
+          const { data: progressData, error: progressError } = await supabase
             .from('family_progress')
             .select(`
               *,
@@ -145,7 +145,10 @@ useEffect(() => {
             `)
             .eq('family_id', savedFamilyId)
           
+          console.log('🔍 Progress data:', { progressData, progressError })
+          
           if (!progressError && progressData) {
+            console.log('✅ Progress loaded, count:', progressData.length)
 
             
             // Calculate total points from database
@@ -163,6 +166,7 @@ useEffect(() => {
           }
           
           // Restore family session
+          console.log('🔍 About to restore game state')
           setFamilyName(savedFamily)
           console.log('✅ Setting gameStarted to TRUE')
           setGameStarted(true)
