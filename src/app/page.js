@@ -2,6 +2,16 @@
 import { supabase } from '../lib/supabase'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Scanner } from '@yudiel/react-qr-scanner'
+import { 
+  createSession, 
+  updateSessionProgress, 
+  completeSession,
+  trackRiddleViewed,
+  trackHintUsed,
+  trackWrongScan,
+  trackCorrectScan,
+  calculateTimeSpent
+} from '../lib/analytics'
 
 /* eslint-disable react/no-unescaped-entities */
 
@@ -62,6 +72,8 @@ const RIDDLE_LIMIT = 9  // Keep this as is
 export default function Home() {
   // State variables
   const [familyName, setFamilyName] = useState('')
+  const [currentSessionId, setCurrentSessionId] = useState(null)
+  const [riddleStartTime, setRiddleStartTime] = useState(null)
   const [gameStarted, setGameStarted] = useState(false)
   const [currentPoints, setCurrentPoints] = useState(0)
   const [discoveredAnimals, setDiscoveredAnimals] = useState([])
@@ -173,13 +185,15 @@ useEffect(() => {
     if (error) {
      
     } else {
-
       setRiddles(data)
     }
   }
   
   fetchRiddles()
 }, [])
+
+
+
 
 
 // Shuffle riddles when riddles load or difficulty changes
@@ -300,7 +314,13 @@ const getRiddleCounts = () => {
 const riddleCounts = getRiddleCounts()
   const currentRiddle = filteredRiddles[currentRiddleIndex]
 
-
+// Track when a new riddle is viewed
+useEffect(() => {
+  if (currentRiddle && currentSessionId && gameStarted) {
+    trackRiddleViewed(currentSessionId, currentRiddle.id)
+    setRiddleStartTime(new Date().toISOString())
+  }
+}, [currentRiddle?.id, currentSessionId, gameStarted])
 
 
   // Game functions
@@ -319,22 +339,24 @@ const startAdventure = async () => {
         .single()
 
       if (error) {
-      
         alert('Error starting adventure. Please try again.')
         return
       }
 
-      
-      
-      // Only store family ID and name for session management
       const familyId = data.id
       localStorage.setItem('zooSafariFamilyId', familyId)
       localStorage.setItem('zooSafariFamilyName', familyName)
       localStorage.setItem('zooSafariDifficulty', selectedDifficulty)
       
+      // ✨ NEW: Create analytics session
+      const sessionId = await createSession(familyId, selectedDifficulty)
+      if (sessionId) {
+        setCurrentSessionId(sessionId)
+        localStorage.setItem('zooSafariSessionId', sessionId)
+      }
+      
       transitionToScreen(() => {
         setGameStarted(true)
-
       })
       
     } catch (err) {
@@ -533,13 +555,20 @@ const handleScanSuccess = useCallback((result) => {
     if (currentRiddle && decodedText === currentRiddle.qr_code) {
       setShowScanner(false)
       foundAnimal()
-} else if (currentRiddle) {
-  setShowScanner(false)
-  setWrongCodeMessage(`Oops! You scanned "${decodedText}" but you need to find a different exhibit.`)
-  window.scrollTo(0, 0) // Add this line
-}
+    } else if (currentRiddle) {
+      setShowScanner(false)
+      setWrongCodeMessage(`Oops! You scanned "${decodedText}" but you need to find a different exhibit.`)
+      
+      // ✨ NEW: Track wrong scan
+      if (currentSessionId) {
+        trackWrongScan(currentSessionId, currentRiddle.id)
+      }
+      
+      window.scrollTo(0, 0)
+    }
   }
-}, [currentRiddle, foundAnimal])
+}, [currentRiddle, foundAnimal, currentSessionId])
+
 
 const handleScanError = useCallback((error) => {
   if (error?.message?.includes('Permission denied')) {
@@ -1354,9 +1383,14 @@ if (!gameStarted) {
               <div className="relative mb-6">
                 <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-600 rounded-2xl transform scale-105 opacity-20"></div>
                 <button
-                  onClick={() => setShowHint(true)}
-                  className="relative w-full bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 hover:from-yellow-500 hover:via-orange-500 hover:to-red-500 text-white font-bold py-3 sm:py-5 px-4 sm:px-8 rounded-2xl shadow-xl transform transition-all duration-300 hover:scale-102 hover:shadow-2xl border-2 border-white/40"
-                >
+                  onClick={() => {
+                  setShowHint(true)
+                  if (currentSessionId && currentRiddle) {
+                   trackHintUsed(currentSessionId, currentRiddle.id)
+                    }
+                   }}
+  className="relative w-full bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 hover:from-yellow-500 hover:via-orange-500 hover:to-red-500 text-white font-bold py-3 sm:py-5 px-4 sm:px-8 rounded-2xl shadow-xl transform transition-all duration-300 hover:scale-102 hover:shadow-2xl border-2 border-white/40"
+>
                   <div className="flex items-center justify-center space-x-4">
                     <div className="bg-white/20 rounded-full p-2">
                       <span className="text-2xl">💡</span>
