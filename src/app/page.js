@@ -171,9 +171,15 @@ useEffect(() => {
           console.log('✅ Setting gameStarted to TRUE')
           setGameStarted(true)
           if (savedDifficulty) setSelectedDifficulty(savedDifficulty)
+
             // ✨ NEW: Restore session for continued analytics tracking
           if (savedSessionId) {
             setCurrentSessionId(savedSessionId)
+
+            // ✨ NEW: Restore riddle position
+          if (savedRiddleIndex) {
+            setCurrentRiddleIndex(parseInt(savedRiddleIndex))
+          }
           }
         } else {
           // Family doesn't exist, clear localStorage
@@ -391,8 +397,7 @@ const nextRiddle = () => {
     if (currentRiddleIndex < filteredRiddles.length - 1) {
       const newIndex = currentRiddleIndex + 1
       setCurrentRiddleIndex(newIndex)
-      // Remove this localStorage line - it's causing conflicts
-      // localStorage.setItem('zooSafariCurrentRiddle', newIndex.toString())
+      localStorage.setItem('zooSafariCurrentRiddle', newIndex.toString())
     }
   })
 }
