@@ -127,7 +127,7 @@ useEffect(() => {
         
         if (familyData && !familyError) {
           // Family exists, load their progress
-          const { data: progressData, error: progressError } = await supabase
+          const { error: progressError } = await supabase
             .from('family_progress')
             .select(`
               *,
@@ -161,7 +161,7 @@ useEffect(() => {
           localStorage.removeItem('zooSafariFamilyId')
           localStorage.removeItem('zooSafariFamilyName')
         }
-      } catch (err) {
+      } catch {
       
       }
     }
@@ -320,7 +320,7 @@ useEffect(() => {
     trackRiddleViewed(currentSessionId, currentRiddle.id)
     setRiddleStartTime(new Date().toISOString())
   }
-}, [currentRiddle?.id, currentSessionId, gameStarted])
+}, [currentRiddle, currentSessionId, gameStarted])
 
 
   // Game functions
@@ -359,7 +359,7 @@ const startAdventure = async () => {
         setGameStarted(true)
       })
       
-    } catch (err) {
+    } catch {
       alert('Error connecting to database. Please try again.')
     }
   }
@@ -391,7 +391,7 @@ const foundAnimal = useCallback(async () => {
 
   try {
     // Check if this riddle was already completed by this family
-const { data: existingProgress, error: checkError } = await supabase
+const { data: existingProgress } = await supabase
   .from('family_progress')
   .select('id')
   .eq('family_id', familyId)
@@ -400,7 +400,7 @@ const { data: existingProgress, error: checkError } = await supabase
 
     if (!existingProgress) {
       // Only insert if not already completed
-      const { data: progressData, error: progressError } = await supabase
+      const { error: progressError } = await supabase
         .from('family_progress')
         .insert([{
           family_id: familyId,
@@ -439,56 +439,14 @@ const { data: existingProgress, error: checkError } = await supabase
       }
     })
 
-  } catch (err) {
+  } catch {
     
     alert('Unable to save progress. Please check your connection.')
   }
-}, [currentPoints, currentRiddle, discoveredAnimals, transitionToScreen])
+}, [currentPoints, currentRiddle, discoveredAnimals, filteredRiddles.length, transitionToScreen])
 
 
 // Family database functions
-const createFamily = async (familyName, difficulty) => {
-  try {
-    const { data, error } = await supabase
-      .from('families')
-      .insert([
-        {
-          family_name: familyName,
-          selected_difficulty: difficulty,
-          created_at: new Date().toISOString(),
-          last_active: new Date().toISOString()
-        }
-      ])
-      .select()
-      .single()
-    
-    if (error) {
-      return null
-    }
-    
-    return data
-  } catch (error) {
-    return null
-  }
-}
-
-const getFamilyById = async (familyId) => {
-  try {
-    const { data, error } = await supabase
-      .from('families')
-      .select('*')
-      .eq('id', familyId)
-      .single()
-    
-    if (error) {
-      return null
-    }
-    
-    return data
-  } catch (error) {
-    return null
-  }
-}
 
 const resetDemo = async () => {
   const familyId = localStorage.getItem('zooSafariFamilyId')
@@ -502,7 +460,7 @@ const resetDemo = async () => {
         .delete()
         .eq('id', familyId)
      
-    } catch (err) {
+    } catch {
     
     }
   }

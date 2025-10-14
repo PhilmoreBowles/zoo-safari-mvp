@@ -46,7 +46,7 @@ const [formData, setFormData] = useState({
       } else {
         setRiddles(data)
       }
-    } catch (err) {
+    } catch {
     } finally {
       setLoading(false)
     }

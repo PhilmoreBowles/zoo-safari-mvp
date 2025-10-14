@@ -29,7 +29,7 @@ export async function createSession(familyId, difficulty) {
     }
 
     return data.id
-  } catch (err) {
+  } catch {
     console.error('Error creating session:', err)
     return null
   }
@@ -54,7 +54,7 @@ export async function updateSessionProgress(sessionId, riddlesCompleted, totalPo
     if (error) {
       console.error('Failed to update session progress:', error)
     }
-  } catch (err) {
+  } catch {
     console.error('Error updating session:', err)
   }
 }
@@ -76,7 +76,7 @@ export async function completeSession(sessionId) {
     if (error) {
       console.error('Failed to complete session:', error)
     }
-  } catch (err) {
+  } catch {
     console.error('Error completing session:', err)
   }
 }
@@ -98,7 +98,7 @@ export async function abandonSession(sessionId) {
     if (error) {
       console.error('Failed to abandon session:', error)
     }
-  } catch (err) {
+  } catch {
     console.error('Error abandoning session:', err)
   }
 }
@@ -126,7 +126,7 @@ export async function trackRiddleViewed(sessionId, riddleId) {
     if (error) {
       console.error('Failed to track riddle viewed:', error)
     }
-  } catch (err) {
+  } catch {
     console.error('Error tracking riddle viewed:', err)
   }
 }
@@ -150,7 +150,7 @@ export async function trackHintUsed(sessionId, riddleId) {
     if (error) {
       console.error('Failed to track hint used:', error)
     }
-  } catch (err) {
+  } catch {
     console.error('Error tracking hint used:', err)
   }
 }
@@ -174,7 +174,7 @@ export async function trackWrongScan(sessionId, riddleId) {
     if (error) {
       console.error('Failed to track wrong scan:', error)
     }
-  } catch (err) {
+  } catch {
     console.error('Error tracking wrong scan:', err)
   }
 }
@@ -200,7 +200,7 @@ export async function trackCorrectScan(sessionId, riddleId, timeSpentSeconds) {
     if (error) {
       console.error('Failed to track correct scan:', error)
     }
-  } catch (err) {
+  } catch {
     console.error('Error tracking correct scan:', err)
   }
 }
