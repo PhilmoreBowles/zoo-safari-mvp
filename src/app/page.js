@@ -115,6 +115,7 @@ useEffect(() => {
     const savedFamily = localStorage.getItem('zooSafariFamilyName')
     const savedRiddleIndex = localStorage.getItem('zooSafariCurrentRiddle')
     const savedDifficulty = localStorage.getItem('zooSafariDifficulty')
+    const savedSessionId = localStorage.getItem('zooSafariSessionId') 
     
     if (savedFamilyId && savedFamily) {
       try {
@@ -156,6 +157,10 @@ useEffect(() => {
           setFamilyName(savedFamily)
           setGameStarted(true)
           if (savedDifficulty) setSelectedDifficulty(savedDifficulty)
+            // ✨ NEW: Restore session for continued analytics tracking
+          if (savedSessionId) {
+            setCurrentSessionId(savedSessionId)
+          }
         } else {
           // Family doesn't exist, clear localStorage
           localStorage.removeItem('zooSafariFamilyId')
