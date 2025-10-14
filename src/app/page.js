@@ -116,6 +116,13 @@ useEffect(() => {
     const savedRiddleIndex = localStorage.getItem('zooSafariCurrentRiddle')
     const savedDifficulty = localStorage.getItem('zooSafariDifficulty')
     const savedSessionId = localStorage.getItem('zooSafariSessionId') 
+
+    console.log('🔍 Session Restore Check:', {
+      savedFamilyId,
+      savedFamily,
+      savedDifficulty,
+      savedSessionId
+    })
     
     if (savedFamilyId && savedFamily) {
       try {
@@ -487,6 +494,7 @@ const resetDemo = async () => {
   localStorage.removeItem('zooSafariFamilyId')
   localStorage.removeItem('zooSafariFamilyName')
   localStorage.removeItem('zooSafariDifficulty')
+  localStorage.removeItem('zooSafariSessionId')
 
   
   // Reset all state
