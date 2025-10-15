@@ -37,7 +37,7 @@ const [formData, setFormData] = useState({
   // Load riddles from database
   const loadRiddles = async () => {
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('riddles')
         .select('*')
         .order('id')
