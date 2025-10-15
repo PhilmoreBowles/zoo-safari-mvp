@@ -458,10 +458,10 @@ const downloadAllQRCodes = async () => {
     <option value="Africa">Africa</option>
     <option value="Harmony Hill">Harmony Hill</option>
     <option value="Tropical Discovery">Tropical Discovery</option>
-    <option value="The Edge">Arctic Zone</option>
-    <option value="Asia">Reptile House</option>
-    <option value="Down Under">Birds of Prey</option>
-    <option value="Primate Panorama">Primate Panoramak</option>
+    <option value="The Edge">The Edge</option>
+    <option value="Asia">Asia</option>
+    <option value="Down Under">Down Under</option>
+    <option value="Primate Panorama">Primate Panorama</option>
   </select>
   <p className="text-xs text-gray-500 mt-1">Groups riddles by physical zoo location</p>
 </div>
