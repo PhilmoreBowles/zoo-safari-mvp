@@ -78,12 +78,7 @@ export default function AnalyticsDashboard() {
       setTopAnimalsData(animals)
       setFunnelData(funnel)
 
-      console.log('📊 Analytics loaded:', {
-        metrics: { families, duration, completion, discoveries },
-        sessions: sessions.length,
-        animals: animals.length,
-        funnel
-      })
+    
 
     } catch (err) {
       console.error('Error loading analytics:', err)

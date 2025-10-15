@@ -117,12 +117,7 @@ useEffect(() => {
     const savedDifficulty = localStorage.getItem('zooSafariDifficulty')
     const savedSessionId = localStorage.getItem('zooSafariSessionId') 
 
-    console.log('🔍 Session Restore Check:', {
-      savedFamilyId,
-      savedFamily,
-      savedDifficulty,
-      savedSessionId
-    })
+
     
     if (savedFamilyId && savedFamily) {
       try {
