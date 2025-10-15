@@ -155,7 +155,7 @@ const handleEdit = (riddle) => {
   const handleDelete = async (riddleId) => {
     if (confirm('Are you sure you want to delete this riddle?')) {
       try {
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from('riddles')
           .delete()
           .eq('id', riddleId)
