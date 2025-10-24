@@ -2,6 +2,7 @@
 import { supabase } from '../lib/supabase'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Scanner } from '@yudiel/react-qr-scanner'
+import SurveyModal from '../components/SurveyModal'
 import { 
   createSession, 
   updateSessionProgress, 
@@ -68,7 +69,6 @@ const scannerButtonStyles = `
 const RIDDLE_LIMIT = 9  // Keep this as is
 
 
-
 export default function Home() {
   // State variables
   const [familyName, setFamilyName] = useState('')
@@ -93,7 +93,8 @@ export default function Home() {
   const [showWrongCodeScreen, setShowWrongCodeScreen] = useState(false)
   const [wrongCodeScanned, setWrongCodeScanned] = useState('')
   const [wrongCodeMessage, setWrongCodeMessage] = useState('')
-
+  const [showSurvey, setShowSurvey] = useState(false)
+  const [surveyCompleted, setSurveyCompleted] = useState(false)
 
   const transitionToScreen = (callback, direction = 'forward') => {
   setIsTransitioning(true)
@@ -128,7 +129,7 @@ useEffect(() => {
           .eq('id', savedFamilyId)
           .single()
 
-          console.log('🔍 Family verification:', { familyData, familyError })
+          
         
         if (familyData && !familyError) {
          // Family exists, load their progress
@@ -140,10 +141,9 @@ useEffect(() => {
             `)
             .eq('family_id', savedFamilyId)
           
-          console.log('🔍 Progress data:', { progressData, progressError })
           
           if (!progressError && progressData) {
-            console.log('✅ Progress loaded, count:', progressData.length)
+           
 
             
             // Calculate total points from database
@@ -161,9 +161,9 @@ useEffect(() => {
           }
           
           // Restore family session
-          console.log('🔍 About to restore game state')
+
           setFamilyName(savedFamily)
-          console.log('✅ Setting gameStarted to TRUE')
+          
           setGameStarted(true)
           if (savedDifficulty) setSelectedDifficulty(savedDifficulty)
 
@@ -272,7 +272,7 @@ useEffect(() => {
 useEffect(() => {
   if (wrongCodeMessage) {
     const audio = new Audio('/sounds/wrong-code.mp3')
-    audio.play().catch(e => console.log('Audio play failed:', e))
+    audio.play().catch(() => {})
   }
 }, [wrongCodeMessage])
 
@@ -281,7 +281,7 @@ useEffect(() => {
 useEffect(() => {
   if (showSuccess) {
     const audio = new Audio('/sounds/celebration.mp3')
-    audio.play().catch(e => console.log('Audio play failed:', e))
+    audio.play().catch(() => {})
   }
 }, [showSuccess])
 
@@ -290,7 +290,7 @@ useEffect(() => {
   if (showLimitReached) {
     const audio = new Audio('/sounds/demo-complete.mp3')
     audio.volume = 0.4 // Slightly louder for celebration
-    audio.play().catch(e => console.log('Audio play failed:', e))
+    audio.play().catch(() => {})
   }
 }, [showLimitReached])
 
@@ -299,6 +299,18 @@ useEffect(() => {
 useEffect(() => {
   
 }, [showWrongCodeScreen])
+
+// Show survey 30 seconds after reaching Demo Complete screen
+useEffect(() => {
+  if (showLimitReached && !surveyCompleted) {
+    const timer = setTimeout(() => {
+      setShowSurvey(true)
+    }, 30000) // 30 seconds = 30000 milliseconds
+    
+    return () => clearTimeout(timer) // Cleanup if component unmounts
+  }
+}, [showLimitReached, surveyCompleted])
+
 
 
 // Add shuffle function
@@ -389,10 +401,15 @@ const nextRiddle = () => {
   transitionToScreen(() => {
     setShowSuccess(false)
     setShowHint(false)
+   
     if (currentRiddleIndex < filteredRiddles.length - 1) {
+      // More riddles left - go to next one
       const newIndex = currentRiddleIndex + 1
       setCurrentRiddleIndex(newIndex)
       localStorage.setItem('zooSafariCurrentRiddle', newIndex.toString())
+    } else {
+      // All riddles complete - show Demo Complete screen
+      setShowLimitReached(true)
     }
   })
 }
@@ -459,13 +476,14 @@ if (currentSessionId) {
   updateSessionProgress(currentSessionId, newAnimals.length, newPoints)
 }
 
-    transitionToScreen(() => {
+   transitionToScreen(() => {
       if (newAnimals.length >= filteredRiddles.length) {
-        // ✨ NEW: Mark session as completed
+        // ✨ Mark session as completed
         if (currentSessionId) {
           completeSession(currentSessionId)
         }
-        setShowLimitReached(true)
+        // Always show success/celebration first
+        setShowSuccess(true)
       } else {
         setShowSuccess(true)
       }
@@ -539,7 +557,7 @@ const handleScanSuccess = useCallback((result) => {
   if (result && result.length > 0) {
 
     const audio = new Audio('/sounds/scan.mp3')
-    audio.play().catch(e => console.log('Audio play failed:', e))
+    audio.play().catch(() => {})
 
     const decodedText = result[0].rawValue
     
@@ -1060,6 +1078,7 @@ if (!gameStarted) {
             </button>
 
 
+
           {/* Add this notification link */}
 <div className="text-center mt-6">
   <a 
@@ -1075,6 +1094,7 @@ if (!gameStarted) {
       </div>
     )
   }
+
 
   // Limit reached screen
   if (showLimitReached) {
@@ -1155,6 +1175,10 @@ if (!gameStarted) {
             </div>
           </div>
 
+          <div className="text-center text-gray-600 text-sm font-semibold mb-4 animate-pulse">
+  📊 Quick survey coming in 30 seconds...
+</div>
+
           <div className="space-y-4">
             <a 
               href="https://zoosafari.app" 
@@ -1180,10 +1204,29 @@ if (!gameStarted) {
               </div>
             </button>
           </div>
+                {/* Survey overlays after 30 seconds on Demo Complete screen */}
+      {showSurvey && !surveyCompleted && (
+        <SurveyModal
+          sessionId={currentSessionId}
+          familyName={familyName}
+          totalPoints={currentPoints}
+          animalsDiscovered={discoveredAnimals.length}
+          onComplete={() => {
+            setSurveyCompleted(true)
+            setShowSurvey(false)
+          }}
+          onSkip={() => {
+            setSurveyCompleted(true)
+            setShowSurvey(false)
+          }}
+        />
+      )}
         </div>
       </div>
     )
   }
+
+
 
 // Main game interface
   return (
@@ -1722,6 +1765,7 @@ if (!gameStarted) {
           </div>
         </div>
       </div>
+      
     </div>
   )
 }

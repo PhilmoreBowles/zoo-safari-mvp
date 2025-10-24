@@ -224,3 +224,177 @@ export function calculateTimeSpent(riddleStartTime) {
   
   return Math.max(0, diffSeconds) // Ensure non-negative
 }
+
+
+// ==========================================
+// SURVEY RESPONSE TRACKING
+// ==========================================
+
+/**
+ * Submit post-adventure survey response
+ * @param {Object} surveyData - Survey response data
+ * @returns {Promise<boolean>} Success status
+ */
+export async function submitSurveyResponse(surveyData) {
+  try {
+    const { data, error } = await supabase
+      .from('survey_responses')
+      .insert([{
+        session_id: surveyData.session_id,
+        nps_score: surveyData.nps_score,
+        enjoyment_level: surveyData.enjoyment_level,
+        learning_value: surveyData.learning_value,
+        difficulty_rating: surveyData.difficulty_rating,
+        favorite_aspects: surveyData.favorite_aspects || [],
+        improvements: surveyData.improvements || null,
+        would_recommend: surveyData.would_recommend || null,
+        age_group: surveyData.age_group || null,
+        completed_at: surveyData.completed_at || new Date().toISOString()
+      }])
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Failed to submit survey:', error)
+      return false
+    }
+
+    console.log('✅ Survey submitted successfully:', data.id)
+    return true
+  } catch (err) {
+    console.error('Error submitting survey:', err)
+    return false
+  }
+}
+
+/**
+ * Check if a session has an associated survey response
+ * @param {string} sessionId - UUID of the session
+ * @returns {Promise<boolean>} True if survey exists
+ */
+export async function hasSurveyResponse(sessionId) {
+  try {
+    const { data, error } = await supabase
+      .from('survey_responses')
+      .select('id')
+      .eq('session_id', sessionId)
+      .single()
+
+    if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
+      console.error('Error checking survey response:', error)
+      return false
+    }
+
+    return !!data
+  } catch (err) {
+    console.error('Error checking survey response:', err)
+    return false
+  }
+}
+
+/**
+ * Get survey analytics summary
+ * @returns {Promise<Object|null>} Survey summary statistics
+ */
+export async function getSurveySummary() {
+  try {
+    const { data, error } = await supabase
+      .from('survey_summary')
+      .select('*')
+      .single()
+
+    if (error) {
+      console.error('Failed to get survey summary:', error)
+      return null
+    }
+
+    return data
+  } catch (err) {
+    console.error('Error getting survey summary:', err)
+    return null
+  }
+}
+
+/**
+ * Get favorite aspects breakdown
+ * @returns {Promise<Array|null>} Array of favorite aspects with counts
+ */
+export async function getFavoriteAspects() {
+  try {
+    const { data, error } = await supabase
+      .from('favorite_aspects_breakdown')
+      .select('*')
+      .order('count', { ascending: false })
+
+    if (error) {
+      console.error('Failed to get favorite aspects:', error)
+      return null
+    }
+
+    return data
+  } catch (err) {
+    console.error('Error getting favorite aspects:', err)
+    return null
+  }
+}
+
+/**
+ * Calculate NPS (Net Promoter Score)
+ * @returns {Promise<Object|null>} NPS calculation with promoters/passives/detractors
+ */
+export async function calculateNPS() {
+  try {
+    const { data, error } = await supabase
+      .rpc('calculate_nps')
+
+    if (error) {
+      console.error('Failed to calculate NPS:', error)
+      return null
+    }
+
+    return data[0] || null
+  } catch (err) {
+    console.error('Error calculating NPS:', err)
+    return null
+  }
+}
+
+/**
+ * Get survey responses with session context for detailed analysis
+ * @param {Object} filters - Optional filters (difficulty, age_group, date_range)
+ * @returns {Promise<Array|null>} Array of survey responses with session data
+ */
+export async function getSurveyResponsesWithContext(filters = {}) {
+  try {
+    let query = supabase
+      .from('survey_with_session_context')
+      .select('*')
+      .order('completed_at', { ascending: false })
+
+    // Apply filters if provided
+    if (filters.difficulty) {
+      query = query.eq('session_difficulty', filters.difficulty)
+    }
+    if (filters.age_group) {
+      query = query.eq('age_group', filters.age_group)
+    }
+    if (filters.start_date) {
+      query = query.gte('completed_at', filters.start_date)
+    }
+    if (filters.end_date) {
+      query = query.lte('completed_at', filters.end_date)
+    }
+
+    const { data, error } = await query
+
+    if (error) {
+      console.error('Failed to get survey responses with context:', error)
+      return null
+    }
+
+    return data
+  } catch (err) {
+    console.error('Error getting survey responses with context:', err)
+    return null
+  }
+}
